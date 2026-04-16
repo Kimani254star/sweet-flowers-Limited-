@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sweet Forever Garden</title>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+body{font-family:Cambria,"Times New Roman",serif}
+.nav-btn{width:100%;text-align:left;padding:8px;border-radius:6px;transition:.3s}
+.nav-btn:hover{background:#2563eb;color:#fff}
+.card{background:#fff;padding:16px;border-radius:8px;box-shadow:0 0 10px rgba(0,0,0,.1);margin-bottom:12px}
+.hidden{display:none}
+#galleryBox img{width:100%;height:100px;object-fit:cover;border-radius:6px;cursor:pointer}
+#galleryPopup{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);justify-content:center;align-items:center;flex-direction:column;z-index:1000}
+#galleryPopup img{max-width:90%;max-height:80%;border-radius:8px}
+</style>
+</head>
+
+<body class="bg-blue-50 text-gray-900">
+
+<header class="bg-blue-900 text-white px-6 py-3 flex justify-between items-center">
+<h1 class="font-bold text-xl">🌿 Sweet Forever Garden</h1>
+<button onclick="toggleLogin()" class="bg-white text-blue-900 px-3 py-1 rounded">Login</button>
+</header>
+
+<div class="flex h-[calc(100vh-56px)]">
+
+<aside class="w-60 bg-blue-950 text-white p-4 flex flex-col">
+
+<h2 class="font-bold mb-4">SERVICES</h2>
+
+<button onclick="showService('all')" class="nav-btn">🏡 All Services</button>
+<button onclick="showService('Landscaping')" class="nav-btn">🌿 Landscaping</button>
+<button onclick="showService('Fumigation')" class="nav-btn">🏠 Fumigation</button>
+<button onclick="showService('Pest Control')" class="nav-btn">🐜 Pest Control</button>
+
+<button onclick="showSection('booking')" class="nav-btn">📅 Booking</button>
+<button onclick="showSection('gallery')" class="nav-btn">🖼 Gallery</button>
+<button onclick="showSection('admin')" class="nav-btn">📊 Admin</button>
+<button onclick="showSection('contact')" class="nav-btn">📞 Contact</button>
+
+</aside>
+
+<main class="flex-1 p-6 overflow-auto">
+
+<div id="loginBox" class="card hidden">
+<h2 class="font-bold mb-2">Login</h2>
+<input id="user" class="w-full p-2 border rounded mb-2" placeholder="Username">
+<input id="pass" type="password" class="w-full p-2 border rounded mb-2" placeholder="Password">
+<button onclick="login()" class="bg-blue-900 text-white w-full py-2 rounded">Login</button>
+</div>
+
+<div id="services">
+<div class="card">🌿 Landscaping Services Available</div>
+<div class="card">🏠 Fumigation per Bedroom</div>
+<div class="card">🐜 Pest Control Services</div>
+</div>
+
+<div id="serviceInfo" class="card hidden"></div>
+
+<div id="booking" class="hidden">
+<div class="card">
+<h2 class="font-bold">Booking Form</h2>
+<input id="bname" class="w-full p-2 border rounded mb-2" placeholder="Full Name">
+<input id="bphone" class="w-full p-2 border rounded mb-2" placeholder="Phone Number">
+
+<select id="bservice" class="w-full p-2 border rounded mb-2">
+<option>Landscaping</option>
+<option>Fumigation</option>
+<option>Pest Control</option>
+</select>
+
+<input id="brooms" class="w-full p-2 border rounded mb-2" placeholder="Bedrooms (if fumigation)">
+<button onclick="book()" class="bg-blue-900 text-white w-full py-2 rounded">Book Now</button>
+</div>
+</div>
+
+<div id="gallery" class="hidden">
+<div class="card">
+<h2 class="font-bold">Upload Gallery</h2>
+<input type="file" id="imgUpload" multiple onchange="upload()">
+<div id="galleryBox" class="grid grid-cols-2 gap-2 mt-3"></div>
+</div>
+</div>
+
+<div id="admin" class="hidden">
+<div class="card">
+<h2 class="font-bold">Admin Dashboard</h2>
+<div id="bookings"></div>
+</div>
+</div>
+
+<div id="contact" class="hidden">
+<div class="card">
+<h2 class="font-bold mb-2">📞 Connect With Us</h2>
+
+<p>Phone: <a href="https://wa.me/254724726960" target="_blank">+254 724 726 960</a></p>
+<p>Phone: <a href="https://wa.me/254717346231" target="_blank">+254 717 346 231</a></p>
+<p>Phone: <a href="https://wa.me/254712773563" target="_blank">+254 712773563</a></p>
+<p>James: <a href="https://wa.me/254757268186" target="_blank">+254 757 268 186</a></p>
+
+<p class="mt-2">Email: info@acacialiquorstore.com</p>
+<p>Address: Sweet Forever Garden, Nairobi, Kenya</p>
+
+<a href="https://wa.me/254724726960" target="_blank">
+  <div class="mt-3 bg-green-500 text-white text-center py-2 rounded">
+    📲 WhatsApp Chat
+  </div>
+</a>
+
+<a href="https://instagram.com/josephkimany6983" target="_blank">
+  <div class="mt-2 bg-pink-500 text-white text-center py-2 rounded">
+    📸 Instagram
+  </div>
+</a>
+
+<a href="https://facebook.com" target="_blank">
+  <div class="mt-2 bg-blue-600 text-white text-center py-2 rounded">
+    📘 Facebook Page
+  </div>
+</a>
+
+<a href="https://tiktok.com" target="_blank">
+  <div class="mt-2 bg-black text-white text-center py-2 rounded">
+    🎵 TikTok
+  </div>
+</a>
+
+<a href="mailto:info@sweetforevergarden.com">
+  <div class="mt-2 bg-gray-700 text-white text-center py-2 rounded">
+    ✉️ Email Us
+  </div>
+</a>
+
+</div>
+</div>
+
+</main>
+</div>
+
+<div id="galleryPopup" class="flex">
+<img id="popupImg">
+<button onclick="closePopup()" class="bg-blue-900 text-white px-4 py-2 mt-2 rounded">Close</button>
+</div>
+
+<script>
+let bookings=JSON.parse(localStorage.getItem("bookings")||"[]");
+let gallery=JSON.parse(localStorage.getItem("gallery")||"[]");
+
+function showSection(id){
+document.querySelectorAll("main > div").forEach(d=>d.classList.add("hidden"));
+document.getElementById(id).classList.remove("hidden");
+}
+
+function toggleLogin(){
+document.getElementById("loginBox").classList.toggle("hidden");
+}
+
+function login(){
+alert("Login successful");
+}
+
+function book(){
+bookings.push({name:bname.value,phone:bphone.value,service:bservice.value,rooms:brooms.value});
+localStorage.setItem("bookings",JSON.stringify(bookings));
+renderBookings();
+alert("Booked successfully");
+}
+
+function renderBookings(){
+document.getElementById("bookings").innerHTML=bookings.map(b=>
+`<div class="card">${b.name} - ${b.service} - ${b.phone}</div>`
+).join("");
+}
+
+function upload(){
+Array.from(imgUpload.files).forEach(file=>{
+let r=new FileReader();
+r.onload=e=>{
+gallery.push(e.target.result);
+localStorage.setItem("gallery",JSON.stringify(gallery));
+renderGallery();
+};
+r.readAsDataURL(file);
+});
+}
+
+function renderGallery(){
+document.getElementById("galleryBox").innerHTML=gallery.map(img=>
+`<img src="${img}" onclick="openImg('${img}')">`
+).join("");
+}
+
+function openImg(img){
+popupImg.src=img;
+galleryPopup.style.display="flex";
+}
+
+function closePopup(){
+galleryPopup.style.display="none";
+}
+
+function showService(type){
+let data={
+"Landscaping":{
+title:"🌿 Landscaping Service",
+desc:"We design and maintain gardens and outdoor spaces.",
+tools:["Grass cutter","Rake","Fertilizer","Hosepipe"],
+process:"We clear land, level soil, plant grass and maintain gardens."
+},
+"Fumigation":{
+title:"🏠 Fumigation Service",
+desc:"We remove bedbugs, cockroaches and pests.",
+tools:["Sprayer","Fogging machine","Chemicals","Mask"],
+process:"We spray rooms and eliminate all pests safely."
+},
+"Pest Control":{
+title:"🐜 Pest Control Service",
+desc:"We control rats, ants and termites.",
+tools:["Rat poison","Traps","Insecticide","Glue boards"],
+process:"We inspect, place traps and eliminate pests."
+},
+"all":{
+title:"All Services",
+desc:"Select a service from sidebar."
+}
+};
+
+let d=data[type];
+
+document.getElementById("serviceInfo").classList.remove("hidden");
+document.getElementById("serviceInfo").innerHTML=`
+<h2 class="font-bold text-lg mb-2">${d.title}</h2>
+<p class="mb-2">${d.desc}</p>
+${d.tools?`<b>Tools:</b><ul class="list-disc ml-5">${d.tools.map(t=>`<li>${t}</li>`).join("")}</ul>`:""}
+<p class="mt-2">${d.process||""}</p>
+`;
+
+window.scrollTo({top:0,behavior:"smooth"});
+}
+
+renderBookings();
+renderGallery();
+</script>
+
+</body>
+</html>
