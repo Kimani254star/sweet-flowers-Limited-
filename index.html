@@ -105,11 +105,23 @@ button{
 
 <body>
 
-<header>
-  <h2>🌿 GreenCare Services</h2>
+<header style="display:flex; align-items:center; justify-content:space-between;">
 
-  <!-- Theme button -->
-  <button onclick="toggleTheme()">🌙</button>
+  <div style="display:flex; align-items:center; gap:10px;">
+  <img src="acacia-logo.png" alt="Acacia Pharmacy Logo" style="width:45px; height:45px;">
+  <h2 style="margin:0; color:#1b8f3c; font-weight:bold;">
+    Acacia Pharmacy Store
+  </h2>
+</div>
+
+  <div id="motto" style="font-size:14px; color:#ccc;"></div>
+
+  
+  <div>
+    <button onclick="toggleTheme()">🌙</button>
+    <button onclick="showCart()">🛒 Cart</button>
+  </div>
+
 </header>
 
 <section id="container">
@@ -220,6 +232,24 @@ button{
 </footer>
 
 <script>
+  const mottos = [
+  "🚚 Fast & Reliable Delivery Across Kenya",
+  "✅ Trusted Quality Medicines & Health Products",
+  "💰 Affordable Prices + Special Discounts Available",
+  "📞 Call / WhatsApp: +254 731 858 997",
+  "💳 Flexible Payment Plans Available (M-PESA, Card, Cash)",
+  "⚡ Order Now – Quick Service & Secure Payments"
+];
+
+let index = 0;
+
+function changeMotto(){
+  document.getElementById("motto").textContent = mottos[index];
+  index = (index + 1) % mottos.length;
+}
+
+setInterval(changeMotto, 2000);
+changeMotto();
 const products = [
 
   {name:"Lawn Grass Installation", type:"Landscaping", bedrooms:0, price:18000, image:"https://images.unsplash.com/photo-1501004318641-b39e6451bec6", description:"Fresh green lawn installation service"},
