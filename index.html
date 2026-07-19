@@ -3,413 +3,1682 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sweet Flower Gardens</title>
+<title>Sweet Flowers Garden | Professional Cleaning, Landscaping & Fumigation Services</title>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-
-body{
-  font-family: Cambria, Georgia, serif;
-  margin:0;
-  background:#f5f5f5;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family: 'Cambria', sans-serif;
 }
 
-body.dark{
-  background:#111;
-  color:#fff;
+html{
+scroll-behavior:smooth;
+}
+
+body{
+background:#ffffff;
+color:#222;
+overflow-x:hidden;
+}
+
+a{
+text-decoration:none;
+color:inherit;
+}
+
+.container{
+width:90%;
+max-width:1350px;
+margin:auto;
 }
 
 header{
-  background:#0b3d2e;
-  color:#fff;
-  padding:15px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+background:rgba(255,255,255,.97);
+backdrop-filter:blur(10px);
+box-shadow:0 3px 20px rgba(0,0,0,.08);
+z-index:999;
 }
 
-#container{
-  display:flex;
-  gap:20px;
-  padding:20px;
+nav{
+height:90px;
+display:flex;
+justify-content:space-between;
+align-items:center;
 }
 
-#filters{
-  width:260px;
+.logo{
+font-size:34px;
+font-weight:800;
+color:#1B5E20;
+line-height:1.1;
 }
 
-#grid{
-  flex:1;
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-  gap:15px;
+.logo span{
+display:block;
+font-size:15px;
+font-weight:500;
+color:#666;
 }
 
-.card{
-  background:#fff;
-  padding:15px;
-  border-radius:10px;
-  box-shadow:0 5px 15px rgba(0,0,0,0.1);
-  text-align:center;
+nav ul{
+display:flex;
+list-style:none;
+gap:35px;
 }
 
-body.dark .card{
-  background:#1e1e1e;
+nav ul li a{
+font-size:16px;
+font-weight:600;
+transition:.3s;
 }
 
-.card img{
-  width:100%;
-  height:150px;
-  object-fit:cover;
-  border-radius:8px;
-  cursor:pointer;
+nav ul li a:hover{
+color:#2E7D32;
 }
 
-button{
-  padding:8px;
-  margin-top:8px;
-  cursor:pointer;
+.nav-right{
+display:flex;
+align-items:center;
+gap:15px;
 }
 
-.add{
-  background:#0b3d2e;
-  color:#fff;
-  border:none;
-  width:100%;
+.login-btn{
+padding:12px 24px;
+border:2px solid #2E7D32;
+border-radius:40px;
+font-weight:600;
+color:#2E7D32;
+transition:.3s;
 }
 
-.footer{
-  background:#0b3d2e;
-  color:white;
-  padding:40px 20px;
-  margin-top:40px;
+.login-btn:hover{
+background:#2E7D32;
+color:white;
 }
 
-.footer-container{
-  display:flex;
-  justify-content:space-between;
-  gap:20px;
-  flex-wrap:wrap;
+.register-btn{
+padding:12px 24px;
+background:#F9A825;
+border-radius:40px;
+font-weight:700;
+color:#222;
+transition:.3s;
+}
+
+.register-btn:hover{
+transform:translateY(-2px);
+}
+
+.hero{
+height:100vh;
+display:flex;
+align-items:center;
+background:
+linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),
+url("https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1800&q=80");
+background-size:cover;
+background-position:center;
+color:white;
+}
+
+.hero-content{
+max-width:760px;
+}
+
+.hero h4{
+font-size:20px;
+letter-spacing:2px;
+color:#FFD54F;
+margin-bottom:20px;
+}
+
+.hero h1{
+font-size:68px;
+line-height:1.15;
+margin-bottom:25px;
+font-weight:800;
+}
+
+.hero p{
+font-size:22px;
+line-height:1.8;
+margin-bottom:40px;
+}
+
+.hero-buttons{
+display:flex;
+gap:20px;
+margin-bottom:50px;
+flex-wrap:wrap;
+}
+
+.primary-btn{
+padding:18px 38px;
+background:#2E7D32;
+border-radius:50px;
+font-weight:700;
+color:white;
+transition:.3s;
+}
+
+.primary-btn:hover{
+background:#43A047;
+}
+
+.secondary-btn{
+padding:18px 38px;
+background:white;
+border-radius:50px;
+font-weight:700;
+color:#1B5E20;
+transition:.3s;
+}
+
+.secondary-btn:hover{
+background:#f4f4f4;
+}
+
+.hero-features{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:18px;
+max-width:650px;
+}
+
+.hero-feature{
+background:rgba(255,255,255,.12);
+backdrop-filter:blur(8px);
+padding:18px 22px;
+border-radius:10px;
+font-weight:500;
+}
+
+.top-bar{
+background:#1B5E20;
+color:white;
+padding:10px 0;
+font-size:15px;
+}
+
+.top-content{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+@media(max-width:1000px){
+nav ul{ display:none; }
+.hero h1{ font-size:48px; }
+.hero-features{ grid-template-columns:1fr; }
+}
+
+@media(max-width:700px){
+.hero{ text-align:center; }
+.hero-buttons{ justify-content:center; }
+.hero-content{ max-width:100%; }
+.top-content{ flex-direction:column; gap:8px; }
+.logo{ font-size:28px; }
+.hero h1{ font-size:38px; }
+.hero p{ font-size:18px; }
+}
+
+.about{
+padding:120px 0;
+background:#f8f9fa;
+}
+
+.about-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:70px;
+align-items:center;
+}
+
+.about-image img{
+width:100%;
+border-radius:20px;
+box-shadow:0 20px 50px rgba(0,0,0,.15);
+}
+
+.section-tag{
+display:inline-block;
+padding:8px 18px;
+background:#E8F5E9;
+color:#1B5E20;
+border-radius:30px;
+font-weight:700;
+margin-bottom:20px;
+}
+
+.about-content h2{
+font-size:48px;
+margin-bottom:25px;
+color:#1B5E20;
+}
+
+.about-content p{
+font-size:18px;
+line-height:1.9;
+color:#555;
+margin-bottom:20px;
+}
+
+.mission-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:25px;
+margin-top:35px;
+}
+
+.mission-box{
+background:#fff;
+padding:30px;
+border-radius:15px;
+box-shadow:0 15px 40px rgba(0,0,0,.08);
+}
+
+.mission-box h3{
+color:#1B5E20;
+margin-bottom:15px;
+}
+
+.statistics{
+margin-top:80px;
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:30px;
+}
+
+.stat{
+background:#fff;
+padding:40px;
+text-align:center;
+border-radius:15px;
+box-shadow:0 15px 40px rgba(0,0,0,.08);
+}
+
+.stat h2{
+font-size:52px;
+color:#2E7D32;
+margin-bottom:10px;
+}
+
+.stat p{
+font-size:18px;
+font-weight:600;
+color:#666;
+}
+
+@media(max-width:900px){
+.about-grid{ grid-template-columns:1fr; }
+.mission-grid{ grid-template-columns:1fr; }
+.statistics{ grid-template-columns:repeat(2,1fr); }
+}
+
+@media(max-width:600px){
+.statistics{ grid-template-columns:1fr; }
+.about-content h2{ font-size:36px; }
+}
+
+.services{
+padding:120px 0;
+background:white;
+}
+
+.section-header{
+text-align:center;
+max-width:850px;
+margin:auto;
+margin-bottom:70px;
+}
+
+.section-header span{
+display:inline-block;
+padding:8px 20px;
+background:#E8F5E9;
+color:#1B5E20;
+font-weight:700;
+border-radius:30px;
+margin-bottom:20px;
+}
+
+.section-header h2{
+font-size:48px;
+color:#1B5E20;
+margin-bottom:20px;
+}
+
+.section-header p{
+font-size:19px;
+color:#666;
+line-height:1.8;
+}
+
+.services-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+gap:35px;
+}
+
+.service-card{
+background:white;
+padding:40px;
+border-radius:20px;
+box-shadow:0 15px 45px rgba(0,0,0,.08);
+transition:.35s;
+border-top:5px solid #2E7D32;
+}
+
+.service-card:hover{
+transform:translateY(-12px);
+box-shadow:0 25px 60px rgba(0,0,0,.12);
+}
+
+.service-icon{
+width:80px;
+height:80px;
+background:#E8F5E9;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:38px;
+border-radius:50%;
+margin-bottom:25px;
+}
+
+.service-card h3{
+font-size:28px;
+color:#1B5E20;
+margin-bottom:18px;
+}
+
+.service-card p{
+font-size:17px;
+color:#666;
+line-height:1.8;
+margin-bottom:25px;
+}
+
+.service-card a{
+display:inline-block;
+padding:14px 30px;
+background:#2E7D32;
+color:white;
+font-weight:600;
+border-radius:40px;
+transition:.3s;
+}
+
+.service-card a:hover{
+background:#1B5E20;
+}
+
+@media(max-width:768px){
+.section-header h2{ font-size:36px; }
+}
+
+.why-us{
+padding:120px 0;
+background:#f8f9fa;
+}
+
+.why-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+gap:35px;
+margin-top:70px;
+}
+
+.why-card{
+background:white;
+padding:40px;
+border-radius:20px;
+box-shadow:0 15px 40px rgba(0,0,0,.08);
+transition:.35s;
+text-align:center;
+}
+
+.why-card:hover{
+transform:translateY(-12px);
+}
+
+.why-icon{
+width:90px;
+height:90px;
+margin:auto;
+margin-bottom:25px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:42px;
+background:#E8F5E9;
+}
+
+.why-card h3{
+font-size:28px;
+margin-bottom:15px;
+color:#1B5E20;
+}
+
+.why-card p{
+color:#666;
+line-height:1.8;
+font-size:17px;
+}
+
+.cta-banner{
+margin-top:90px;
+background:linear-gradient(135deg,#1B5E20,#43A047);
+padding:60px;
+border-radius:25px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:40px;
+color:white;
+flex-wrap:wrap;
+}
+
+.cta-banner h2{
+font-size:42px;
+margin-bottom:15px;
+}
+
+.cta-banner p{
+font-size:18px;
+max-width:650px;
+line-height:1.8;
+}
+
+.cta-btn{
+display:inline-block;
+padding:18px 40px;
+background:#F9A825;
+color:#222;
+font-weight:700;
+border-radius:50px;
+transition:.3s;
+}
+
+.cta-btn:hover{
+background:white;
+}
+
+@media(max-width:900px){
+.cta-banner{ text-align:center; justify-content:center; }
+.cta-banner h2{ font-size:34px; }
+}
+
+.projects{
+padding:120px 0;
+background:white;
+}
+
+.projects-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
+gap:35px;
+margin-top:60px;
+}
+
+.project-card{
+background:white;
+border-radius:20px;
+overflow:hidden;
+box-shadow:0 15px 40px rgba(0,0,0,.08);
+transition:.35s;
+}
+
+.project-card:hover{
+transform:translateY(-10px);
+}
+
+.project-card img{
+width:100%;
+height:260px;
+object-fit:cover;
+}
+
+.project-info{
+padding:30px;
+}
+
+.project-info h3{
+font-size:28px;
+color:#1B5E20;
+margin-bottom:15px;
+}
+
+.project-info p{
+color:#666;
+line-height:1.8;
+}
+
+.gallery{
+padding:120px 0;
+background:#f8f9fa;
+}
+
+.gallery-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+margin-top:60px;
+}
+
+.gallery-grid img{
+width:100%;
+height:260px;
+object-fit:cover;
+border-radius:15px;
+transition:.35s;
+cursor:pointer;
+}
+
+.gallery-grid img:hover{
+transform:scale(1.05);
+}
+
+.testimonials{
+padding:120px 0;
+background:#f8f9fa;
+}
+
+.testimonial-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+gap:30px;
+margin-top:60px;
+}
+
+.testimonial-card{
+background:white;
+padding:40px;
+border-radius:20px;
+box-shadow:0 15px 40px rgba(0,0,0,.08);
+transition:.35s;
+}
+
+.testimonial-card:hover{
+transform:translateY(-10px);
+}
+
+.stars{
+font-size:24px;
+color:#F9A825;
+margin-bottom:20px;
+}
+
+.testimonial-card p{
+line-height:1.8;
+margin-bottom:20px;
+color:#666;
+}
+
+.testimonial-card h3{
+color:#1B5E20;
+margin-bottom:5px;
+}
+
+.contact{
+padding:120px 0;
+background:white;
+}
+
+.contact-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:50px;
+margin-top:60px;
+}
+
+.contact-info{
+background:#1B5E20;
+padding:50px;
+border-radius:20px;
+color:white;
+}
+
+.contact-info h3{
+font-size:34px;
+margin-bottom:30px;
+}
+
+.contact-item{
+margin-bottom:30px;
+}
+
+.contact-form{
+background:#f8f9fa;
+padding:40px;
+border-radius:20px;
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea{
+width:100%;
+padding:16px;
+margin-bottom:20px;
+border:1px solid #ddd;
+border-radius:10px;
+font-size:16px;
+}
+
+.contact-form button{
+width:100%;
+padding:18px;
+background:#2E7D32;
+color:white;
+border:none;
+border-radius:10px;
+font-size:18px;
+font-weight:700;
+cursor:pointer;
+transition:.3s;
+}
+
+.contact-form button:hover{
+background:#1B5E20;
+}
+
+footer{
+background:#111;
+color:#ddd;
+padding:80px 0 30px;
+}
+
+.footer-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:40px;
+}
+
+.footer-grid h3{
+color:white;
+margin-bottom:20px;
+}
+
+.footer-grid ul{
+list-style:none;
+}
+
+.footer-grid li{
+margin-bottom:12px;
+}
+
+.footer-grid a{
+color:#ddd;
+}
+
+.footer-grid a:hover{
+color:#F9A825;
 }
 
 .footer-bottom{
-  text-align:center;
-  margin-top:20px;
-  border-top:1px solid #444;
-  padding-top:10px;
-  font-size:13px;
+text-align:center;
+margin-top:60px;
+padding-top:25px;
+border-top:1px solid rgba(255,255,255,.1);
+}
+
+@media(max-width:900px){
+.contact-grid{ grid-template-columns:1fr; }
+}
+
+.modal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.65);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:9999;
+padding:20px;
+backdrop-filter:blur(5px);
+}
+
+.modal-box{
+width:100%;
+max-width:470px;
+background:white;
+border-radius:20px;
+padding:45px;
+position:relative;
+animation:popup .35s ease;
+box-shadow:0 25px 60px rgba(0,0,0,.25);
+}
+
+@keyframes popup{
+from{ transform:translateY(40px); opacity:0; }
+to{ transform:translateY(0); opacity:1; }
+}
+
+.close-modal{
+position:absolute;
+right:25px;
+top:20px;
+font-size:34px;
+cursor:pointer;
+color:#777;
+transition:.3s;
+}
+
+.close-modal:hover{
+color:#1B5E20;
+}
+
+.modal-box h2{
+font-size:36px;
+color:#1B5E20;
+margin-bottom:10px;
+}
+
+.modal-box p{
+color:#666;
+margin-bottom:30px;
+}
+
+.input-group{
+margin-bottom:22px;
+}
+
+.input-group label{
+display:block;
+font-weight:600;
+margin-bottom:10px;
+color:#333;
+}
+
+.input-group input{
+width:100%;
+padding:16px;
+border:1px solid #dcdcdc;
+border-radius:10px;
+font-size:16px;
+outline:none;
+transition:.3s;
+}
+
+.input-group input:focus{
+border-color:#2E7D32;
+box-shadow:0 0 0 3px rgba(46,125,50,.15);
+}
+
+.password-box{
+position:relative;
+}
+
+.password-box input{
+padding-right:60px;
+}
+
+.toggle-password{
+position:absolute;
+right:10px;
+top:50%;
+transform:translateY(-50%);
+border:none;
+background:none;
+font-size:22px;
+cursor:pointer;
+}
+
+.remember{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+font-size:15px;
+}
+
+.remember a{
+color:#2E7D32;
+font-weight:600;
+}
+
+.login-button{
+width:100%;
+padding:17px;
+border:none;
+border-radius:12px;
+background:#2E7D32;
+color:white;
+font-size:18px;
+font-weight:700;
+cursor:pointer;
+transition:.3s;
+}
+
+.login-button:hover{
+background:#1B5E20;
+}
+
+.register-link{
+text-align:center;
+margin-top:25px;
+font-size:16px;
+}
+
+.register-link a{
+color:#2E7D32;
+font-weight:700;
+text-decoration:none;
+}
+
+.register-link a:hover{
+text-decoration:underline;
+}
+
+@media(max-width:600px){
+.modal-box{ padding:30px 25px; }
+.modal-box h2{ font-size:30px; }
+}
+
+.booking{
+padding:120px 0;
+background:#f8f9fa;
+}
+
+.booking-form{
+background:white;
+padding:50px;
+border-radius:20px;
+box-shadow:0 20px 50px rgba(0,0,0,.08);
+margin-top:60px;
+}
+
+.form-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:25px;
+margin-bottom:25px;
+}
+
+.booking-form label{
+display:block;
+margin-bottom:8px;
+font-weight:600;
+color:#333;
+}
+
+.booking-form input,
+.booking-form select,
+.booking-form textarea{
+width:100%;
+padding:16px;
+border:1px solid #ddd;
+border-radius:10px;
+font-size:16px;
+margin-bottom:20px;
+outline:none;
+transition:.3s;
+}
+
+.booking-form input:focus,
+.booking-form select:focus,
+.booking-form textarea:focus{
+border-color:#2E7D32;
+box-shadow:0 0 0 3px rgba(46,125,50,.15);
+}
+
+.booking-btn{
+width:100%;
+padding:18px;
+background:#2E7D32;
+color:white;
+font-size:18px;
+font-weight:700;
+border:none;
+border-radius:10px;
+cursor:pointer;
+transition:.3s;
+}
+
+.booking-btn:hover{
+background:#1B5E20;
+}
+
+.admin-wrapper{
+display:flex;
+height:100vh;
+background:#f4f6f9;
+}
+
+.admin-sidebar{
+width:260px;
+background:#1B5E20;
+color:white;
+padding:30px 20px;
+overflow-y:auto;
+}
+
+.admin-sidebar h2{
+margin-bottom:30px;
+font-size:24px;
+}
+
+.admin-sidebar ul{
+list-style:none;
+padding:0;
+}
+
+.admin-sidebar li{
+padding:15px;
+cursor:pointer;
+border-radius:8px;
+margin-bottom:10px;
+transition:.3s;
+}
+
+.admin-sidebar li:hover{
+background:#2E7D32;
+}
+
+.admin-main{
+flex:1;
+padding:40px;
+overflow:auto;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+margin:30px 0;
+}
+
+.card{
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+.card h3{
+margin-bottom:10px;
+color:#666;
+}
+
+.card h2{
+color:#1B5E20;
+font-size:32px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+background:white;
+}
+
+table th,
+table td{
+padding:15px;
+border-bottom:1px solid #eee;
+text-align:left;
+}
+
+.admin-page{
+display:block;
+}
+
+.toolbar {
+display: flex;
+justify-content: space-between;
+margin-bottom: 20px;
+gap: 15px;
+}
+
+.toolbar input {
+padding: 10px;
+border-radius: 8px;
+border: 1px solid #ddd;
+width: 300px;
+}
+
+.toolbar button {
+padding: 10px 20px;
+background: #2E7D32;
+color: white;
+border: none;
+border-radius: 8px;
+cursor: pointer;
+font-weight: 600;
 }
 </style>
 </head>
-
 <body>
 
-<header style="display:flex; align-items:center; justify-content:space-between;">
-
-  <div style="display:flex; align-items:center; gap:10px;">
-  <img src="acacia-logo.png" alt="Acacia Pharmacy Logo" style="width:45px; height:45px;">
-  <h2 style="margin:0; color:#1b8f3c; font-weight:bold;">
-    Sweet Flower Garden
-  </h2>
+<div class="top-bar">
+    <div class="container top-content">
+        <div>📞 Erickson Mayetti : 0705 391 000</div>
+        <div>📞 Joseph Kimani : 0717 346 231</div>
+    </div>
 </div>
 
-  <div id="motto" style="font-size:14px; color:#ccc;"></div>
-
-  
-  <div>
-    <button onclick="toggleTheme()">🌙</button>
-    <button onclick="showCart()">🛒 Cart</button>
-  </div>
-
+<header>
+    <div class="container">
+        <nav>
+            <div class="logo">
+                Sweet Flowers Garden
+                <span>Cleaning • Landscaping • Fumigation • Maintenance</span>
+            </div>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="nav-right">
+                <a href="#" class="login-btn" onclick="openLogin()">Login</a>
+                <a href="#" class="register-btn" onclick="openRegister()">Create Account</a>
+            </div>
+        </nav>
+    </div>
 </header>
 
-<section id="container">
+<!-- Main Client Facing Site Wrapped inside homeView container -->
+<div id="homeView">
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h4>WELCOME TO SWEET FLOWER GARDEN</h4>
+                <h1>Professional Landscaping, Cleaning & Fumigation Services</h1>
+                <p>We provide reliable landscaping, gardening, cleaning, fumigation, pest control, and property maintenance services for homes, businesses, schools, hospitals, hotels, and commercial properties throughout Kenya.</p>
+                <div class="hero-buttons">
+                    <a href="#contact" class="primary-btn">Request Free Quote</a>
+                    <a href="#services" class="secondary-btn">Explore Services</a>
+                </div>
+                <div class="hero-features">
+                    <div class="hero-feature">🌿 Professional Landscaping</div>
+                    <div class="hero-feature">🧹 Commercial & Residential Cleaning</div>
+                    <div class="hero-feature">🐜 Safe Pest Control & Fumigation</div>
+                    <div class="hero-feature">🏢 Property Maintenance Services</div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<div id="filters">
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=900&q=80" alt="Sweet Flower Garden">
+                </div>
+                <div class="about-content">
+                    <span class="section-tag">ABOUT US</span>
+                    <h2>Creating Beautiful, Clean & Healthy Environments</h2>
+                    <p>Sweet Flower Garden is a trusted Kenyan company specializing in landscaping, professional cleaning, fumigation, pest control, and property maintenance. We are committed to transforming homes, offices, institutions, and commercial properties through dependable, affordable, and high-quality services.</p>
+                    <p>Our experienced professionals use modern equipment, environmentally friendly products, and proven techniques to deliver outstanding results while ensuring the safety of people, pets, and the environment.</p>
+                    <div class="mission-grid">
+                        <div class="mission-box">
+                            <h3>Our Mission</h3>
+                            <p>To provide exceptional facility management services through professionalism, innovation, and customer satisfaction.</p>
+                        </div>
+                        <div class="mission-box">
+                            <h3>Our Vision</h3>
+                            <p>To become Kenya's most trusted landscaping and facility management company.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="statistics">
+                <div class="stat"><h2>10+</h2><p>Years Experience</p></div>
+                <div class="stat"><h2>5,00+</h2><p>Completed Projects</p></div>
+                <div class="stat"><h2>3,00+</h2><p>Happy Clients</p></div>
+                <div class="stat"><h2>24/7</h2><p>Customer Support</p></div>
+            </div>
+        </div>
+    </section>
 
-<input type="text" id="search" placeholder="Search service..." oninput="applyFilters()" style="width:100%;padding:8px;margin-bottom:15px;">
+    <section id="services" class="services">
+        <div class="container">
+            <div class="section-header">
+                <span>OUR SERVICES</span>
+                <h2>Professional Services We Offer</h2>
+                <p>We provide reliable, affordable, and high-quality services for homes, businesses, schools, hospitals, hotels, apartments, and institutions throughout Kenya.</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">🌿</div>
+                    <h3>Landscaping</h3>
+                    <p>Professional garden design, lawn installation, flower planting, hedge trimming, irrigation systems, and landscape maintenance.</p>
+                    <a href="#">Learn More →</a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🧹</div>
+                    <h3>Cleaning Services</h3>
+                    <p>Residential, office, commercial, hospital, apartment, warehouse, and post-construction cleaning carried out by trained professionals.</p>
+                    <a href="#">Learn More →</a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🐜</div>
+                    <h3>Fumigation & Pest Control</h3>
+                    <p>Safe elimination of bed bugs, cockroaches, termites, rodents, mosquitoes, ants, snakes, and other harmful pests.</p>
+                    <a href="#">Learn More →</a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🏢</div>
+                    <h3>Property Maintenance</h3>
+                    <p>Professional painting, plumbing, electrical repairs, pressure washing, roof cleaning, and general maintenance services.</p>
+                    <a href="#">Learn More →</a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">💧</div>
+                    <h3>Water Tank Cleaning</h3>
+                    <p>Cleaning, disinfecting, and maintaining domestic and commercial water tanks to ensure safe water storage.</p>
+                    <a href="#">Learn More →</a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">♻️</div>
+                    <h3>Waste Management</h3>
+                    <p>Reliable garbage collection, waste disposal, recycling, and environmental cleaning services for organizations and homes.</p>
+                    <a href="#">Learn More →</a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<h3>Service Type</h3>
+    <section class="why-us">
+        <div class="container">
+            <div class="section-header">
+                <span>WHY CHOOSE US</span>
+                <h2>Why Thousands of Clients Trust Sweet Flower Garden</h2>
+                <p>We deliver reliable, affordable, and high-quality facility management services backed by experienced professionals, modern equipment, and outstanding customer care.</p>
+            </div>
+            <div class="why-grid">
+                <div class="why-card">
+                    <div class="why-icon">🏆</div>
+                    <h3>Experienced Team</h3>
+                    <p>Our skilled professionals have years of experience in landscaping, cleaning, fumigation, and property maintenance.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon">🌱</div>
+                    <h3>Eco-Friendly Products</h3>
+                    <p>We use environmentally friendly products that are safe for families, pets, businesses, and the environment.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon">⚡</div>
+                    <h3>Fast Response</h3>
+                    <p>We respond quickly to enquiries, emergency requests, and scheduled maintenance services.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon">🛡️</div>
+                    <h3>Quality Guaranteed</h3>
+                    <p>Every project is completed with attention to detail and backed by our commitment to customer satisfaction.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon">💰</div>
+                    <h3>Affordable Pricing</h3>
+                    <p>Transparent quotations with competitive prices and no hidden charges.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon">📞</div>
+                    <h3>24/7 Customer Support</h3>
+                    <p>Our friendly team is available to answer questions and assist with emergency service requests.</p>
+                </div>
+            </div>
+            <div class="cta-banner">
+                <div>
+                    <h2>Ready to Transform Your Property?</h2>
+                    <p>Contact Sweet Flower Garden today for professional landscaping, cleaning, fumigation, and maintenance services.</p>
+                </div>
+                <div><a href="#contact" class="cta-btn">Request Free Quote</a></div>
+            </div>
+        </div>
+    </section>
 
-<label><input type="checkbox" value="Landscaping" data-type="type" onchange="applyFilters()"> Landscaping</label><br>
-<label><input type="checkbox" value="Fumigation" data-type="type" onchange="applyFilters()"> Fumigation</label><br>
-<label><input type="checkbox" value="Pest Control" data-type="type" onchange="applyFilters()"> Pest Control</label><br>
-<label><input type="checkbox" value="Moving" data-type="type" onchange="applyFilters()"> Moving Services</label><br>
+    <section id="projects" class="projects">
+        <div class="container">
+            <div class="section-header">
+                <span>OUR PROJECTS</span>
+                <h2>Our Recent Work</h2>
+                <p>Every project reflects our commitment to quality, professionalism, and customer satisfaction.</p>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80">
+                    <div class="project-info">
+                        <h3>Garden Landscaping</h3>
+                        <p>Professional lawn installation, flower planting, and garden design.</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=900&q=80">
+                    <div class="project-info">
+                        <h3>Commercial Cleaning</h3>
+                        <p>Office, apartment, and commercial cleaning services.</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <img src="https://images.unsplash.com/photo-1558904541-efa843a96f01?auto=format&fit=crop&w=900&q=80">
+                    <div class="project-info">
+                        <h3>Fumigation Services</h3>
+                        <p>Safe pest control for homes, businesses, and institutions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<h3>Bedrooms (Houses only)</h3>
+    <section id="gallery" class="gallery">
+        <div class="container">
+            <div class="section-header">
+                <span>PHOTO GALLERY</span>
+                <h2>Our Work in Pictures</h2>
+                <p>Browse some of the projects completed by Sweet Flower Garden.</p>
+            </div>
+            <div class="gallery-grid">
+                <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=700&q=80">
+                <img src="https://images.unsplash.com/photo-1523413651479-597eb2da0ad6?auto=format&fit=crop&w=700&q=80">
+                <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=700&q=80">
+            </div>
+        </div>
+    </section>
 
-<label><input type="checkbox" value="1" data-type="bedrooms" onchange="applyFilters()"> 1 Bedroom</label><br>
-<label><input type="checkbox" value="2" data-type="bedrooms" onchange="applyFilters()"> 2 Bedrooms</label><br>
-<label><input type="checkbox" value="3" data-type="bedrooms" onchange="applyFilters()"> 3 Bedrooms</label><br>
-<label><input type="checkbox" value="4" data-type="bedrooms" onchange="applyFilters()"> 4 Bedrooms</label><br>
-<label><input type="checkbox" value="5+" data-type="bedrooms" onchange="applyFilters()"> 5+ Bedrooms</label><br>
+    <section id="booking" class="booking">
+        <div class="container">
+            <div class="section-header">
+                <span>BOOK A SERVICE</span>
+                <h2>Book a Professional Service</h2>
+                <p>Complete the form below and our team will contact you to confirm your booking and provide a quotation.</p>
+            </div>
+            <form id="bookingForm" class="booking-form">
+                <div class="form-grid">
+                    <div>
+                        <label>Full Name</label>
+                        <input type="text" id="bookingName" placeholder="Enter your full name" required>
+                    </div>
+                    <div>
+                        <label>Email Address</label>
+                        <input type="email" id="bookingEmail" placeholder="Enter your email" required>
+                    </div>
+                    <div>
+                        <label>Phone Number</label>
+                        <input type="tel" id="bookingPhone" placeholder="07XXXXXXXX" required>
+                    </div>
+                    <div>
+                        <label>County</label>
+                        <select id="bookingCounty" required>
+                            <option value="">Select County</option>
+                            <option>Nairobi</option>
+                            <option>Kiambu</option>
+                            <option>Machakos</option>
+                            <option>Kajiado</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Preferred Date</label>
+                        <input type="date" id="bookingDate" required>
+                    </div>
+                    <div>
+                        <label>Preferred Time</label>
+                        <input type="time" id="bookingTime" required>
+                    </div>
+                    <div>
+                        <label>Property Type</label>
+                        <select id="propertyType" required>
+                            <option value="">Select Property</option>
+                            <option>Residential Home</option>
+                            <option>Apartment</option>
+                            <option>Office</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Service Category</label>
+                        <select id="bookingService" required>
+                            <option value="">Select Service</option>
+                            <option>Cleaning</option>
+                            <option>Fumigation</option>
+                            <option>Landscaping</option>
+                            <option>Garden Maintenance</option>
+                        </select>
+                    </div>
+                </div>
+                <label>Property Address</label>
+                <input type="text" id="bookingAddress" placeholder="Enter the property location" required>
+                <label>Describe the Service Required</label>
+                <textarea id="bookingDescription" rows="6" placeholder="Describe the work you would like us to do..." required></textarea>
+                <label>Upload Photos (Optional)</label>
+                <input type="file" id="bookingImages" multiple accept="image/*">
+                <button type="submit" class="booking-btn">Submit Booking Request</button>
+            </form>
+        </div>
+    </section>
 
-<h3>Price Range (KES)</h3>
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <span>TESTIMONIALS</span>
+                <h2>What Our Clients Say</h2>
+                <p>Our reputation is built on quality work, professionalism, and customer satisfaction.</p>
+            </div>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"Sweet Flower Garden transformed our office compound beautifully. Their landscaping team exceeded our expectations."</p>
+                    <h3>James Mwangi</h3><span>Corporate Client</span>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<label><input type="checkbox" value="0-5000" data-type="price" onchange="applyFilters()"> Under 5,000</label><br>
-<label><input type="checkbox" value="5000-10000" data-type="price" onchange="applyFilters()"> 5,000 - 10,000</label><br>
-<label><input type="checkbox" value="10000-20000" data-type="price" onchange="applyFilters()"> 10,000 - 20,000</label><br>
-<label><input type="checkbox" value="20000-50000" data-type="price" onchange="applyFilters()"> 20,000 - 50,000</label><br>
-<label><input type="checkbox" value="50000+" data-type="price" onchange="applyFilters()"> 50,000+</label><br>
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="section-header">
+                <span>CONTACT US</span>
+                <h2>Request a Free Quote</h2>
+                <p>Contact us today and receive a free quotation for your project.</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Sweet Flower Garden</h3>
+                    <div class="contact-item"><h4>📞 Erickson Mayetti</h4><p>0705 391 000</p></div>
+                    <div class="contact-item"><h4>📞 Joseph Kimani</h4><p>0717 346 231</p></div>
+                </div>
+                <div class="contact-form">
+                    <form id="quoteRequestForm">
+                        <input type="text" id="quoteName" placeholder="Full Name" required>
+                        <input type="email" id="quoteEmail" placeholder="Email Address" required>
+                        <input type="tel" id="quotePhone" placeholder="Phone Number" required>
+                        <select id="quoteService" required>
+                            <option value="">Select Service</option>
+                            <option>Landscaping</option>
+                            <option>Cleaning</option>
+                            <option>Fumigation</option>
+                            <option>Property Maintenance</option>
+                        </select>
+                        <textarea id="quoteMessage" rows="6" placeholder="Tell us about your project" required></textarea>
+                        <button type="submit">Request Free Quote</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<br>
-<button onclick="clearFilters()">Clear Filters</button>
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">© 2026 Sweet Flower Garden. All Rights Reserved.</div>
+        </div>
+    </footer>
 </div>
 
-<div id="grid"></div>
-
+<!-- Customer View Portal Section -->
+<section id="customerView" style="display:none;">
+    <div class="admin-wrapper">
+        <aside class="admin-sidebar">
+            <h2>Sweet Flower Garden</h2>
+            <ul>
+                <li onclick="showCustomerPage('customerDashboard')">🏠 Dashboard</li>
+                <li onclick="showCustomerPage('myBookings')">📅 My Bookings</li>
+                <li onclick="showCustomerPage('myProfile')">👤 My Profile</li>
+                <li onclick="logoutCustomer()">🚪 Logout</li>
+            </ul>
+        </aside>
+        <main class="admin-main">
+            <div id="customerDashboard" class="customer-page">
+                <h1>Welcome</h1>
+                <div class="cards">
+                    <div class="card"><h3>My Bookings</h3><h2 id="myBookingCount">0</h2></div>
+                </div>
+            </div>
+            <div id="myBookings" class="customer-page" style="display:none;">
+                <h1>My Bookings</h1>
+                <table>
+                    <thead><tr><th>Service</th><th>Date</th><th>Status</th></tr></thead>
+                    <tbody id="customerBookingBody"></tbody>
+                </table>
+            </div>
+            <div id="myProfile" class="customer-page" style="display:none;">
+                <h1>My Profile</h1>
+                <div class="card">
+                    <p><strong>Name:</strong> <span id="profileName"></span></p>
+                    <p><strong>Email:</strong> <span id="profileEmail"></span></p>
+                    <p><strong>Phone:</strong> <span id="profilePhone"></span></p>
+                </div>
+            </div>
+        </main>
+    </div>
 </section>
 
-<div id="viewModal" style="display:none; position:fixed; top:10%; left:50%; transform:translateX(-50%); width:320px; background:#fff; padding:15px; border-radius:10px;">
-  <img id="viewImg" style="width:100%; height:180px; object-fit:cover;">
-  <h3 id="viewName"></h3>
-  <p id="viewPrice"></p>
-  <p id="viewType"></p>
-  <p id="viewDesc"></p>
-  <button onclick="closeView()">Close</button>
-</div>
-
-<footer class="footer">
-
-<div class="footer-container">
-
-  <div class="footer-section">
-    <h3>🌿 GreenCare Services</h3>
-    <p>Your trusted partner for landscaping, fumigation, pest control & moving services.</p>
-  </div>
-
-  <div class="footer-section">
-    <h4>📞 Contact Us</h4>
-    <p>📱 Phone: +254 731 858 997</p>
-
-    <p>
-      💬 <a href="https://wa.me/254731858997" target="_blank" style="color:#25D366;">
-        WhatsApp
-      </a>
-    </p>
-
-    <p>📧 Email: support@greencare.com</p>
-    <p>📍 Nairobi, Kenya</p>
-
-    <div style="margin-top:10px; font-size:22px; display:flex; gap:12px;">
-
-      <a href="https://wa.me/254731858997" target="_blank" style="color:#25D366;">
-        <i class="fab fa-whatsapp"></i>
-      </a>
-
-      <a href="https://facebook.com" target="_blank" style="color:#1877F2;">
-        <i class="fab fa-facebook-f"></i>
-      </a>
-
-      <a href="https://instagram.com" target="_blank" style="color:#E4405F;">
-        <i class="fab fa-instagram"></i>
-      </a>
-
+<!-- Modals Systems -->
+<div id="loginModal" class="modal">
+    <div class="modal-box">
+        <span class="close-modal" onclick="closeLogin()">&times;</span>
+        <h2>Welcome Back</h2>
+        <form id="loginForm">
+            <div class="input-group"><label>Email Address</label><input type="email" id="loginEmail" required></div>
+            <div class="input-group"><label>Password</label><input type="password" id="loginPassword" required></div>
+            <button type="submit" class="login-button">Login</button>
+        </form>
     </div>
-  </div>
-
-  <div class="footer-section">
-    <h4>💳 Payment</h4>
-    <p>M-PESA Till: 123456</p>
-    <p>Cash on Service</p>
-    <p>Bank Transfer</p>
-  </div>
-
-  <div class="footer-section">
-    <h4>📜 Terms</h4>
-    <p>No refunds after service completion</p>
-    <p>Service warranty where applicable</p>
-    <p>Prices may vary based on location</p>
-  </div>
-
 </div>
 
-<div class="footer-bottom">
-  <p>© 2026 GreenCare Services. All Rights Reserved.</p>
+<div id="registerModal" class="modal">
+    <div class="modal-box">
+        <span class="close-modal" onclick="closeRegister()">&times;</span>
+        <h2>Create Account</h2>
+        <form id="registerForm">
+            <div class="input-group"><label>Full Name</label><input type="text" id="regName" required></div>
+            <div class="input-group"><label>Email Address</label><input type="email" id="regEmail" required></div>
+            <div class="input-group"><label>Phone Number</label><input type="tel" id="regPhone" required></div>
+            <div class="input-group"><label>Password</label><input type="password" id="regPassword" required></div>
+            <div class="input-group"><label>Confirm Password</label><input type="password" id="regConfirm" required></div>
+            <button type="submit" class="login-button">Create Account</button>
+        </form>
+    </div>
 </div>
 
-</footer>
+<!-- Admin Management Portal Section -->
+<section id="adminView" style="display:none;">
+    <div class="admin-wrapper">
+        <aside class="admin-sidebar">
+            <h2>Admin SFG</h2>
+            <ul>
+                <li onclick="showAdminPage('dashboardPage')">🏠 Dashboard</li>
+                <li onclick="showAdminPage('customersPage')">👥 Customers</li>
+                <li onclick="showAdminPage('bookingsPage')">📅 Bookings Operations</li>
+                <li onclick="logoutAdmin()">🚪 Logout</li>
+            </ul>
+        </aside>
+        <main class="admin-main">
+            <div id="dashboardPage" class="admin-page">
+                <h1>Operational Admin Dashboard</h1>
+                <div class="cards">
+                    <div class="card"><h3>Registered Customers</h3><h2 id="customerCount">0</h2></div>
+                    <div class="card"><h3>Total Received Bookings</h3><h2 id="bookingCount">0</h2></div>
+                </div>
+            </div>
+            <div id="customersPage" class="admin-page" style="display:none;">
+                <h1>Customer Database Management</h1>
+                <table id="customerTable">
+                    <thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Email</th></tr></thead>
+                    <tbody id="customerBody"></tbody>
+                </table>
+            </div>
+            <div id="bookingsPage" class="admin-page" style="display:none;">
+                <h1>Booking Operational Database Requests</h1>
+                <table id="bookingTable">
+                    <thead><tr><th>#</th><th>Customer Name</th><th>Email / Phone</th><th>Service Type</th><th>Target Date</th><th>Status</th></tr></thead>
+                    <tbody id="bookingBody"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</section>
 
 <script>
-  const mottos = [
-  "🚚 Fast & Reliable Delivery Across Kenya",
-  "✅ Trusted Quality Medicines & Health Products",
-  "💰 Affordable Prices + Special Discounts Available",
-  "📞 Call / WhatsApp: +254 731 858 997",
-  "💳 Flexible Payment Plans Available (M-PESA, Card, Cash)",
-  "⚡ Order Now – Quick Service & Secure Payments"
-];
+const loginModal = document.getElementById("loginModal");
+const registerModal = document.getElementById("registerModal");
 
-let index = 0;
+function openLogin() { loginModal.style.display = "flex"; }
+function closeLogin() { loginModal.style.display = "none"; }
+function openRegister() { registerModal.style.display = "flex"; }
+function closeRegister() { registerModal.style.display = "none"; }
 
-function changeMotto(){
-  document.getElementById("motto").textContent = mottos[index];
-  index = (index + 1) % mottos.length;
-}
+document.getElementById("registerForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    const name = document.getElementById("regName").value.trim();
+    const email = document.getElementById("regEmail").value.trim();
+    const phone = document.getElementById("regPhone").value.trim();
+    const password = document.getElementById("regPassword").value;
+    const confirm = document.getElementById("regConfirm").value;
 
-setInterval(changeMotto, 2000);
-changeMotto();
-const products = [
+    if(password !== confirm) { alert("Passwords do not match."); return; }
+    let users = JSON.parse(localStorage.getItem("sfgUsers")) || [];
+    if(users.some(u => u.email === email)) { alert("Email already registered."); return; }
 
-  {name:"Lawn Grass Installation", type:"Landscaping", bedrooms:0, price:18000, image: "images/galaxy-a15.jpg", description:"Fresh green lawn installation service"},
-  {name:"Flower Bed Design", type:"Landscaping", bedrooms:0, price:12000, image: "images/galaxy-a15.jpg",  description:"Decorative flower garden setup"},
-  {name:"Tree Planting Service", type:"Landscaping", bedrooms:0, price:7000, image: "images/galaxy-a15.jpg",  description:"Planting and spacing of trees"},
-  {name:"Garden Irrigation Setup", type:"Landscaping", bedrooms:0, price:25000, image: "images/galaxy-a15.jpg",  description:"Water irrigation system installation"},
+    users.push({ name, email, phone, password });
+    localStorage.setItem("sfgUsers", JSON.stringify(users));
+    alert("Account created successfully.");
+    closeRegister();
+    openLogin();
+});
 
-  {name:"3 Bedroom Bedbug Fumigation", type:"Fumigation", bedrooms:3, price:9000, image: "images/galaxy-a15.jpg",  description:"Eliminate bedbugs completely"},
-  {name:"2 Bedroom Ant Control Fumigation", type:"Fumigation", bedrooms:2, price:6500, image: "images/galaxy-a15.jpg",  description:"Ant removal service"},
-  {name:"Office Deep Fumigation", type:"Fumigation", bedrooms:0, price:14000, image: "images/galaxy-a15.jpg",  description:"Complete office pest cleaning"},
-  {name:"Warehouse Fumigation Service", type:"Fumigation", bedrooms:0, price:20000, image: "images/galaxy-a15.jpg",  description:"Industrial fumigation service"},
+document.getElementById("loginForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    const email = document.getElementById("loginEmail").value.trim().toLowerCase();
+    const password = document.getElementById("loginPassword").value.trim();
 
-  {name:"Cockroach Control Service", type:"Pest Control", bedrooms:0, price:5000, image: "images/galaxy-a15.jpg",  description:"Eliminate cockroaches fast"},
-  {name:"Rodent Control Service", type:"Pest Control", bedrooms:0, price:10000, image: "images/galaxy-a15.jpg",  description:"Rat and mice elimination"},
-  {name:"Mosquito Control Service", type:"Pest Control", bedrooms:0, price:8000,image: "images/galaxy-a15.jpg",  image:"https://images.unsplash.com/photo-1583337130417-3346a1be7dee", description:"Mosquito spraying and control"},
-  {name:"Snake Removal Service", type:"Pest Control", bedrooms:0, price:20000, image: "images/galaxy-a15.jpg", description:"Safe snake removal service"},
-
-  {name:"Small Apartment Moving", type:"Moving", bedrooms:1, price:10000, image: "images/galaxy-a15.jpg",  description:"Moving for small apartments"},
-  {name:"2 Bedroom House Moving", type:"Moving", bedrooms:2, price:15000, image: "images/galaxy-a15.jpg",  description:"Full relocation service"},
-  {name:"3 Bedroom House Moving", type:"Moving", bedrooms:3, price:20000, image: "images/galaxy-a15.jpg",  description:"Large house relocation"},
-  {name:"Furniture Moving Service", type:"Moving", bedrooms:0, price:8000, image: "images/galaxy-a15.jpg",  description:"Safe furniture transport"},
-  {name:"Office Relocation Service", type:"Moving", bedrooms:0, price:25000, image: "images/galaxy-a15.jpg",  description:"Complete office relocation"},
-
-  {name:"Garden Cleanup Service", type:"Landscaping", bedrooms:0, price:6000,image: "images/galaxy-a15.jpg",  description:"Cleaning and clearing gardens"},
-  {name:"Hedge Trimming Service", type:"Landscaping", bedrooms:0, price:5000, image: "images/galaxy-a15.jpg",  description:"Professional hedge trimming"},
-  {name:"Land Preparation Service", type:"Landscaping", bedrooms:0, price:15000, image: "images/galaxy-a15.jpg",  description:"Clearing land for construction"}
-
-];
-let likes = {};
-
-
-function toggleLove(name){
-  if(likes[name]){
-    delete likes[name];
-  } else {
-    likes[name] = true;
-  }
-  display(products);
-}
-function display(list = products){
-  const grid = document.getElementById("grid");
-  grid.innerHTML = "";
-
-  list.forEach(p=>{
-    grid.innerHTML += `
-      <div class="card">
-
-        <img src="${p.image}" onclick="viewProduct('${p.name}')">
-
-        <h3>${p.name}</h3>
-        <p>KES ${p.price}</p>
-        <p>${p.type}</p>
-
-        <button class="add" onclick="requestService('${p.name}')">
-          Request Service
-        </button>
-
-        <button onclick="toggleLove('${p.name}')" class="icon-btn heart">
-          ${likes[p.name] ? "❤️" : "🤍"}
-        </button>
-
-      </div>
-    `;
-  });
-}
-function requestService(name){
-  const p = products.find(x => x.name === name);
-
-  const msg = encodeURIComponent(
-    `Hello, I want to request this service:%0A%0A` +
-    `Service: ${p.name}%0A` +
-    `Price: KES ${p.price}%0A` +
-    `Type: ${p.type}`
-  );
-
-  const phone = "254731858997";
-
-  const choice = confirm(
-    "Choose OK for WhatsApp chat\nCancel to see other options"
-  );
-
-  if(choice){
-    window.open(`https://wa.me/${phone}?text=${msg}`, "_blank");
-  } else {
-    const option = prompt(
-      "Type option:\n1 = Call\n2 = Email\n3 = WhatsApp"
-    );
-
-    if(option === "1"){
-      window.location.href = `tel:+${phone}`;
+    if((email === "admin@sweetflowergarden.com" || email === "developeracaciabooks@gmail.com") && password === "admin123") {
+        alert("Welcome Administrator");
+        closeLogin();
+        showView("adminView");
+        loadAdminDashboard();
+        return;
     }
 
-    if(option === "2"){
-      window.location.href = `mailto:support@greencare.com?subject=Service Request - ${p.name}&body=I want this service: ${p.name}`;
-    }
+    const users = JSON.parse(localStorage.getItem("sfgUsers")) || [];
+    const user = users.find(u => u.email.toLowerCase() === email && u.password === password);
+    if(!user) { alert("Invalid email or password."); return; }
 
-    if(option === "3"){
-      window.open(`https://wa.me/${phone}?text=${msg}`, "_blank");
-    }
-  }
-}
-function viewProduct(name){
-  const p = products.find(x=>x.name===name);
-  document.getElementById("viewImg").src = p.image;
-  document.getElementById("viewName").textContent = p.name;
-  document.getElementById("viewPrice").textContent = "KES " + p.price;
-  document.getElementById("viewType").textContent = p.type;
-  document.getElementById("viewDesc").textContent = p.description;
-  document.getElementById("viewModal").style.display = "block";
-}
+    localStorage.setItem("loggedInUser", JSON.stringify(user));
+    alert("Welcome " + user.name + "!");
+    closeLogin();
+    showView("customerView");
+    loadCustomerDashboard();
+});
 
-function closeView(){
-  document.getElementById("viewModal").style.display = "none";
+function showView(view) {
+    document.getElementById("homeView").style.display = "none";
+    document.getElementById("customerView").style.display = "none";
+    document.getElementById("adminView").style.display = "none";
+    document.getElementById(view).style.display = "block";
 }
 
-function applyFilters(){
-  const search = document.getElementById("search").value.toLowerCase();
-  const checked = [...document.querySelectorAll("input[type=checkbox]:checked")];
+function showCustomerPage(page) {
+    document.querySelectorAll(".customer-page").forEach(p => p.style.display = "none");
+    document.getElementById(page).style.display = "block";
+}
 
-  const type = checked.filter(c=>c.dataset.type==="type").map(c=>c.value);
-  const bedrooms = checked.filter(c=>c.dataset.type==="bedrooms").map(c=>c.value);
-  const price = checked.filter(c=>c.dataset.type==="price").map(c=>c.value);
+function showAdminPage(page) {
+    document.querySelectorAll(".admin-page").forEach(p => p.style.display = "none");
+    document.getElementById(page).style.display = "block";
+}
 
-  const filtered = products.filter(p=>{
+function logoutCustomer() {
+    localStorage.removeItem("loggedInUser");
+    showView("homeView");
+}
 
-    const matchSearch = p.name.toLowerCase().includes(search);
-    const matchType = !type.length || type.includes(p.type);
+function logoutAdmin() {
+    showView("homeView");
+}
 
-    const matchBedrooms = !bedrooms.length || bedrooms.some(b=>{
-      if(b==="5+") return p.bedrooms>=5;
-      return p.bedrooms==Number(b);
+document.getElementById("bookingForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+    bookings.push({
+        customer: document.getElementById("bookingName").value,
+        email: document.getElementById("bookingEmail").value,
+        phone: document.getElementById("bookingPhone").value,
+        service: document.getElementById("bookingService").value,
+        date: document.getElementById("bookingDate").value,
+        status: "Pending"
     });
+    localStorage.setItem("bookings", JSON.stringify(bookings));
+    alert("Booking submitted successfully.");
+    this.reset();
+});
 
-    const matchPrice = !price.length || price.some(r=>{
-      if(r==="0-5000") return p.price < 5000;
-      if(r==="5000-10000") return p.price>=5000 && p.price<=10000;
-      if(r==="10000-20000") return p.price>=10000 && p.price<=20000;
-      if(r==="20000-50000") return p.price>=20000 && p.price<=50000;
-      if(r==="50000+") return p.price>50000;
+document.getElementById("quoteRequestForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+    bookings.push({
+        customer: document.getElementById("quoteName").value,
+        email: document.getElementById("quoteEmail").value,
+        phone: document.getElementById("quotePhone").value,
+        service: document.getElementById("quoteService").value + " (Quote Request)",
+        date: "As soon as possible",
+        status: "Pending"
     });
+    localStorage.setItem("bookings", JSON.stringify(bookings));
+    alert("Quotation request submitted to operational dashboard database.");
+    this.reset();
+});
 
-    return matchSearch && matchType && matchBedrooms && matchPrice;
-  });
+function loadCustomerDashboard(){
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if(!user) return;
+    document.getElementById("profileName").textContent = user.name;
+    document.getElementById("profileEmail").textContent = user.email;
+    document.getElementById("profilePhone").textContent = user.phone;
 
-  display(filtered);
+    let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+    let myBookings = bookings.filter(b => b.email.toLowerCase() === user.email.toLowerCase());
+    
+    document.getElementById("myBookingCount").textContent = myBookings.length;
+    
+    let html = "";
+    myBookings.forEach(b => {
+        html += `<tr><td>${b.service}</td><td>${b.date}</td><td><strong>${b.status}</strong></td></tr>`;
+    });
+    document.getElementById("customerBookingBody").innerHTML = html;
 }
 
-function clearFilters(){
-  document.querySelectorAll("input[type=checkbox]").forEach(c=>c.checked=false);
-  document.getElementById("search").value="";
-  display(products);
+function loadAdminDashboard(){
+    let users = JSON.parse(localStorage.getItem("sfgUsers")) || [];
+    let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+
+    document.getElementById("customerCount").textContent = users.length;
+    document.getElementById("bookingCount").textContent = bookings.length;
+
+    // Load user list database values
+    let userHtml = "";
+    users.forEach((u, index) => {
+        userHtml += `<tr><td>${index + 1}</td><td>${u.name}</td><td>${u.phone}</td><td>${u.email}</td></tr>`;
+    });
+    document.getElementById("customerBody").innerHTML = userHtml;
+
+    let bookingHtml = "";
+    bookings.forEach((b, index) => {
+        bookingHtml += `<tr>
+            <td>${index + 1}</td>
+            <td>${b.customer}</td>
+            <td>${b.email} <br> <small>${b.phone}</small></td>
+            <td>${b.service}</td>
+            <td>${b.date}</td>
+            <td><span style="color:#E65100; font-weight:bold;">${b.status}</span></td>
+        </tr>`;
+    });
+    document.getElementById("bookingBody").innerHTML = bookingHtml;
 }
-
-function toggleTheme(){
-  document.body.classList.toggle("dark");
-}
-
-display(products);
-
 </script>
-
 </body>
 </html>
