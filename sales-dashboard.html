@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales Dashboard | Sweet Flower Garden</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="sales-dashboard">
+
+<section id="salesView">
+    <div class="admin-wrapper">
+        <aside class="admin-sidebar">
+            <h2>Sales SFG</h2>
+            <ul>
+                <li onclick="showAdminPage('salesDashboardPage')">🏠 Dashboard</li>
+                <li onclick="showAdminPage('salesCustomersPage')">👥 Customers</li>
+                <li onclick="showAdminPage('salesBookingsPage')">📅 Bookings Operations</li>
+                <li onclick="logoutSales()">🚪 Logout</li>
+            </ul>
+        </aside>
+        <main class="admin-main">
+            <div id="salesDashboardPage" class="admin-page">
+                <h1>Welcome, <span id="salesWelcomeName"></span></h1>
+                <div class="cards">
+                    <div class="card"><h3>Registered Customers</h3><h2 id="salesCustomerCount">0</h2></div>
+                    <div class="card"><h3>Total Bookings</h3><h2 id="salesBookingCount">0</h2></div>
+                </div>
+            </div>
+            <div id="salesCustomersPage" class="admin-page" style="display:none;">
+                <h1>Customer Database</h1>
+                <table>
+                    <thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Email</th></tr></thead>
+                    <tbody id="salesCustomerBody"></tbody>
+                </table>
+            </div>
+            <div id="salesBookingsPage" class="admin-page" style="display:none;">
+                <h1>Booking Requests</h1>
+                <table>
+                    <thead><tr><th>#</th><th>Customer Name</th><th>Email / Phone</th><th>Service Type</th><th>Target Date</th><th>Status</th></tr></thead>
+                    <tbody id="salesBookingBody"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Dashboard | Sweet Flower Garden</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="customer-dashboard">
+
+<section id="customerView">
+    <div class="admin-wrapper">
+        <aside class="admin-sidebar">
+            <h2>Sweet Flower Garden</h2>
+            <ul>
+                <li onclick="showCustomerPage('customerDashboard')">🏠 Dashboard</li>
+                <li onclick="showCustomerPage('myBookings')">📅 My Bookings</li>
+                <li onclick="showCustomerPage('myProfile')">👤 My Profile</li>
+                <li onclick="logoutCustomer()">🚪 Logout</li>
+            </ul>
+        </aside>
+        <main class="admin-main">
+            <div id="customerDashboard" class="customer-page">
+                <h1>Welcome, <span id="welcomeName"></span></h1>
+                <div class="cards">
+                    <div class="card"><h3>My Bookings</h3><h2 id="myBookingCount">0</h2></div>
+                    <div class="card"><h3>Pending</h3><h2 id="myPendingCount">0</h2></div>
+                    <div class="card"><h3>Completed</h3><h2 id="myCompletedCount">0</h2></div>
+                </div>
+            </div>
+            <div id="myBookings" class="customer-page" style="display:none;">
+                <h1>My Bookings</h1>
+                <table>
+                    <thead><tr><th>Service</th><th>Date</th><th>Status</th></tr></thead>
+                    <tbody id="customerBookingBody"></tbody>
+                </table>
+            </div>
+            <div id="myProfile" class="customer-page" style="display:none;">
+                <h1>My Profile</h1>
+                <div class="card" style="margin-bottom:25px;">
+                    <p><strong>Name:</strong> <span id="profileName"></span></p>
+                    <p><strong>Email:</strong> <span id="profileEmail"></span></p>
+                    <p><strong>Phone:</strong> <span id="profilePhone"></span></p>
+                </div>
+                <div class="admin-form">
+                    <h3 style="margin-bottom:20px;color:#1B5E20;">Edit Profile</h3>
+                    <form id="profileEditForm">
+                        <label>Full Name</label>
+                        <input type="text" id="editName" required>
+                        <label>Phone Number</label>
+                        <input type="tel" id="editPhone" required>
+                        <button type="submit">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>

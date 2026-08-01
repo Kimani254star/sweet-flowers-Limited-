@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact __TITLE__ Book | Sweet Flower Garden</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="contact">
+
+<div class="top-bar">
+    <div class="container top-content">
+        <div>📞 Erickson Mayetti : 0705 391 000</div>
+        <div>📞 Joseph Kimani : 0717 346 231</div>
+    </div>
+</div>
+
+<header>
+    <div class="container">
+        <nav>
+            <div class="logo">
+                Sweet Flowers Garden
+                <span>Cleaning • Landscaping • Fumigation • Maintenance</span>
+            </div>
+            <ul>
+                <li><a href="index.html" class="main-nav-link" data-target="home">Home</a></li>
+                <li><a href="about.html" class="main-nav-link" data-target="about">About</a></li>
+                <li><a href="services.html" class="main-nav-link" data-target="services">Services</a></li>
+                <li><a href="projects.html" class="main-nav-link" data-target="projects">Projects</a></li>
+                <li><a href="gallery.html" class="main-nav-link" data-target="gallery">Gallery</a></li>
+                <li><a href="contact.html" class="main-nav-link" data-target="contact">Contact</a></li>
+            </ul>
+            <div class="nav-right">
+                <a href="#" class="login-btn" onclick="openLogin();return false;">Login</a>
+                <a href="#" class="register-btn" onclick="openRegister();return false;">Create Account</a>
+            </div>
+        </nav>
+    </div>
+</header>
+
+    <section id="booking" class="booking">
+        <div class="container">
+            <div class="section-header">
+                <span>BOOK A SERVICE</span>
+                <h2>Book a Professional Service</h2>
+                <p>Complete the form below and our team will contact you to confirm your booking and provide a quotation.</p>
+            </div>
+            <form id="bookingForm" class="booking-form">
+                <div class="form-grid">
+                    <div>
+                        <label>Full Name</label>
+                        <input type="text" id="bookingName" placeholder="Enter your full name" required>
+                    </div>
+                    <div>
+                        <label>Email Address</label>
+                        <input type="email" id="bookingEmail" placeholder="Enter your email" required>
+                    </div>
+                    <div>
+                        <label>Phone Number</label>
+                        <input type="tel" id="bookingPhone" placeholder="07XXXXXXXX" required>
+                    </div>
+                    <div>
+                        <label>County</label>
+                        <select id="bookingCounty" required>
+                            <option value="">Select County</option>
+                            <option>Nairobi</option>
+                            <option>Kiambu</option>
+                            <option>Machakos</option>
+                            <option>Kajiado</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Preferred Date</label>
+                        <input type="date" id="bookingDate" required>
+                    </div>
+                    <div>
+                        <label>Preferred Time</label>
+                        <input type="time" id="bookingTime" required>
+                    </div>
+                    <div>
+                        <label>Property Type</label>
+                        <select id="propertyType" required>
+                            <option value="">Select Property</option>
+                            <option>Residential Home</option>
+                            <option>Apartment</option>
+                            <option>Office</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Service Category</label>
+                        <select id="bookingService" required>
+                            <option value="">Select Service</option>
+                            <option>Cleaning</option>
+                            <option>Fumigation</option>
+                            <option>Landscaping</option>
+                            <option>Garden Maintenance</option>
+                        </select>
+                    </div>
+                </div>
+                <label>Property Address</label>
+                <input type="text" id="bookingAddress" placeholder="Enter the property location" required>
+                <label>Describe the Service Required</label>
+                <textarea id="bookingDescription" rows="6" placeholder="Describe the work you would like us to do..." required></textarea>
+                <label>Upload Photos (Optional)</label>
+                <input type="file" id="bookingImages" multiple accept="image/*">
+                <button type="submit" class="booking-btn">Submit Booking Request</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <span>TESTIMONIALS</span>
+                <h2>What Our Clients Say</h2>
+                <p>Our reputation is built on quality work, professionalism, and customer satisfaction.</p>
+            </div>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"Sweet Flower Garden transformed our office compound beautifully. Their landscaping team exceeded our expectations."</p>
+                    <h3>James Mwangi</h3><span>Corporate Client</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="section-header">
+                <span>CONTACT US</span>
+                <h2>Request a Free Quote</h2>
+                <p>Contact us today and receive a free quotation for your project.</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Sweet Flower Garden</h3>
+                    <div class="contact-item"><h4>📞 Erickson Mayetti</h4><p>0705 391 000</p></div>
+                    <div class="contact-item"><h4>📞 Joseph Kimani</h4><p>0717 346 231</p></div>
+                </div>
+                <div class="contact-form">
+                    <form id="quoteRequestForm">
+                        <input type="text" id="quoteName" placeholder="Full Name" required>
+                        <input type="email" id="quoteEmail" placeholder="Email Address" required>
+                        <input type="tel" id="quotePhone" placeholder="Phone Number" required>
+                        <select id="quoteService" required>
+                            <option value="">Select Service</option>
+                            <option>Landscaping</option>
+                            <option>Cleaning</option>
+                            <option>Fumigation</option>
+                            <option>Property Maintenance</option>
+                        </select>
+                        <textarea id="quoteMessage" rows="6" placeholder="Tell us about your project" required></textarea>
+                        <button type="submit">Request Free Quote</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<footer>
+    <div class="container">
+        <div class="footer-bottom">© 2026 Sweet Flower Garden. All Rights Reserved.</div>
+    </div>
+</footer>
+
+<div id="loginModal" class="modal">
+    <div class="modal-box">
+        <span class="close-modal" onclick="closeLogin()">&times;</span>
+        <h2>Welcome Back</h2>
+        <form id="loginForm">
+            <div class="input-group"><label>Email Address</label><input type="email" id="loginEmail" required></div>
+            <div class="input-group"><label>Password</label><input type="password" id="loginPassword" required></div>
+            <button type="submit" class="login-button">Login</button>
+        </form>
+    </div>
+</div>
+
+<div id="registerModal" class="modal">
+    <div class="modal-box">
+        <span class="close-modal" onclick="closeRegister()">&times;</span>
+        <h2>Create Account</h2>
+        <form id="registerForm">
+            <div class="input-group"><label>Full Name</label><input type="text" id="regName" required></div>
+            <div class="input-group"><label>Email Address</label><input type="email" id="regEmail" required></div>
+            <div class="input-group"><label>Phone Number</label><input type="tel" id="regPhone" required></div>
+            <div class="input-group"><label>Password</label><input type="password" id="regPassword" required></div>
+            <div class="input-group"><label>Confirm Password</label><input type="password" id="regConfirm" required></div>
+            <button type="submit" class="login-button">Create Account</button>
+        </form>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
