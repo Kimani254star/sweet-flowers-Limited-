@@ -3,98 +3,1876 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home | Sweet Flower Garden</title>
+<title>Sweet Flowers Garden — Business Manager</title>
+<style>
+  :root{
+    --pine:#1F3A2E;
+    --pine-deep:#152A21;
+    --soil:#A8582F;
+    --soil-deep:#8A431F;
+    --ochre:#C99A3B;
+    --paper:#EFEEE2;
+    --paper-warm:#F5F3E8;
+    --card:#FFFFFF;
+    --ink:#232620;
+    --ink-soft:#5B6058;
+    --line:#DEDACB;
+    --good:#3E6B4F;
+    --bad:#B23B2E;
+    --radius-card: 10px;
+    --radius-pill: 999px;
+    --shadow-card: 0 1px 2px rgba(21,42,33,0.04);
+    --footer-bg: var(--pine-deep);
+  }
+  body.dark{
+    --pine:#5E8C72;
+    --pine-deep:#DCE6DE;
+    --soil:#D98A5E;
+    --soil-deep:#F0A876;
+    --ochre:#E0B65E;
+    --paper:#14160F;
+    --paper-warm:#1B1E15;
+    --card:#1E2119;
+    --ink:#EAE8DC;
+    --ink-soft:#9CA394;
+    --line:#33362A;
+    --good:#6FBE8C;
+    --bad:#E37564;
+    --footer-bg:#0C0E09;
+  }
+  body.dark .brand-mark{box-shadow:0 0 0 1px rgba(255,255,255,0.06);}
+  body.dark .sidebar{background:#0C0E09;}
+  body.dark .login-icon-circle{background:var(--soil);}
+  body.dark .login-icon-btn:hover .login-icon-circle{background:var(--soil-deep);}
+  body.dark .icon-bug{background:#3A2420;}
+  body.dark .icon-leaf{background:#1F2E22;}
+  body.dark .icon-money{background:#332A18;}
+  body.dark img, body.dark svg[stroke="white"]{filter:none;}
+  .theme-toggle{
+    display:flex;align-items:center;justify-content:center;
+    width:38px;height:38px;border-radius:50%;
+    border:1.5px solid var(--line);background:var(--card);
+    cursor:pointer;color:var(--pine-deep);flex-shrink:0;
+    transition:background .15s ease, border-color .15s ease;
+  }
+  .theme-toggle:hover{border-color:var(--soil);}
+  .theme-toggle svg{width:17px;height:17px;}
+  .theme-toggle .moon{display:none;}
+  body.dark .theme-toggle .sun{display:none;}
+  body.dark .theme-toggle .moon{display:block;}
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+  .pub-nav-links{display:flex;align-items:center;gap:26px;}
+  .pub-nav-item{
+    background:none;border:none;cursor:pointer;
+    font-family:inherit;font-size:13.4px;font-weight:600;
+    color:var(--ink-soft);padding:4px 0;position:relative;
+  }
+  .pub-nav-item:hover{color:var(--pine-deep);}
+  .pub-nav-item.active{color:var(--pine-deep);}
+  .pub-nav-item.active::after{
+    content:'';position:absolute;left:0;right:0;bottom:-4px;height:2px;background:var(--soil);
+  }
+  .pub-view{display:none;}
+  .pub-view.active{display:block;}
+  .contact-wrap{
+    max-width:1600px;margin:10px auto 0;padding:0 6vw 10px;
+    display:grid;grid-template-columns:1fr 1.2fr;gap:30px;
+  }
+  .contact-info-item{display:flex;gap:12px;align-items:flex-start;margin-bottom:20px;}
+  .contact-info-item svg{width:18px;height:18px;color:var(--soil);flex-shrink:0;margin-top:2px;}
+  .contact-info-item b{display:block;font-size:13.6px;color:var(--pine-deep);}
+  .contact-info-item span{font-size:12.8px;color:var(--ink-soft);}
+
+  *{box-sizing:border-box;font-family:inherit;}
+  html{font-family:Cambria, Georgia, 'Times New Roman', serif;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:Cambria, Georgia, 'Times New Roman', serif;
+    font-size:15px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    transition:background .2s ease, color .2s ease;
+  }
+  h1,h2,h3,h4{
+    font-family:Cambria, Georgia, 'Times New Roman', serif;
+    font-weight:700;
+    margin:0;
+    color:var(--pine-deep);
+    letter-spacing:-0.01em;
+  }
+  .app{
+    display:grid;
+    grid-template-columns:236px 1fr;
+    min-height:100vh;
+  }
+  .sidebar{
+    background:var(--pine-deep);
+    color:#DCE6DE;
+    padding:28px 18px;
+    display:flex;
+    flex-direction:column;
+    gap:26px;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:0 6px;
+  }
+  .brand-mark{
+    width:34px;height:34px;border-radius:8px;
+    background:linear-gradient(155deg, var(--soil), var(--ochre));
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .brand-mark svg{width:19px;height:19px;}
+  .brand-text{font-family:Cambria, Georgia, serif;font-size:16.5px;font-weight:600;color:#F3F1E4;line-height:1.15;}
+  .brand-text span{display:block;font-family:Cambria, Georgia, serif;font-size:10.5px;font-weight:600;color:#8FA894;letter-spacing:0.04em;margin-top:2px;}
+  nav{display:flex;flex-direction:column;gap:2px;}
+  .nav-group-label{
+    font-size:10.5px;font-weight:600;color:#71876E;
+    padding:14px 12px 6px;letter-spacing:0.04em;
+  }
+  .nav-item{
+    display:flex;align-items:center;gap:10px;
+    padding:9px 12px;border-radius:7px;
+    color:#C6D3C4;text-decoration:none;
+    font-size:13.6px;font-weight:500;
+    cursor:pointer;border:none;background:none;width:100%;text-align:left;
+    transition:background .15s ease, color .15s ease;
+  }
+  .nav-item svg{width:16px;height:16px;opacity:.85;flex-shrink:0;}
+  .nav-item:hover{background:rgba(255,255,255,0.06);color:#fff;}
+  .nav-item.active{background:var(--soil);color:#fff;}
+  .nav-item.active svg{opacity:1;}
+  .sidebar-foot{
+    margin-top:auto;
+    padding:12px;border-radius:9px;
+    background:rgba(255,255,255,0.05);
+    font-size:12px;color:#8FA894;
+  }
+  .sidebar-foot b{color:#DCE6DE;display:block;font-size:13px;font-family:Cambria, Georgia, serif;font-weight:600;margin-bottom:2px;}
+  .customer-mode-label{
+    padding:10px 12px;border-radius:8px;background:rgba(255,255,255,0.06);
+    color:#9FB2A1;font-size:11.6px;font-weight:700;letter-spacing:0.03em;
+    margin-bottom:6px;
+  }
+
+  main{padding:30px 38px 60px;max-width:1180px;}
+  .topline{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:26px;flex-wrap:wrap;gap:14px;}
+  .topline h1{font-size:26px;}
+  .topline p{color:var(--ink-soft);margin-top:4px;font-size:13.6px;}
+  .pill{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:5px 12px;border-radius:var(--radius-pill);
+    font-size:12.4px;font-weight:600;
+  }
+  .pill.new{background:#E4EEE0;color:var(--good);}
+  .pill.pending{background:#F5E9D3;color:#8A6416;}
+  .pill.sched{background:#DDE7F2;color:#39588A;}
+  .pill.done{background:#E4EEE0;color:var(--good);}
+  .pill.unpaid{background:#F6DED9;color:var(--bad);}
+  .pill.paid{background:#E4EEE0;color:var(--good);}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:7px;
+    padding:10px 18px;border-radius:7px;border:none;
+    font-family:Cambria, Georgia, serif;font-weight:600;font-size:13.6px;
+    cursor:pointer;transition:transform .1s ease, background .15s ease;
+  }
+  .btn:active{transform:translateY(1px);}
+  .btn-primary{background:var(--soil);color:#fff;}
+  .btn-primary:hover{background:var(--soil-deep);}
+  .btn-ghost{background:transparent;color:var(--pine-deep);border:1.5px solid var(--line);}
+  .btn-ghost:hover{border-color:var(--pine-deep);}
+  .btn-dark{background:var(--pine-deep);color:#fff;}
+
+  .grid{display:grid;gap:16px;}
+  .g4{grid-template-columns:repeat(4,1fr);}
+  .g3{grid-template-columns:2fr 1fr;}
+  .g2{grid-template-columns:1fr 1fr;}
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius-card);
+    padding:20px 22px;
+  }
+  .stat-card .label{font-size:12px;color:var(--ink-soft);font-weight:600;text-transform:none;}
+  .stat-card .value{font-family:Cambria, Georgia, serif;font-size:26px;font-weight:600;margin-top:6px;color:var(--pine-deep);}
+  .stat-card .delta{font-size:12px;margin-top:6px;font-weight:600;}
+  .delta.up{color:var(--good);}
+  .delta.down{color:var(--bad);}
+
+  section.block{margin-bottom:30px;}
+  .block-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;}
+  .block-head h3{font-size:16px;}
+  .block-head a, .see-all{font-size:12.6px;color:var(--soil);font-weight:600;text-decoration:none;cursor:pointer;}
+
+  table{width:100%;border-collapse:collapse;}
+  th{
+    text-align:left;font-size:11.5px;color:var(--ink-soft);
+    font-weight:600;letter-spacing:0.02em;
+    padding:0 14px 10px;border-bottom:1.5px solid var(--line);
+  }
+  td{padding:13px 14px;border-bottom:1px solid var(--line);font-size:13.8px;vertical-align:middle;}
+  tr:last-child td{border-bottom:none;}
+  .row-name{font-weight:600;color:var(--pine-deep);}
+  .row-sub{color:var(--ink-soft);font-size:12.4px;margin-top:2px;}
+  .muted{color:var(--ink-soft);}
+  .num{font-variant-numeric:tabular-nums;}
+  .right{text-align:right;}
+
+  .inquiry-card{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:15px 16px;border:1px solid var(--line);border-radius:9px;margin-bottom:9px;background:#fff;
+  }
+  .inquiry-card:last-child{margin-bottom:0;}
+  .service-tag{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:12.6px;font-weight:600;color:var(--pine);
+  }
+
+  label{display:block;font-size:12.6px;font-weight:600;color:var(--ink-soft);margin-bottom:6px;}
+  input[type=text],input[type=number],input[type=date],select,textarea{
+    width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:7px;
+    font-family:Cambria, Georgia, serif;font-size:13.8px;color:var(--ink);background:#fff;
+  }
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--soil);outline-offset:1px;border-color:var(--soil);}
+  .field{margin-bottom:16px;}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+  .cost-line{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px dashed var(--line);}
+  .cost-line:last-of-type{border-bottom:none;}
+  .cost-line span:first-child{color:var(--ink-soft);font-size:13.4px;}
+  .cost-line input{width:110px;text-align:right;padding:6px 9px;}
+  .cost-total{display:flex;justify-content:space-between;padding-top:12px;margin-top:6px;border-top:2px solid var(--pine-deep);font-weight:700;}
+  .suggested-box{
+    background:var(--paper-warm);border:1.5px dashed var(--soil);border-radius:9px;
+    padding:16px 18px;margin-top:16px;
+  }
+  .suggested-box .big{font-family:Cambria, Georgia, serif;font-size:28px;color:var(--soil-deep);font-weight:700;}
+
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;}
+  .cal-day{border:1px solid var(--line);border-radius:9px;padding:10px;min-height:120px;background:#fff;}
+  .cal-day .dnum{font-size:11.5px;font-weight:700;color:var(--ink-soft);margin-bottom:8px;}
+  .cal-day.today{border-color:var(--soil);background:#FBF4EC;}
+  .job-chip{
+    background:var(--pine);color:#fff;border-radius:6px;padding:6px 8px;font-size:11.4px;margin-bottom:5px;line-height:1.3;
+  }
+  .job-chip.b{background:var(--soil);}
+  .job-chip.c{background:#39588A;}
+  .job-chip b{display:block;font-size:11.6px;}
+
+  .invoice-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:26px;}
+  .invoice-total-row{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);font-size:13.8px;}
+  .invoice-total-row.grand{border-bottom:none;border-top:2px solid var(--pine-deep);font-weight:700;font-size:16px;padding-top:14px;color:var(--pine-deep);}
+
+  .barchart{display:flex;align-items:flex-end;gap:14px;height:180px;padding-top:10px;}
+  .bar-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;}
+  .bar{width:100%;border-radius:5px 5px 0 0;background:var(--pine);position:relative;}
+  .bar.b2{background:var(--soil);}
+  .bar-label{font-size:11px;color:var(--ink-soft);margin-top:8px;font-weight:600;}
+  .bar-val{font-size:11px;font-weight:700;color:var(--pine-deep);margin-bottom:4px;}
+
+  .view{display:none;}
+  .view.active{display:block;}
+
+  #appScreen{display:none;}
+  #appScreen.active{display:grid;}
+  .landing{min-height:100vh;background:var(--paper);}
+  .landing-nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:22px 6vw;
+  }
+  .landing-nav .brand-text{color:var(--pine-deep);}
+  .landing-nav .brand-text span{color:var(--soil-deep);}
+  .landing-hero{
+    text-align:center;padding:40px 6vw 10px;max-width:1200px;margin:0 auto;
+  }
+  .landing-hero h1{font-size:36px;margin-bottom:14px;}
+  .landing-hero p{color:var(--ink-soft);font-size:15.5px;}
+  .hero-badge{
+    display:inline-block;background:var(--paper-warm);border:1px solid var(--line);
+    border-radius:var(--radius-pill);padding:6px 16px;font-size:12.4px;
+    font-weight:600;color:var(--pine-deep);margin-bottom:18px;
+  }
+  .hero-cta{display:flex;gap:12px;justify-content:center;margin-top:24px;}
+  .trust-strip{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+    max-width:1600px;margin:44px auto 0;padding:22px 6vw;
+  }
+  .trust-item{text-align:center;}
+  .trust-item b{display:block;font-size:24px;font-family:Cambria,serif;color:var(--soil-deep);}
+  .trust-item span{font-size:11.8px;color:var(--ink-soft);font-weight:600;}
+  .testimonial{
+    max-width:840px;margin:40px auto 0;padding:0 6vw;text-align:center;
+  }
+  .testimonial p{font-size:16.5px;font-style:italic;color:var(--pine-deep);line-height:1.6;margin-bottom:12px;}
+  .testimonial span{font-size:12.6px;color:var(--ink-soft);font-weight:600;}
+
+  .gallery-grid{
+    display:grid;grid-template-columns:repeat(auto-fit, minmax(210px, 1fr));gap:14px;
+    max-width:1600px;margin:20px auto 0;padding:0 6vw;
+  }
+  .gallery-tile{
+    position:relative;aspect-ratio:4/3;border-radius:10px;overflow:hidden;
+    cursor:default;isolation:isolate;
+  }
+  .gallery-tile .tile-bg{
+    position:absolute;inset:0;transition:transform .25s ease;
+  }
+  .gallery-tile:hover .tile-bg{transform:scale(1.06);}
+  .gallery-tile .tile-icon{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    color:rgba(255,255,255,0.85);
+  }
+  .gallery-tile .tile-icon svg{width:30px;height:30px;}
+  .gallery-tile .tile-caption{
+    position:absolute;left:0;right:0;bottom:0;
+    padding:10px 12px 9px;
+    background:linear-gradient(0deg, rgba(0,0,0,0.55), transparent);
+    color:#fff;font-size:12px;font-weight:700;
+  }
+  .gallery-tile .tile-caption span{display:block;font-weight:500;font-size:10.8px;opacity:0.85;}
+  .gallery-tile .tile-bg img{width:100%;height:100%;object-fit:cover;display:block;}
+  .gallery-tile .tile-delete{
+    position:absolute;top:8px;right:8px;z-index:2;
+    width:26px;height:26px;border-radius:6px;border:none;
+    background:rgba(0,0,0,0.55);color:#fff;display:flex;align-items:center;justify-content:center;
+    cursor:pointer;
+  }
+  .gallery-tile .tile-delete:hover{background:var(--bad);}
+  .gallery-tile .tile-delete svg{width:13px;height:13px;}
+  .empty-row td{text-align:center;padding:34px 14px;color:var(--ink-soft);font-size:13.2px;border-bottom:none;}
+  .row-actions{display:flex;gap:6px;justify-content:flex-end;}
+  .icon-btn{
+    width:28px;height:28px;border-radius:6px;border:1px solid var(--line);
+    background:#fff;display:inline-flex;align-items:center;justify-content:center;
+    cursor:pointer;color:var(--ink-soft);flex-shrink:0;transition:background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .icon-btn svg{width:14px;height:14px;}
+  .icon-btn:hover{border-color:var(--soil);color:var(--soil-deep);}
+  .icon-btn.danger:hover{border-color:var(--bad);color:var(--bad);background:#FBEBE8;}
+  .icon-btn.send:hover{border-color:var(--good);color:var(--good);}
+
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(15,20,15,0.5);
+    display:none;align-items:center;justify-content:center;z-index:1000;padding:20px;
+  }
+  .modal-overlay.active{display:flex;}
+  .modal-card{
+    background:var(--card);border-radius:12px;max-width:440px;width:100%;
+    padding:26px 26px 22px;box-shadow:0 20px 50px rgba(0,0,0,0.25);
+    max-height:86vh;overflow-y:auto;
+  }
+  .modal-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
+  .modal-head h3{font-size:17px;}
+  .modal-close{
+    background:none;border:none;cursor:pointer;color:var(--ink-soft);
+    width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .modal-close:hover{color:var(--bad);}
+  .modal-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);font-size:13.4px;}
+  .modal-row:last-of-type{border-bottom:none;}
+  .modal-row span:first-child{color:var(--ink-soft);}
+  .modal-row span:last-child{font-weight:600;color:var(--pine-deep);text-align:right;}
+
+  .toast-wrap{
+    position:fixed;bottom:22px;right:22px;z-index:999;
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .toast{
+    background:var(--pine-deep);color:#fff;
+    padding:12px 18px;border-radius:8px;font-size:13.4px;font-weight:600;
+    box-shadow:0 8px 24px rgba(0,0,0,0.18);
+    display:flex;align-items:center;gap:9px;
+    animation:toastIn .25s ease;
+  }
+  .toast svg{width:15px;height:15px;flex-shrink:0;}
+  @keyframes toastIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+  .landing-services{
+    display:grid;grid-template-columns:repeat(auto-fit, minmax(230px, 1fr));gap:18px;
+    max-width:1600px;margin:36px auto 0;padding:0 6vw;
+  }
+  .service-tile{
+    background:#fff;border:1px solid var(--line);border-radius:12px;
+    padding:26px 20px;text-align:center;
+    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    cursor:pointer;
+  }
+  .service-tile:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(31,58,46,0.1);border-color:var(--soil);}
+  .service-tile .badge-icon{margin:0 auto 14px;width:46px;height:46px;}
+  .service-tile .badge-icon svg{width:22px;height:22px;}
+  .service-tile h3{font-size:15.5px;margin-bottom:8px;}
+  .service-tile p{color:var(--ink-soft);font-size:12.6px;margin:0;line-height:1.5;}
+  .landing-login{
+    display:flex;flex-direction:column;align-items:center;gap:14px;
+    padding:52px 6vw 60px;
+  }
+  .login-icon-btn{
+    display:flex;flex-direction:column;align-items:center;gap:8px;
+    background:none;border:none;cursor:pointer;
+  }
+  .login-icon-circle{
+    width:58px;height:58px;border-radius:50%;
+    background:var(--pine-deep);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .15s ease, transform .1s ease;
+  }
+  .login-icon-btn:hover .login-icon-circle{background:var(--soil);}
+  .login-icon-btn:active .login-icon-circle{transform:translateY(1px);}
+  .login-icon-btn span{font-size:12.8px;font-weight:700;color:var(--pine-deep);}
+  .login-links{display:flex;gap:26px;margin-top:2px;}
+
+  .footer-cta{
+    background:var(--footer-bg);color:#EFEEE2;
+  }
+  .footer-cta-inner{
+    max-width:1600px;margin:0 auto;padding:52px 6vw;
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;
+    border-bottom:1px solid rgba(255,255,255,0.12);
+  }
+  .footer-cta-inner h2{color:#F3F1E4;font-size:26px;margin-bottom:6px;}
+  .footer-cta-inner p{color:#AEBDAF;font-size:13.6px;margin:0;}
+  .footer-cta-actions{display:flex;gap:12px;flex-shrink:0;}
+
+  .landing-footer{
+    background:var(--footer-bg);color:#C6D3C4;
+  }
+  .footer-top{
+    max-width:1600px;margin:0 auto;padding:48px 6vw 30px;
+    display:grid;grid-template-columns:1.7fr 1fr 1fr 1fr 1.2fr;gap:30px;
+  }
+  .footer-brand p{color:#9FB2A1;font-size:12.8px;margin-top:12px;line-height:1.6;max-width:280px;}
+  .footer-brand .brand-text{color:#F3F1E4;}
+  .footer-brand .brand-text span{color:#8FA894;}
+  .footer-social{display:flex;gap:10px;margin-top:16px;}
+  .footer-social a{
+    width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.08);
+    display:flex;align-items:center;justify-content:center;color:#DCE6DE;
+    text-decoration:none;transition:background .15s ease;
+  }
+  .footer-social a:hover{background:var(--soil);}
+  .footer-social svg{width:15px;height:15px;}
+  .footer-col h4{font-size:12.5px;color:#F3F1E4;margin-bottom:14px;font-weight:700;letter-spacing:0.02em;}
+  .footer-col span{display:block;font-size:12.8px;color:#9FB2A1;margin-bottom:10px;cursor:pointer;}
+  .footer-col span:hover{color:#fff;}
+  .footer-newsletter p{font-size:12.6px;color:#9FB2A1;margin:0 0 12px;line-height:1.5;}
+  .footer-newsletter-row{display:flex;gap:8px;}
+  .footer-newsletter-row input{
+    flex:1;padding:9px 11px;border-radius:6px;border:1px solid rgba(255,255,255,0.18);
+    background:rgba(255,255,255,0.06);color:#fff;font-size:12.8px;font-family:inherit;
+  }
+  .footer-newsletter-row input::placeholder{color:#8FA085;}
+  .footer-newsletter-row button{
+    background:var(--soil);color:#fff;border:none;border-radius:6px;
+    padding:9px 14px;font-size:12.6px;font-weight:700;cursor:pointer;flex-shrink:0;
+  }
+  .footer-newsletter-row button:hover{background:var(--soil-deep);}
+  .footer-bottom{
+    border-top:1px solid rgba(255,255,255,0.1);
+    max-width:1600px;margin:0 auto;
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;
+    padding:18px 6vw;font-size:11.6px;color:#8FA894;
+  }
+  .footer-bottom-links{display:flex;gap:18px;}
+  .footer-bottom-links span{cursor:pointer;}
+  .footer-bottom-links span:hover{color:#fff;}
+  .signup-wrap{padding:0 6vw;}
+
+  .badge-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .icon-bug{background:#F6DED9;color:var(--bad);}
+  .icon-leaf{background:#DCEBDF;color:var(--good);}
+  .icon-money{background:#F5E9D3;color:#8A6416;}
+
+  .messages-wrap{display:grid;grid-template-columns:260px 1fr;gap:0;border:1px solid var(--line);border-radius:var(--radius-card);overflow:hidden;background:#fff;}
+  .thread-list{border-right:1px solid var(--line);}
+  .thread{padding:14px 16px;border-bottom:1px solid var(--line);cursor:pointer;}
+  .thread.active{background:var(--paper-warm);}
+  .thread .tname{font-weight:600;font-size:13.6px;color:var(--pine-deep);}
+  .thread .tprev{font-size:12.2px;color:var(--ink-soft);margin-top:3px;}
+  .chat-area{padding:20px;display:flex;flex-direction:column;height:420px;}
+  .bubble{max-width:70%;padding:10px 14px;border-radius:12px;margin-bottom:10px;font-size:13.6px;}
+  .bubble.them{background:var(--paper-warm);border-bottom-left-radius:3px;align-self:flex-start;}
+  .bubble.us{background:var(--pine);color:#fff;border-bottom-right-radius:3px;align-self:flex-end;}
+
+  @media (max-width: 880px){
+    .app{grid-template-columns:1fr;}
+    .sidebar{position:sticky;top:0;z-index:10;flex-direction:row;overflow-x:auto;padding:14px;}
+    nav{flex-direction:row;}
+    .nav-group-label{display:none;}
+    .sidebar-foot{display:none;}
+    .g4{grid-template-columns:repeat(2,1fr);}
+    .g3, .g2{grid-template-columns:1fr;}
+    .field-row{grid-template-columns:1fr;}
+    main{padding:20px;}
+    .messages-wrap{grid-template-columns:1fr;}
+    .thread-list{display:none;}
+    .footer-top{grid-template-columns:1fr 1fr;}
+    .footer-cta-inner{flex-direction:column;align-items:flex-start;text-align:left;}
+    .footer-bottom{flex-direction:column;align-items:flex-start;}
+    .trust-strip{grid-template-columns:1fr 1fr;}
+    .contact-wrap{grid-template-columns:1fr;}
+    .landing-nav{flex-wrap:wrap;gap:12px;}
+    .pub-nav-links{gap:16px;order:3;width:100%;}
+  }
+  @media (max-width: 560px){
+    .footer-top{grid-template-columns:1fr;}
+  }
+</style>
 </head>
-<body data-page="home">
-
-<div class="top-bar">
-    <div class="container top-content">
-        <div>📞 Erickson Mayetti : 0705 391 000</div>
-        <div>📞 Joseph Kimani : 0717 346 231</div>
+<body>
+<div class="landing" id="landingScreen">
+  <div class="landing-nav">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22V12M12 12C12 12 5 11 5 5C11 5 12 12 12 12ZM12 12C12 12 19 11 19 5C13 5 12 12 12 12Z"/></svg>
+      </div>
+      <div class="brand-text">Sweet Flowers Garden<span>FUMIGATION &amp; LANDSCAPING</span></div>
     </div>
-</div>
-
-<header>
-    <div class="container">
-        <nav>
-            <div class="logo">
-                Sweet Flowers Garden
-                <span>Cleaning • Landscaping • Fumigation • Maintenance</span>
-            </div>
-            <ul>
-                <li><a href="index.html" class="main-nav-link" data-target="home">Home</a></li>
-                <li><a href="about.html" class="main-nav-link" data-target="about">About</a></li>
-                <li><a href="services.html" class="main-nav-link" data-target="services">Services</a></li>
-                <li><a href="projects.html" class="main-nav-link" data-target="projects">Projects</a></li>
-                <li><a href="gallery.html" class="main-nav-link" data-target="gallery">Gallery</a></li>
-                <li><a href="contact.html" class="main-nav-link" data-target="contact">Contact</a></li>
-            </ul>
-            <div class="nav-right">
-                <a href="#" class="login-btn" onclick="openLogin();return false;">Login</a>
-                <a href="#" class="register-btn" onclick="openRegister();return false;">Create Account</a>
-            </div>
-        </nav>
+    <div class="pub-nav-links">
+      <button class="pub-nav-item active" data-pub="home" onclick="showPublicView('home')">Home</button>
+      <button class="pub-nav-item" data-pub="services" onclick="showPublicView('services')">Services</button>
+      <button class="pub-nav-item" data-pub="gallery" onclick="showPublicView('gallery')">Gallery</button>
+      <button class="pub-nav-item" data-pub="contact" onclick="showPublicView('contact')">Contact</button>
     </div>
-</header>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>
+      </button>
+      <button class="btn btn-ghost" onclick="showBusinessLogin()" style="padding:9px 16px;">Login</button>
+      <button class="btn btn-primary" onclick="showSignup()" style="padding:9px 16px;">Get a quote</button>
+    </div>
+  </div>
 
-    <section id="home" class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h4>WELCOME TO SWEET FLOWER GARDEN</h4>
-                <h1>Professional Landscaping, Cleaning & Fumigation Services</h1>
-                <p>We provide reliable landscaping, gardening, cleaning, fumigation, pest control, and property maintenance services for homes, businesses, schools, hospitals, hotels, and commercial properties throughout Kenya.</p>
-                <div class="hero-buttons">
-                    <a href="contact.html" class="primary-btn">Request Free Quote</a>
-                    <a href="services.html" class="secondary-btn">Explore Services</a>
-                </div>
-                <div class="hero-features">
-                    <div class="hero-feature">🌿 Professional Landscaping</div>
-                    <div class="hero-feature">🧹 Commercial & Residential Cleaning</div>
-                    <div class="hero-feature">🐜 Safe Pest Control & Fumigation</div>
-                    <div class="hero-feature">🏢 Property Maintenance Services</div>
-                </div>
-            </div>
+  <div class="pub-view active" id="pubHome">
+  <div class="landing-hero">
+    <span class="hero-badge">🌿 Trusted by 500+ homes &amp; estates in Nairobi</span>
+    <h1>Fumigation &amp; landscaping,<br>done right the first time.</h1>
+    <p>From same-week pest control to full garden makeovers — request a quote in minutes and track everything from your own account.</p>
+    <div class="hero-cta">
+      <button class="btn btn-primary" onclick="showSignup()">Request a service →</button>
+      <button class="btn btn-ghost" onclick="showCustomerLogin()">Track an existing request</button>
+    </div>
+  </div>
+
+  <div class="trust-strip">
+    <div class="trust-item"><b>12+</b><span>years in business</span></div>
+    <div class="trust-item"><b>3,400+</b><span>jobs completed</span></div>
+    <div class="trust-item"><b>4.8★</b><span>average customer rating</span></div>
+    <div class="trust-item"><b>&lt;24hrs</b><span>average response time</span></div>
+  </div>
+
+  <div class="testimonial">
+    <p>“They fumigated our whole compound and redid the front garden in the same week. Professional, tidy, and the pricing was upfront the whole way.”</p>
+    <span>— Grace Muthoni, Kilimani</span>
+  </div>
+  </div>
+
+  <div class="pub-view" id="pubServices">
+  <div class="block-head" style="max-width:1600px;margin:0 auto;padding:0 6vw;">
+    <h3 style="font-size:19px;">Services we offer</h3>
+  </div>
+
+  <div class="landing-services">
+    <div class="service-tile">
+      <div class="badge-icon icon-bug">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg>
+      </div>
+      <h3>Fumigation</h3>
+      <p>Full-property pest treatment for homes, offices and estates.</p>
+    </div>
+    <div class="service-tile">
+      <div class="badge-icon icon-leaf">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22V12M12 12C12 12 5 11 5 5C11 5 12 12 12 12ZM12 12C12 12 19 11 19 5C13 5 12 12 12 12Z"/></svg>
+      </div>
+      <h3>Landscaping</h3>
+      <p>Garden design and full-grounds redesign, planting to hardscaping.</p>
+    </div>
+    <div class="service-tile">
+      <div class="badge-icon icon-leaf">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 20h10M12 20V10M8 10c0-4 4-7 4-7s4 3 4 7"/></svg>
+      </div>
+      <h3>Garden &amp; lawn care</h3>
+      <p>Routine maintenance, mowing and seasonal upkeep, one-off or contract.</p>
+    </div>
+    <div class="service-tile">
+      <div class="badge-icon icon-money">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v18M6 3l7 4-7 4"/></svg>
+      </div>
+      <h3>Tree &amp; hedge trimming</h3>
+      <p>Shaping, pruning and clearance for trees, hedges and shrubs.</p>
+    </div>
+  </div>
+  </div>
+
+  <div class="pub-view" id="pubGallery">
+  <div class="block-head" style="max-width:1600px;margin:0 auto;padding:0 6vw;">
+    <h3 style="font-size:19px;">Our recent work</h3>
+  </div>
+  <div class="gallery-grid">
+    <div class="gallery-tile">
+      <div class="tile-bg" style="background:linear-gradient(150deg,#8A431F,#C99A3B);"></div>
+      <div class="tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="4"/><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></div>
+      <div class="tile-caption">Fumigation<span>Karen</span></div>
+    </div>
+    <div class="gallery-tile">
+      <div class="tile-bg" style="background:linear-gradient(150deg,#1F3A2E,#5E8C72);"></div>
+      <div class="tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22V12M12 12C12 12 5 11 5 5C11 5 12 12 12 12ZM12 12C12 12 19 11 19 5C13 5 12 12 12 12Z"/></svg></div>
+      <div class="tile-caption">Landscaping<span>Runda</span></div>
+    </div>
+    <div class="gallery-tile">
+      <div class="tile-bg" style="background:linear-gradient(150deg,#3E6B4F,#C99A3B);"></div>
+      <div class="tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 20h10M12 20V10M8 10c0-4 4-7 4-7s4 3 4 7"/></svg></div>
+      <div class="tile-caption">Garden &amp; lawn care<span>Kilimani</span></div>
+    </div>
+    <div class="gallery-tile">
+      <div class="tile-bg" style="background:linear-gradient(150deg,#A8582F,#3E6B4F);"></div>
+      <div class="tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3v18M6 3l7 4-7 4"/></svg></div>
+      <div class="tile-caption">Hedge trimming<span>Westlands</span></div>
+    </div>
+    <div class="gallery-tile">
+      <div class="tile-bg" style="background:linear-gradient(150deg,#152A21,#A8582F);"></div>
+      <div class="tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22V12M12 12C12 12 5 11 5 5C11 5 12 12 12 12ZM12 12C12 12 19 11 19 5C13 5 12 12 12 12Z"/></svg></div>
+      <div class="tile-caption">Garden redesign<span>Kileleshwa</span></div>
+    </div>
+    <div class="gallery-tile">
+      <div class="tile-bg" style="background:linear-gradient(150deg,#8A431F,#1F3A2E);"></div>
+      <div class="tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="4"/><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></div>
+      <div class="tile-caption">Fumigation<span>South B</span></div>
+    </div>
+  </div>
+  <div class="gallery-grid" id="dynamicGalleryGrid" style="margin-top:14px;"></div>
+  </div>
+
+  <div class="pub-view" id="pubContact">
+  <div class="block-head" style="max-width:1600px;margin:0 auto;padding:0 6vw;">
+    <h3 style="font-size:19px;">Get in touch</h3>
+  </div>
+  <div class="contact-wrap">
+    <div class="card">
+      <h3 style="font-size:15.5px;margin-bottom:16px;">Contact details</h3>
+      <div class="contact-info-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 2 .7 3a2 2 0 0 1-.5 2.1L8 10.1a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c1 .4 2 .6 3 .7a2 2 0 0 1 1.7 2z"/></svg>
+        <div><b>Phone</b><span>0717 346 31 · 0705 391 000</span></div>
+      </div>
+      <div class="contact-info-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M22 6l-10 7L2 6"/></svg>
+        <div><b>Email</b><span>hello@sweetflowersgarden.co.ke</span></div>
+      </div>
+      <div class="contact-info-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <div><b>Location</b><span>Nairobi, Kenya</span></div>
+      </div>
+      <div class="contact-info-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <div><b>Hours</b><span>Mon–Sat, 8am–6pm</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="font-size:15.5px;margin-bottom:16px;">Send us a message</h3>
+      <div class="field-row">
+        <div class="field"><label>Name</label><input type="text" placeholder="Your name"></div>
+        <div class="field"><label>Phone</label><input type="text" placeholder="07XX XXX XXX"></div>
+      </div>
+      <div class="field"><label>Email</label><input type="text" placeholder="you@email.com"></div>
+      <div class="field" style="margin-bottom:0;"><label>Message</label><textarea rows="4" placeholder="How can we help?"></textarea></div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:16px;">Send message</button>
+    </div>
+  </div>
+  </div>
+
+  <div class="landing-login">
+    <button class="login-icon-btn" onclick="showBusinessLogin()">
+      <div class="login-icon-circle">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg>
+      </div>
+      <span>Login</span>
+    </button>
+    <div class="login-links">
+      <span class="see-all" onclick="showBusinessLogin()">Business login →</span>
+      <span class="see-all" onclick="showCustomerLogin()">Customer login →</span>
+      <span class="see-all" onclick="showSignup()">Create account →</span>
+    </div>
+  </div>
+
+  <div class="footer-cta">
+    <div class="footer-cta-inner">
+      <div>
+        <h2>Ready to get your garden sorted?</h2>
+        <p>Request a free quote today, or log in to track a service that's already underway.</p>
+      </div>
+      <div class="footer-cta-actions">
+        <button class="btn btn-primary" onclick="showSignup()">Request a service →</button>
+        <button class="btn btn-ghost" style="border-color:rgba(255,255,255,0.3);color:#fff;" onclick="showBusinessLogin()">Login</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="landing-footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="brand">
+          <div class="brand-mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22V12M12 12C12 12 5 11 5 5C11 5 12 12 12 12ZM12 12C12 12 19 11 19 5C13 5 12 12 12 12Z"/></svg>
+          </div>
+          <div class="brand-text">Sweet Flowers Garden<span>FUMIGATION &amp; LANDSCAPING</span></div>
         </div>
-    </section>
-
-<footer>
-    <div class="container">
-        <div class="footer-bottom">© 2026 Sweet Flower Garden. All Rights Reserved.</div>
+        <p>Trusted fumigation, landscaping and grounds care for homes and estates across Nairobi.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12z"/></svg></a>
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+          <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h3l-7.5 8.6L22 22h-6.9l-5.4-6.9L3.5 22H.5l8-9.2L2 2h7l4.9 6.3L18 2z"/></svg></a>
+          <a href="#" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <span onclick="showSignup()">Fumigation</span>
+        <span onclick="showSignup()">Landscaping</span>
+        <span onclick="showSignup()">Garden &amp; lawn care</span>
+        <span onclick="showSignup()">Tree &amp; hedge trimming</span>
+      </div>
+      <div class="footer-col">
+        <h4>Account</h4>
+        <span onclick="showSignup()">Create account</span>
+        <span onclick="showCustomerLogin()">Customer login</span>
+        <span onclick="showBusinessLogin()">Business login</span>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <span>0717 346 31 · 0705 391 000</span>
+        <span>hello@sweetflowersgarden.co.ke</span>
+        <span>Nairobi, Kenya</span>
+        <span>Mon–Sat, 8am–6pm</span>
+      </div>
+      <div class="footer-col footer-newsletter">
+        <h4>Stay updated</h4>
+        <p>Seasonal tips and offers, straight to your inbox.</p>
+        <div class="footer-newsletter-row">
+          <input type="text" placeholder="Your email">
+          <button>Join</button>
+        </div>
+      </div>
     </div>
-</footer>
-
-<div id="loginModal" class="modal">
-    <div class="modal-box">
-        <span class="close-modal" onclick="closeLogin()">&times;</span>
-        <h2>Welcome Back</h2>
-        <form id="loginForm">
-            <div class="input-group"><label>Email Address</label><input type="email" id="loginEmail" required></div>
-            <div class="input-group"><label>Password</label><input type="password" id="loginPassword" required></div>
-            <button type="submit" class="login-button">Login</button>
-        </form>
+    <div class="footer-bottom">
+      <span>© 2026 Sweet Flowers Garden. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <span>Privacy policy</span>
+        <span>Terms of service</span>
+      </div>
     </div>
+  </footer>
 </div>
 
-<div id="registerModal" class="modal">
-    <div class="modal-box">
-        <span class="close-modal" onclick="closeRegister()">&times;</span>
-        <h2>Create Account</h2>
-        <form id="registerForm">
-            <div class="input-group"><label>Full Name</label><input type="text" id="regName" required></div>
-            <div class="input-group"><label>Email Address</label><input type="email" id="regEmail" required></div>
-            <div class="input-group"><label>Phone Number</label><input type="tel" id="regPhone" required></div>
-            <div class="input-group"><label>Password</label><input type="password" id="regPassword" required></div>
-            <div class="input-group"><label>Confirm Password</label><input type="password" id="regConfirm" required></div>
-            <button type="submit" class="login-button">Create Account</button>
-        </form>
+<div class="landing" id="signupScreen" style="display:none;">
+  <div class="landing-nav">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22V12M12 12C12 12 5 11 5 5C11 5 12 12 12 12ZM12 12C12 12 19 11 19 5C13 5 12 12 12 12Z"/></svg>
+      </div>
+      <div class="brand-text">Sweet Flowers Garden<span>FUMIGATION &amp; LANDSCAPING</span></div>
     </div>
+    <span class="see-all" onclick="backToLandingFromSignup()">← Back</span>
+  </div>
+  <div class="signup-wrap">
+    <div class="card" style="max-width:420px;margin:20px auto 60px;">
+      <h2 style="font-size:20px;margin-bottom:4px;">Create your account</h2>
+      <p class="muted" style="font-size:12.8px;margin-bottom:20px;">Track your inquiries, quotations and invoices in one place.</p>
+      <div class="field"><label>Full name</label><input type="text" id="suName" placeholder="e.g. John Kamau"></div>
+      <div class="field"><label>Phone</label><input type="text" id="suPhone" placeholder="07XX XXX XXX"></div>
+      <div class="field"><label>Email</label><input type="text" id="suEmail" placeholder="you@email.com"></div>
+      <div class="field"><label>Address</label><input type="text" id="suAddress" placeholder="e.g. Karen, Nairobi"></div>
+      <div class="field"><label>Password</label><input type="password" id="suPassword" placeholder="Create a password"></div>
+      <p id="signupError" style="display:none;color:var(--bad);font-size:12.4px;margin:-6px 0 14px;">Please fill in your name, email and password.</p>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="createCustomerAccount()">Create account</button>
+    </div>
+  </div>
 </div>
 
-<script src="script.js"></script>
+<div class="landing" id="customerLoginScreen" style="display:none;">
+  <div class="landing-nav">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22V12M12 12C12 12 5 11 5 5C11 5 12 12 12 12ZM12 12C12 12 19 11 19 5C13 5 12 12 12 12Z"/></svg>
+      </div>
+      <div class="brand-text">Sweet Flowers Garden<span>FUMIGATION &amp; LANDSCAPING</span></div>
+    </div>
+    <span class="see-all" onclick="backToLandingFromCustomerLogin()">← Back</span>
+  </div>
+  <div class="signup-wrap">
+    <div class="card" style="max-width:400px;margin:40px auto 60px;">
+      <h2 style="font-size:20px;margin-bottom:4px;">Customer login</h2>
+      <p class="muted" style="font-size:12.8px;margin-bottom:20px;">Log in to view your inquiries, quotations and invoices.</p>
+      <div class="field"><label>Email</label><input type="text" id="custEmail" placeholder="you@email.com"></div>
+      <div class="field"><label>Password</label><input type="password" id="custPassword" placeholder="Enter password" onkeydown="if(event.key==='Enter')attemptCustomerLogin()"></div>
+      <p id="custLoginError" style="display:none;color:var(--bad);font-size:12.4px;margin:-6px 0 14px;">No account found with that email and password.</p>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="attemptCustomerLogin()">Log in</button>
+      <p class="muted" style="font-size:12.4px;text-align:center;margin:14px 0 0;">Don't have an account? <span class="see-all" onclick="backToLandingFromCustomerLogin();showSignup()">Create one →</span></p>
+    </div>
+  </div>
+</div>
+
+<div class="landing" id="businessLoginScreen" style="display:none;">
+  <div class="landing-nav">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22V12M12 12C12 12 5 11 5 5C11 5 12 12 12 12ZM12 12C12 12 19 11 19 5C13 5 12 12 12 12Z"/></svg>
+      </div>
+      <div class="brand-text">Sweet Flowers Garden<span>FUMIGATION &amp; LANDSCAPING</span></div>
+    </div>
+    <span class="see-all" onclick="backToLandingFromBusinessLogin()">← Back</span>
+  </div>
+  <div class="signup-wrap">
+    <div class="card" style="max-width:400px;margin:40px auto 60px;">
+      <h2 style="font-size:20px;margin-bottom:4px;">Business login</h2>
+      <p class="muted" style="font-size:12.8px;margin-bottom:20px;">For Sweet Flowers Garden staff only.</p>
+      <div class="field"><label>Email</label><input type="text" id="bizEmail" placeholder="you@company.com"></div>
+      <div class="field"><label>Password</label><input type="password" id="bizPassword" placeholder="Enter password" onkeydown="if(event.key==='Enter')attemptBusinessLogin()"></div>
+      <p id="bizLoginError" style="display:none;color:var(--bad);font-size:12.4px;margin:-6px 0 14px;">Incorrect email or password.</p>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="attemptBusinessLogin()">Log in</button>
+    </div>
+  </div>
+</div>
+
+<div class="app" id="appScreen">
+
+  <div class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22V12M12 12C12 12 5 11 5 5C11 5 12 12 12 12ZM12 12C12 12 19 11 19 5C13 5 12 12 12 12Z"/></svg>
+      </div>
+      <div class="brand-text">Sweet Flowers Garden<span>BUSINESS MANAGER</span></div>
+    </div>
+
+    <div class="customer-mode-label" id="customerModeLabel" style="display:none;">CUSTOMER ACCOUNT</div>
+    <nav id="adminNav">
+      <div class="nav-group-label">Overview</div>
+      <button class="nav-item active" data-view="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        Dashboard
+      </button>
+
+      <div class="nav-group-label">Sales pipeline</div>
+      <button class="nav-item" data-view="inquiries">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        Inquiries <span style="margin-left:auto;background:var(--soil);border-radius:99px;font-size:10.5px;padding:1px 7px;">8</span>
+      </button>
+      <button class="nav-item" data-view="quotation">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Quotations
+      </button>
+      <button class="nav-item" data-view="jobs">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Jobs
+      </button>
+      <button class="nav-item" data-view="invoices">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>
+        Invoices
+      </button>
+
+      <div class="nav-group-label">Money</div>
+      <button class="nav-item" data-view="expenses">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/></svg>
+        Expenses
+      </button>
+      <button class="nav-item" data-view="reports">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M8 17V9m5 8V5m5 12v-6"/></svg>
+        Reports
+      </button>
+
+      <div class="nav-group-label">Talk</div>
+      <button class="nav-item" data-view="messages">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Messages
+      </button>
+
+      <div class="nav-group-label">Marketing</div>
+      <button class="nav-item" data-view="gallery">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        Gallery
+      </button>
+
+      <div class="nav-group-label">Team</div>
+      <button class="nav-item" data-view="team">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Users
+      </button>
+    </nav>
+
+    <div class="sidebar-foot">
+      <button class="nav-item" style="color:#DCE6DE;" onclick="toggleTheme()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>
+        Dark mode
+      </button>
+      <button class="nav-item" style="color:#DCE6DE;" onclick="backToLanding()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        Log out
+      </button>
+    </div>
+  </div>
+
+  <main>
+
+    <div class="view active" id="dashboard">
+      <div class="topline">
+        <div>
+          <h1>Welcome back</h1>
+          <p>Here's how the business is doing</p>
+        </div>
+        <button class="btn btn-primary" onclick="showView('quotation')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
+          New quotation
+        </button>
+      </div>
+
+      <div class="grid g4" style="margin-bottom:28px;">
+        <div class="card stat-card">
+          <div class="label">Revenue this month</div>
+          <div class="value" id="statRevenue">KSh 0</div>
+        </div>
+        <div class="card stat-card">
+          <div class="label">Expenses this month</div>
+          <div class="value" id="statExpenses">KSh 0</div>
+        </div>
+        <div class="card stat-card">
+          <div class="label">Profit this month</div>
+          <div class="value" id="statProfit">KSh 0</div>
+        </div>
+        <div class="card stat-card">
+          <div class="label">Outstanding invoices</div>
+          <div class="value" id="statOutstanding">KSh 0</div>
+        </div>
+      </div>
+
+      <div class="grid g3">
+        <section class="block">
+          <div class="block-head">
+            <h3>New inquiries awaiting a response</h3>
+            <span class="see-all" onclick="showView('inquiries')">See all →</span>
+          </div>
+          <div id="dashInquiries">
+            <div class="card" style="padding:30px 20px;text-align:center;">
+              <p class="muted" style="font-size:13.2px;margin:0;">No inquiries yet. New customer requests will show up here.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="block">
+          <div class="block-head"><h3>Today's jobs</h3></div>
+          <div class="card" style="padding:20px 18px;text-align:center;">
+            <p class="muted" style="font-size:13px;margin:0;">Nothing scheduled for today.</p>
+          </div>
+          <div class="block-head" style="margin-top:20px;"><h3>Pipeline</h3></div>
+          <div class="card" style="padding:16px 18px;">
+            <div class="cost-line"><span>Pending quotations</span><b id="statPendingQuotes">0</b></div>
+            <div class="cost-line"><span>Scheduled jobs</span><b>0</b></div>
+            <div class="cost-line"><span>Awaiting payment</span><b id="statAwaitingPayment">0</b></div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="view" id="inquiries">
+      <div class="topline">
+        <div>
+          <h1>Inquiries</h1>
+          <p>Everything a customer has asked for, before it becomes a quotation</p>
+        </div>
+      </div>
+      <div class="card" style="padding:0;">
+        <table>
+          <tr><th>Customer</th><th>Service</th><th>Location</th><th>Received</th><th>Status</th><th></th></tr>
+          <tbody id="inquiriesTableBody"><tr class="empty-row"><td colspan="6">No inquiries yet. Customer requests will appear here as they come in.</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="view" id="quotation">
+      <div class="topline">
+        <div>
+          <h1>Quotations</h1>
+          <p>Every quotation sent, and a builder to create a new one</p>
+        </div>
+        <span class="pill new">New quotation</span>
+      </div>
+
+      <div class="card" style="padding:0;margin-bottom:26px;">
+        <table>
+          <tr><th>Customer</th><th>Service</th><th class="right">Amount</th><th>Status</th><th></th></tr>
+          <tbody id="quotationsTableBody"><tr class="empty-row"><td colspan="5">No quotations sent yet. Use the builder below to create one.</td></tr></tbody>
+        </table>
+      </div>
+
+      <div class="grid g3">
+        <div class="card">
+          <h3 style="margin-bottom:16px;">Costing engine</h3>
+          <div class="cost-line"><span>Chemical / materials cost</span><input type="number" value="0" id="c1" oninput="calc()"></div>
+          <div class="cost-line"><span>Labour</span><input type="number" value="0" id="c2" oninput="calc()"></div>
+          <div class="cost-line"><span>Transport</span><input type="number" value="0" id="c3" oninput="calc()"></div>
+          <div class="cost-line"><span>Other / PPE</span><input type="number" value="0" id="c4" oninput="calc()"></div>
+          <div class="cost-total"><span>Total cost</span><span class="num" id="totalCost">KSh 0</span></div>
+
+          <div class="field" style="margin-top:20px;">
+            <label>Desired margin (%)</label>
+            <input type="number" value="40" id="margin" oninput="calc()">
+          </div>
+
+          <div class="suggested-box">
+            <div style="font-size:12.4px;color:var(--ink-soft);font-weight:600;">Suggested price</div>
+            <div class="big" id="suggested">KSh 0</div>
+            <div class="field" style="margin-top:14px;margin-bottom:0;">
+              <label>Final price sent to customer</label>
+              <input type="number" value="0" id="finalPrice">
+            </div>
+          </div>
+
+          <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:18px;" onclick="sendQuotation()">Send quotation</button>
+        </div>
+
+        <div class="card">
+          <h3 style="margin-bottom:14px;">Message to customer</h3>
+          <div class="field">
+            <label>Customer</label>
+            <input type="text" id="quoteCustomer" placeholder="Select or type customer name">
+          </div>
+          <div class="field">
+            <label>Service</label>
+            <select id="quoteService"><option>🐜 Fumigation</option><option>🌳 Landscaping</option><option>🌱 Garden maintenance</option><option>🏡 Lawn care</option><option>🌿 Tree/hedge trimming</option><option>Other</option></select>
+          </div>
+          <div class="field">
+            <textarea rows="5" id="quoteMessage" placeholder="Describe the work you'll carry out…"></textarea>
+          </div>
+          <div class="field">
+            <label>Proposed visit date</label>
+            <input type="date">
+          </div>
+          <div class="field" style="margin-bottom:0;">
+            <label>Line items</label>
+            <table style="margin-top:6px;">
+              <tr><th>Service</th><th class="right">Qty</th><th class="right">Price</th></tr>
+              <tr><td colspan="3" class="muted" style="text-align:center;padding:16px 0;">No line items added yet</td></tr>
+            </table>
+          </div>
+          <button class="btn btn-ghost" style="width:100%;justify-content:center;margin-top:18px;">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="view" id="jobs">
+      <div class="topline">
+        <div>
+          <h1>Jobs calendar</h1>
+          <p>No jobs scheduled yet</p>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-ghost">‹ Prev</button>
+          <button class="btn btn-ghost">Next ›</button>
+        </div>
+      </div>
+      <div class="cal-grid">
+        <div class="cal-day"><div class="dnum">MON</div></div>
+        <div class="cal-day"><div class="dnum">TUE</div></div>
+        <div class="cal-day"><div class="dnum">WED</div></div>
+        <div class="cal-day today"><div class="dnum">THU</div></div>
+        <div class="cal-day"><div class="dnum">FRI</div></div>
+        <div class="cal-day"><div class="dnum">SAT</div></div>
+        <div class="cal-day"><div class="dnum">SUN</div></div>
+      </div>
+
+      <div class="card" style="margin-top:24px;padding:0;">
+        <table>
+          <tr><th>Customer</th><th>Service</th><th>Location</th><th>Date</th><th>Status</th></tr>
+          <tr class="empty-row"><td colspan="5">Accepted quotations will turn into jobs here automatically.</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="view" id="invoices">
+      <div class="topline">
+        <div><h1>Invoices</h1><p id="invoicesSubline">No invoices yet</p></div>
+      </div>
+
+      <div class="grid g3">
+        <div class="card" style="padding:0;">
+          <table>
+            <tr><th>Invoice #</th><th>Customer</th><th class="right">Amount</th><th>Status</th><th></th></tr>
+            <tbody id="invoicesTableBody"><tr class="empty-row"><td colspan="5">Invoices are generated once a job is marked complete.</td></tr></tbody>
+          </table>
+        </div>
+        <div class="card">
+          <h3 style="font-size:14.5px;margin-bottom:12px;">New invoice</h3>
+          <div class="field"><label>Customer</label><input type="text" id="invCustomer" placeholder="Select or type customer name"></div>
+          <div class="field"><label>Service description</label><input type="text" id="invDesc" placeholder="e.g. Fumigation service"></div>
+          <div class="field"><label>Amount (KSh)</label><input type="number" id="invAmount" placeholder="0"></div>
+          <div class="field"><label>Tax treatment</label>
+            <select id="invTax"><option>VAT (16%)</option><option>Zero-rated</option><option>Exempt</option></select>
+          </div>
+          <div class="field" style="margin-bottom:0;"><label>Due date</label><input type="date" id="invDue"></div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:18px;" onclick="saveInvoice()">Save invoice</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="view" id="expenses">
+      <div class="topline">
+        <div><h1>Expenses</h1><p id="expensesSubline">KSh 0 logged this month</p></div>
+      </div>
+      <div class="grid g3">
+        <div class="card" style="padding:0;">
+          <table>
+            <tr><th>Category</th><th>Description</th><th>Supplier</th><th>Job</th><th class="right">Amount</th><th></th></tr>
+            <tbody id="expensesTableBody"><tr class="empty-row"><td colspan="6">No expenses logged yet.</td></tr></tbody>
+          </table>
+        </div>
+        <div class="card">
+          <h3 style="font-size:14.5px;margin-bottom:12px;">Add expense</h3>
+          <div class="field"><label>Category</label>
+            <select id="expCategory"><option>Chemicals</option><option>Fertilizers</option><option>Plants</option><option>Fuel</option><option>Labour</option><option>Equipment</option><option>Other</option></select>
+          </div>
+          <div class="field"><label>Description</label><input type="text" id="expDesc" placeholder="e.g. Fumigation chemical"></div>
+          <div class="field"><label>Amount (KSh)</label><input type="number" id="expAmount" placeholder="0"></div>
+          <div class="field"><label>Related job</label><select id="expJob"><option>None</option></select></div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="saveExpense()">Save expense</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="view" id="reports">
+      <div class="topline"><div><h1>Reports</h1><p>Revenue, expenses and profit at a glance</p></div></div>
+      <div class="grid g2">
+        <div class="card" style="padding:36px 20px;text-align:center;">
+          <p class="muted" style="font-size:13.2px;margin:0;">Revenue vs expenses will chart here once jobs are invoiced.</p>
+        </div>
+        <div class="card" style="padding:36px 20px;text-align:center;">
+          <p class="muted" style="font-size:13.2px;margin:0;">Expense breakdown will appear once you start logging expenses.</p>
+        </div>
+      </div>
+      <div class="block-head" style="margin-top:24px;"><h3>Profit by service line</h3></div>
+      <div class="card" style="padding:0;">
+        <table>
+          <tr><th>Service</th><th class="right">Revenue</th><th class="right">Cost</th><th class="right">Profit</th><th class="right">Margin</th></tr>
+          <tr class="empty-row"><td colspan="5">No completed jobs yet.</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="view" id="messages">
+      <div class="topline"><div><h1>Messages</h1><p>Customer conversations, in one inbox</p></div></div>
+      <div class="card" style="padding:0;">
+        <table>
+          <tr><th>Customer</th><th>Last message</th><th>Received</th><th></th></tr>
+          <tr class="empty-row"><td colspan="4">No conversations yet. Messages from customers will appear here.</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="view" id="team">
+      <div class="topline">
+        <div><h1>Users</h1><p>People who can log in and manage the business account</p></div>
+      </div>
+      <div class="grid g3">
+        <div class="card" style="padding:0;">
+          <table>
+            <tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th></th></tr>
+            <tr>
+              <td><div class="row-name">Owner</div></td>
+              <td class="muted">developeracaciabooks@gmail.com</td>
+              <td><span class="pill sched">Admin</span></td>
+              <td><span class="pill paid">Active</span></td>
+              <td></td>
+            </tr>
+            <tbody id="teamTableBody"></tbody>
+          </table>
+        </div>
+        <div class="card">
+          <h3 style="font-size:14.5px;margin-bottom:12px;">Add a user</h3>
+          <div class="field"><label>Full name</label><input type="text" id="teamName" placeholder="e.g. Peter Otieno"></div>
+          <div class="field"><label>Email</label><input type="text" id="teamEmail" placeholder="name@company.com"></div>
+          <div class="field"><label>Role</label>
+            <select id="teamRole">
+              <option>Sales</option>
+              <option>Accountant</option>
+              <option>Technician</option>
+              <option>Admin</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="addTeamUser()">Add user</button>
+          <p class="muted" style="font-size:11.6px;margin-top:12px;margin-bottom:0;">Sales can manage inquiries and quotations. Accountants can manage invoices, expenses and reports.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="view" id="gallery">
+      <div class="topline">
+        <div><h1>Gallery</h1><p>Photos shown on the public "Our recent work" page</p></div>
+      </div>
+      <div class="grid g3">
+        <div class="card" style="grid-column:1/-1;padding:0;">
+          <div id="galleryEmptyState" style="padding:36px 20px;text-align:center;">
+            <p class="muted" style="font-size:13.2px;margin:0;">No photos added yet. Use the form to upload your first one.</p>
+          </div>
+          <div class="gallery-grid" id="adminGalleryGrid" style="padding:20px;"></div>
+        </div>
+        <div class="card">
+          <h3 style="font-size:14.5px;margin-bottom:12px;">Add a photo</h3>
+          <div class="field"><label>Photo</label><input type="file" id="galleryFile" accept="image/*"></div>
+          <div class="field"><label>Caption</label><input type="text" id="galleryCaption" placeholder="e.g. Fumigation"></div>
+          <div class="field" style="margin-bottom:0;"><label>Location</label><input type="text" id="galleryLocation" placeholder="e.g. Karen"></div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:18px;" onclick="addGalleryPhoto()">Add to gallery</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="view" id="customer">
+      <div class="topline">
+        <div><h1>Welcome</h1><p>This is what your customers see when they log in</p></div>
+        <button class="btn btn-dark" onclick="toggleCustomerInquiryForm()">+ New inquiry</button>
+      </div>
+      <div class="grid g4" style="margin-bottom:26px;">
+        <div class="card stat-card"><div class="label">My requests</div><div class="value" id="custStatRequests">0</div></div>
+        <div class="card stat-card"><div class="label">Pending</div><div class="value" id="custStatPending">0</div></div>
+        <div class="card stat-card"><div class="label">Scheduled</div><div class="value">0</div></div>
+        <div class="card stat-card"><div class="label">Outstanding balance</div><div class="value">KSh 0</div></div>
+      </div>
+
+      <div class="card" id="customerInquiryForm" style="display:none;margin-bottom:26px;">
+        <h3 style="font-size:15px;margin-bottom:14px;">New service inquiry</h3>
+        <div class="field"><label>Service</label>
+          <select id="custService"><option>🐜 Fumigation</option><option>🌳 Landscaping</option><option>🌱 Garden maintenance</option><option>🏡 Lawn care</option><option>🌿 Tree/hedge trimming</option><option>Other</option></select>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Property type</label><select id="custPropertyType"><option>Home</option><option>Apartment</option><option>Office</option><option>Estate</option></select></div>
+          <div class="field"><label>Preferred date</label><input type="date"></div>
+        </div>
+        <div class="field"><label>Location</label><input type="text" id="custLocation" placeholder="e.g. Karen, Nairobi"></div>
+        <div class="field" style="margin-bottom:0;"><label>Describe the problem or job</label><textarea rows="3" id="custDescription" placeholder="Tell us what you need…"></textarea></div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:16px;" onclick="submitCustomerInquiry()">Submit inquiry</button>
+      </div>
+
+      <div class="block-head"><h3>My requests</h3></div>
+      <div id="custRequestsList">
+        <div class="card" style="padding:36px 22px;text-align:center;margin-bottom:26px;">
+          <p class="muted" style="font-size:13.4px;margin:0 0 14px;">You haven't made any service requests yet.</p>
+          <button class="btn btn-primary" onclick="toggleCustomerInquiryForm()">Make your first inquiry</button>
+        </div>
+      </div>
+
+      <div class="block-head"><h3>Reply to an inquiry</h3></div>
+      <div class="card">
+        <p class="muted" style="font-size:12.8px;margin:0 0 14px;">Once the business responds to your inquiry, you can reply to them here.</p>
+        <div style="display:flex;gap:8px;">
+          <input type="text" placeholder="Write a reply…" style="flex:1;">
+          <button class="btn btn-primary">Send</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  function toggleTheme(){
+    document.body.classList.toggle('dark');
+  }
+  function showPublicView(id){
+    document.querySelectorAll('.pub-view').forEach(v=>v.classList.remove('active'));
+    document.getElementById('pub'+id.charAt(0).toUpperCase()+id.slice(1)).classList.add('active');
+    document.querySelectorAll('.pub-nav-item').forEach(n=>n.classList.remove('active'));
+    const btn=document.querySelector('.pub-nav-item[data-pub="'+id+'"]');
+    if(btn) btn.classList.add('active');
+    window.scrollTo(0,0);
+  }
+  let customerAccounts = [];
+  function enterApp(startView){
+    document.getElementById('landingScreen').style.display='none';
+    document.getElementById('signupScreen').style.display='none';
+    document.getElementById('customerLoginScreen').style.display='none';
+    document.getElementById('businessLoginScreen').style.display='none';
+    document.getElementById('appScreen').classList.add('active');
+    const isCustomer = startView==='customer';
+    document.getElementById('adminNav').style.display = isCustomer ? 'none' : 'flex';
+    document.getElementById('customerModeLabel').style.display = isCustomer ? 'block' : 'none';
+    showView(startView || 'dashboard');
+  }
+  function backToLanding(){
+    document.getElementById('appScreen').classList.remove('active');
+    document.getElementById('landingScreen').style.display='block';
+  }
+  function showSignup(){
+    document.getElementById('landingScreen').style.display='none';
+    document.getElementById('customerLoginScreen').style.display='none';
+    document.getElementById('signupScreen').style.display='block';
+  }
+  function backToLandingFromSignup(){
+    document.getElementById('signupScreen').style.display='none';
+    document.getElementById('landingScreen').style.display='block';
+  }
+  function createCustomerAccount(){
+    const name=document.getElementById('suName').value.trim();
+    const phone=document.getElementById('suPhone').value.trim();
+    const email=document.getElementById('suEmail').value.trim().toLowerCase();
+    const address=document.getElementById('suAddress').value.trim();
+    const password=document.getElementById('suPassword').value;
+    const err=document.getElementById('signupError');
+    if(!name || !email || !password){
+      err.style.display='block';
+      return;
+    }
+    err.style.display='none';
+    customerAccounts.push({name, phone, email, address, password});
+    currentCustomerName=name;
+    setCustomerGreeting(name);
+    enterApp('customer');
+  }
+  function showCustomerLogin(){
+    document.getElementById('landingScreen').style.display='none';
+    document.getElementById('customerLoginScreen').style.display='block';
+  }
+  function backToLandingFromCustomerLogin(){
+    document.getElementById('customerLoginScreen').style.display='none';
+    document.getElementById('landingScreen').style.display='block';
+  }
+  function setCustomerGreeting(name){
+    const el=document.querySelector('#customer .topline h1');
+    if(el) el.textContent='Welcome, '+name.split(' ')[0];
+  }
+  function attemptCustomerLogin(){
+    const email=document.getElementById('custEmail').value.trim().toLowerCase();
+    const pass=document.getElementById('custPassword').value;
+    const err=document.getElementById('custLoginError');
+    const match=customerAccounts.find(a => a.email===email && a.password===pass);
+    if(match){
+      err.style.display='none';
+      currentCustomerName=match.name;
+      setCustomerGreeting(match.name);
+      enterApp('customer');
+    } else {
+      err.style.display='block';
+    }
+  }
+  function showBusinessLogin(){
+    document.getElementById('landingScreen').style.display='none';
+    document.getElementById('businessLoginScreen').style.display='block';
+  }
+  function backToLandingFromBusinessLogin(){
+    document.getElementById('businessLoginScreen').style.display='none';
+    document.getElementById('landingScreen').style.display='block';
+  }
+  const BUSINESS_EMAIL='developeracaciabooks@gmail.com';
+  const BUSINESS_PASSWORD='admin123';
+  function attemptBusinessLogin(){
+    const email=document.getElementById('bizEmail').value.trim();
+    const pass=document.getElementById('bizPassword').value;
+    const err=document.getElementById('bizLoginError');
+    if(email===BUSINESS_EMAIL && pass===BUSINESS_PASSWORD){
+      err.style.display='none';
+      enterApp('dashboard');
+    } else {
+      err.style.display='block';
+    }
+  }
+  function toggleCustomerInquiryForm(){
+    const form=document.getElementById('customerInquiryForm');
+    form.style.display = (form.style.display==='none' || !form.style.display) ? 'block' : 'none';
+  }
+  let teamData = [];
+  function addTeamUser(){
+    const name=document.getElementById('teamName').value.trim();
+    const email=document.getElementById('teamEmail').value.trim();
+    const role=document.getElementById('teamRole').value;
+    if(!name || !email){ return; }
+    teamData.push({name, email, role});
+    renderTeam();
+    document.getElementById('teamName').value='';
+    document.getElementById('teamEmail').value='';
+    showToast(name+' added as '+role);
+  }
+  function renderTeam(){
+    const tbody=document.getElementById('teamTableBody');
+    tbody.innerHTML='';
+    teamData.forEach((u,i)=>{
+      const row=document.createElement('tr');
+      row.innerHTML='<td><div class="row-name">'+u.name+'</div></td>'
+        +'<td class="muted">'+u.email+'</td>'
+        +'<td><span class="pill pending">'+u.role+'</span></td>'
+        +'<td><span class="pill paid">Active</span></td>'
+        +'<td><div class="row-actions">'
+          +'<button class="icon-btn" title="Edit" onclick="editTeamUser('+i+')">'+ICON_EDIT+'</button>'
+          +'<button class="icon-btn danger" title="Remove" onclick="deleteTeamUser('+i+')">'+ICON_DELETE+'</button>'
+        +'</div></td>';
+      tbody.appendChild(row);
+    });
+  }
+  function editTeamUser(i){
+    const u=teamData[i];
+    document.getElementById('teamName').value=u.name;
+    document.getElementById('teamEmail').value=u.email;
+    document.getElementById('teamRole').value=u.role;
+    deleteTeamUser(i, true);
+    showToast('Editing '+u.name+' — save to update');
+  }
+  function deleteTeamUser(i, silent){
+    const u=teamData[i];
+    teamData.splice(i,1);
+    renderTeam();
+    if(!silent) showToast(u.name+' removed');
+  }
+
+  let galleryData = [];
+  function addGalleryPhoto(){
+    const fileInput=document.getElementById('galleryFile');
+    const caption=document.getElementById('galleryCaption').value.trim();
+    const location=document.getElementById('galleryLocation').value.trim();
+    if(!fileInput.files || !fileInput.files[0]){ showToast('Choose a photo first'); return; }
+    if(!caption){ showToast('Add a caption'); return; }
+    const reader=new FileReader();
+    reader.onload=function(e){
+      galleryData.push({src:e.target.result, caption, location});
+      renderGallery();
+      fileInput.value='';
+      document.getElementById('galleryCaption').value='';
+      document.getElementById('galleryLocation').value='';
+      showToast('Photo added to gallery');
+    };
+    reader.readAsDataURL(fileInput.files[0]);
+  }
+  function galleryTileHtml(item, i, withDelete){
+    return '<div class="gallery-tile">'
+      + (withDelete ? '<button class="tile-delete" title="Delete" onclick="deleteGalleryPhoto('+i+')">'+ICON_DELETE+'</button>' : '')
+      + '<div class="tile-bg"><img src="'+item.src+'" alt="'+item.caption+'"></div>'
+      + '<div class="tile-caption">'+item.caption+(item.location ? '<span>'+item.location+'</span>' : '')+'</div>'
+      + '</div>';
+  }
+  function renderGallery(){
+    const adminGrid=document.getElementById('adminGalleryGrid');
+    const dynGrid=document.getElementById('dynamicGalleryGrid');
+    const emptyState=document.getElementById('galleryEmptyState');
+    adminGrid.innerHTML='';
+    dynGrid.innerHTML='';
+    emptyState.style.display = galleryData.length===0 ? 'block' : 'none';
+    galleryData.forEach((item,i)=>{
+      adminGrid.insertAdjacentHTML('beforeend', galleryTileHtml(item, i, true));
+      dynGrid.insertAdjacentHTML('beforeend', galleryTileHtml(item, i, false));
+    });
+  }
+  function deleteGalleryPhoto(i){
+    galleryData.splice(i,1);
+    renderGallery();
+    showToast('Photo removed');
+  }
+
+  let inquiriesData = [];
+  let quotationsData = [];
+  let expensesData = [];
+  let invoicesData = [];
+  let currentCustomerName = '';
+
+  function showToast(message){
+    const wrap=document.getElementById('toastWrap');
+    const t=document.createElement('div');
+    t.className='toast';
+    t.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span>'+message+'</span>';
+    wrap.appendChild(t);
+    setTimeout(()=>{ t.style.transition='opacity .3s ease'; t.style.opacity='0'; setTimeout(()=>t.remove(),300); }, 2600);
+  }
+  function money(n){ return 'KSh '+Math.round(n).toLocaleString(); }
+
+  function openModal(title, bodyHtml){
+    document.getElementById('modalTitle').textContent=title;
+    document.getElementById('modalBody').innerHTML=bodyHtml;
+    document.getElementById('viewModal').classList.add('active');
+  }
+  function closeModal(){
+    document.getElementById('viewModal').classList.remove('active');
+  }
+  function modalRow(label, value){
+    return '<div class="modal-row"><span>'+label+'</span><span>'+value+'</span></div>';
+  }
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+  function clearEmptyRow(tbody){
+    const empty=tbody.querySelector('.empty-row');
+    if(empty) empty.remove();
+  }
+
+  function submitCustomerInquiry(){
+    const service=document.getElementById('custService').value;
+    const property=document.getElementById('custPropertyType').value;
+    const location=document.getElementById('custLocation').value.trim();
+    const description=document.getElementById('custDescription').value.trim();
+    if(!location){ showToast('Please add a location'); return; }
+    const entry={
+      customer: currentCustomerName || 'Customer',
+      service, property, location, description,
+      received: 'Just now', status:'New'
+    };
+    inquiriesData.push(entry);
+    renderInquiries();
+    renderCustomerRequests();
+    updateDashboardStats();
+    document.getElementById('custLocation').value='';
+    document.getElementById('custDescription').value='';
+    toggleCustomerInquiryForm();
+    showToast('Inquiry submitted');
+  }
+
+  const ICON_VIEW='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>';
+  const ICON_EDIT='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>';
+  const ICON_DELETE='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6"/></svg>';
+  const ICON_SEND='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>';
+
+  function renderInquiries(){
+    const tbody=document.getElementById('inquiriesTableBody');
+    clearEmptyRow(tbody);
+    tbody.innerHTML='';
+    if(inquiriesData.length===0){
+      tbody.innerHTML='<tr class="empty-row"><td colspan="6">No inquiries yet. Customer requests will appear here as they come in.</td></tr>';
+      return;
+    }
+    inquiriesData.forEach((inq,i)=>{
+      const row=document.createElement('tr');
+      row.innerHTML='<td><div class="row-name">'+inq.customer+'</div></td>'
+        +'<td><span class="service-tag">'+inq.service+'</span></td>'
+        +'<td>'+inq.location+'</td>'
+        +'<td class="muted">'+inq.received+'</td>'
+        +'<td><span class="pill new">'+inq.status+'</span></td>'
+        +'<td><div class="row-actions">'
+          +'<button class="icon-btn" title="View" onclick="viewInquiry('+i+')">'+ICON_VIEW+'</button>'
+          +'<button class="icon-btn" title="Quote / Edit" onclick="editInquiry('+i+')">'+ICON_EDIT+'</button>'
+          +'<button class="icon-btn danger" title="Delete" onclick="deleteInquiry('+i+')">'+ICON_DELETE+'</button>'
+        +'</div></td>';
+      tbody.appendChild(row);
+    });
+  }
+  function viewInquiry(i){
+    const inq=inquiriesData[i];
+    openModal('Inquiry details', ''
+      +modalRow('Customer', inq.customer)
+      +modalRow('Service', inq.service)
+      +modalRow('Property type', inq.property||'—')
+      +modalRow('Location', inq.location)
+      +modalRow('Description', inq.description||'—')
+      +modalRow('Received', inq.received)
+      +modalRow('Status', inq.status)
+    );
+  }
+  function editInquiry(i){
+    const inq=inquiriesData[i];
+    document.getElementById('quoteCustomer').value=inq.customer;
+    document.getElementById('quoteService').value=inq.service;
+    showView('quotation');
+    showToast('Prefilled quotation for '+inq.customer);
+  }
+  function deleteInquiry(i){
+    const inq=inquiriesData[i];
+    inquiriesData.splice(i,1);
+    renderInquiries();
+    renderCustomerRequests();
+    updateDashboardStats();
+    showToast('Deleted inquiry from '+inq.customer);
+  }
+
+  function renderCustomerRequests(){
+    const list=document.getElementById('custRequestsList');
+    const mine=inquiriesData.filter(inq => inq.customer === currentCustomerName);
+    document.getElementById('custStatRequests').textContent=mine.length;
+    document.getElementById('custStatPending').textContent=mine.filter(i=>i.status==='New').length;
+    if(mine.length===0){
+      list.innerHTML='<div class="card" style="padding:36px 22px;text-align:center;margin-bottom:26px;">'
+        +'<p class="muted" style="font-size:13.4px;margin:0 0 14px;">You haven\'t made any service requests yet.</p>'
+        +'<button class="btn btn-primary" onclick="toggleCustomerInquiryForm()">Make your first inquiry</button></div>';
+      return;
+    }
+    let html='';
+    mine.forEach(inq=>{
+      const idx=inquiriesData.indexOf(inq);
+      html+='<div class="card" style="margin-bottom:14px;">'
+        +'<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">'
+        +'<div><div class="row-name">'+inq.service+'</div><div class="row-sub">'+inq.location+'</div></div>'
+        +'<span class="pill '+(inq.status==='New'?'new':inq.status==='Quoted'?'pending':inq.status==='Accepted'?'done':'sched')+'">'+inq.status+'</span>'
+        +'</div>';
+      if(inq.status==='New'){
+        html+='<p class="muted" style="font-size:12.6px;margin:10px 0 0;">Waiting on a response from Sweet Flowers Garden.</p>';
+      } else if(inq.status==='Quoted'){
+        html+='<div class="cost-line" style="margin-top:10px;"><span>Quoted price</span><b class="num">'+money(inq.quotedAmount||0)+'</b></div>'
+          +'<div style="display:flex;gap:8px;margin-top:10px;">'
+          +'<button class="btn btn-primary" style="padding:8px 14px;font-size:12.6px;" onclick="respondToQuotation('+idx+',\'Accepted\')">Accept quotation</button>'
+          +'<button class="btn btn-ghost" style="padding:8px 14px;font-size:12.6px;" onclick="respondToQuotation('+idx+',\'Declined\')">Decline</button>'
+          +'</div>';
+      } else if(inq.status==='Accepted'){
+        html+='<p class="muted" style="font-size:12.6px;margin:10px 0 0;">Accepted at '+money(inq.quotedAmount||0)+' — the business will be in touch to schedule.</p>';
+      } else if(inq.status==='Declined'){
+        html+='<p class="muted" style="font-size:12.6px;margin:10px 0 0;">You declined this quotation.</p>';
+      }
+      html+='</div>';
+    });
+    list.innerHTML=html;
+  }
+  function respondToQuotation(idx, decision){
+    inquiriesData[idx].status=decision;
+    renderCustomerRequests();
+    renderInquiries();
+    showToast(decision==='Accepted' ? 'Quotation accepted' : 'Quotation declined');
+  }
+
+  function sendQuotation(){
+    const customer=document.getElementById('quoteCustomer').value.trim();
+    const service=document.getElementById('quoteService').value;
+    const finalPrice=+document.getElementById('finalPrice').value||0;
+    if(!customer){ showToast('Add a customer name first'); return; }
+    quotationsData.push({customer, service, amount:finalPrice, status:'Sent'});
+    const matchingInquiry=inquiriesData.find(inq => inq.customer===customer && inq.status==='New');
+    if(matchingInquiry){
+      matchingInquiry.status='Quoted';
+      matchingInquiry.quotedAmount=finalPrice;
+      renderInquiries();
+      renderCustomerRequests();
+    }
+    renderQuotations();
+    updateDashboardStats();
+    showToast('Quotation sent to '+customer);
+  }
+
+  function renderQuotations(){
+    const tbody=document.getElementById('quotationsTableBody');
+    tbody.innerHTML='';
+    if(quotationsData.length===0){
+      tbody.innerHTML='<tr class="empty-row"><td colspan="5">No quotations sent yet. Use the builder below to create one.</td></tr>';
+      return;
+    }
+    quotationsData.forEach((q,i)=>{
+      const row=document.createElement('tr');
+      row.innerHTML='<td><div class="row-name">'+q.customer+'</div></td>'
+        +'<td><span class="service-tag">'+q.service+'</span></td>'
+        +'<td class="right num">'+money(q.amount)+'</td>'
+        +'<td><span class="pill pending">'+q.status+'</span></td>'
+        +'<td><div class="row-actions">'
+          +'<button class="icon-btn" title="View" onclick="viewQuotation('+i+')">'+ICON_VIEW+'</button>'
+          +'<button class="icon-btn" title="Edit" onclick="editQuotation('+i+')">'+ICON_EDIT+'</button>'
+          +'<button class="icon-btn send" title="Resend" onclick="resendQuotation('+i+')">'+ICON_SEND+'</button>'
+          +'<button class="icon-btn danger" title="Delete" onclick="deleteQuotation('+i+')">'+ICON_DELETE+'</button>'
+        +'</div></td>';
+      tbody.appendChild(row);
+    });
+  }
+  function viewQuotation(i){
+    const q=quotationsData[i];
+    openModal('Quotation details', ''
+      +modalRow('Customer', q.customer)
+      +modalRow('Service', q.service)
+      +modalRow('Amount', money(q.amount))
+      +modalRow('Status', q.status)
+    );
+  }
+  function editQuotation(i){
+    const q=quotationsData[i];
+    document.getElementById('quoteCustomer').value=q.customer;
+    document.getElementById('quoteService').value=q.service;
+    document.getElementById('finalPrice').value=q.amount;
+    showToast('Editing quotation for '+q.customer);
+  }
+  function resendQuotation(i){
+    showToast('Quotation resent to '+quotationsData[i].customer);
+  }
+  function deleteQuotation(i){
+    const q=quotationsData[i];
+    quotationsData.splice(i,1);
+    renderQuotations();
+    updateDashboardStats();
+    showToast('Deleted quotation for '+q.customer);
+  }
+
+  function saveExpense(){
+    const category=document.getElementById('expCategory').value;
+    const description=document.getElementById('expDesc').value.trim();
+    const amount=+document.getElementById('expAmount').value||0;
+    if(!description || amount<=0){ showToast('Add a description and amount'); return; }
+    expensesData.push({category, description, supplier:'—', job:'—', amount});
+    renderExpenses();
+    updateDashboardStats();
+    document.getElementById('expDesc').value='';
+    document.getElementById('expAmount').value='';
+    showToast('Expense saved');
+  }
+
+  function renderExpenses(){
+    const tbody=document.getElementById('expensesTableBody');
+    tbody.innerHTML='';
+    if(expensesData.length===0){
+      tbody.innerHTML='<tr class="empty-row"><td colspan="6">No expenses logged yet.</td></tr>';
+      document.getElementById('expensesSubline').textContent='KSh 0 logged this month';
+      return;
+    }
+    let total=0;
+    expensesData.forEach((e,i)=>{
+      total+=e.amount;
+      const row=document.createElement('tr');
+      row.innerHTML='<td>'+e.category+'</td><td>'+e.description+'</td><td class="muted">'+e.supplier+'</td>'
+        +'<td class="muted">'+e.job+'</td><td class="right num">'+money(e.amount)+'</td>'
+        +'<td><div class="row-actions">'
+          +'<button class="icon-btn" title="Edit" onclick="editExpense('+i+')">'+ICON_EDIT+'</button>'
+          +'<button class="icon-btn danger" title="Delete" onclick="deleteExpense('+i+')">'+ICON_DELETE+'</button>'
+        +'</div></td>';
+      tbody.appendChild(row);
+    });
+    document.getElementById('expensesSubline').textContent=money(total)+' logged this month';
+  }
+  function editExpense(i){
+    const e=expensesData[i];
+    document.getElementById('expCategory').value=e.category;
+    document.getElementById('expDesc').value=e.description;
+    document.getElementById('expAmount').value=e.amount;
+    showToast('Editing expense — save to update');
+  }
+  function deleteExpense(i){
+    expensesData.splice(i,1);
+    renderExpenses();
+    updateDashboardStats();
+    showToast('Expense deleted');
+  }
+
+  function saveInvoice(){
+    const customer=document.getElementById('invCustomer').value.trim();
+    const amount=+document.getElementById('invAmount').value||0;
+    if(!customer || amount<=0){ showToast('Add a customer and amount'); return; }
+    const num='INV-'+(1000+invoicesData.length+1);
+    invoicesData.push({num, customer, amount, status:'Unpaid'});
+    renderInvoices();
+    updateDashboardStats();
+    document.getElementById('invCustomer').value='';
+    document.getElementById('invAmount').value='';
+    showToast('Invoice '+num+' saved');
+  }
+
+  function renderInvoices(){
+    const tbody=document.getElementById('invoicesTableBody');
+    tbody.innerHTML='';
+    if(invoicesData.length===0){
+      tbody.innerHTML='<tr class="empty-row"><td colspan="5">Invoices are generated once a job is marked complete.</td></tr>';
+      document.getElementById('invoicesSubline').textContent='No invoices yet';
+      return;
+    }
+    invoicesData.forEach((inv,i)=>{
+      const row=document.createElement('tr');
+      row.innerHTML='<td>'+inv.num+'</td><td>'+inv.customer+'</td><td class="right num">'+money(inv.amount)+'</td>'
+        +'<td><span class="pill '+(inv.status==='Paid'?'paid':'unpaid')+'">'+inv.status+'</span></td>'
+        +'<td><div class="row-actions">'
+          +'<button class="icon-btn" title="View" onclick="viewInvoice('+i+')">'+ICON_VIEW+'</button>'
+          +'<button class="icon-btn" title="Edit" onclick="editInvoice('+i+')">'+ICON_EDIT+'</button>'
+          +'<button class="icon-btn send" title="Send" onclick="sendInvoiceAgain('+i+')">'+ICON_SEND+'</button>'
+          +'<button class="icon-btn danger" title="Delete" onclick="deleteInvoice('+i+')">'+ICON_DELETE+'</button>'
+        +'</div></td>';
+      tbody.appendChild(row);
+    });
+    const outstanding=invoicesData.filter(i=>i.status==='Unpaid').reduce((s,i)=>s+i.amount,0);
+    document.getElementById('invoicesSubline').textContent=invoicesData.length+' invoice(s) · '+money(outstanding)+' outstanding';
+  }
+  function viewInvoice(i){
+    const inv=invoicesData[i];
+    openModal(inv.num, ''
+      +modalRow('Customer', inv.customer)
+      +modalRow('Amount', money(inv.amount))
+      +modalRow('Status', inv.status)
+      +(inv.status==='Unpaid'
+        ? '<button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:16px;" onclick="markInvoicePaid('+i+')">Record payment</button>'
+        : '')
+    );
+  }
+  function markInvoicePaid(i){
+    invoicesData[i].status='Paid';
+    renderInvoices();
+    updateDashboardStats();
+    closeModal();
+    showToast(invoicesData[i].num+' marked as paid');
+  }
+  function editInvoice(i){
+    const inv=invoicesData[i];
+    document.getElementById('invCustomer').value=inv.customer;
+    document.getElementById('invAmount').value=inv.amount;
+    showToast('Editing '+inv.num+' — save to update');
+  }
+  function sendInvoiceAgain(i){
+    showToast(invoicesData[i].num+' sent to '+invoicesData[i].customer);
+  }
+  function deleteInvoice(i){
+    const inv=invoicesData[i];
+    invoicesData.splice(i,1);
+    renderInvoices();
+    updateDashboardStats();
+    showToast(inv.num+' deleted');
+  }
+
+  function updateDashboardStats(){
+    const revenue=invoicesData.reduce((s,i)=>s+i.amount,0);
+    const expenseTotal=expensesData.reduce((s,e)=>s+e.amount,0);
+    document.getElementById('statRevenue').textContent=money(revenue);
+    document.getElementById('statExpenses').textContent=money(expenseTotal);
+    document.getElementById('statProfit').textContent=money(revenue-expenseTotal);
+    const outstanding=invoicesData.filter(i=>i.status==='Unpaid').reduce((s,i)=>s+i.amount,0);
+    document.getElementById('statOutstanding').textContent=money(outstanding);
+    document.getElementById('statPendingQuotes').textContent=quotationsData.filter(q=>q.status==='Sent').length;
+    document.getElementById('statAwaitingPayment').textContent=invoicesData.filter(i=>i.status==='Unpaid').length;
+
+    const dashInq=document.getElementById('dashInquiries');
+    const newOnes=inquiriesData.filter(i=>i.status==='New');
+    if(newOnes.length===0){
+      dashInq.innerHTML='<div class="card" style="padding:30px 20px;text-align:center;">'
+        +'<p class="muted" style="font-size:13.2px;margin:0;">No inquiries yet. New customer requests will show up here.</p></div>';
+    } else {
+      let html='';
+      newOnes.forEach(inq=>{
+        html+='<div class="inquiry-card"><div style="display:flex;gap:12px;align-items:center;">'
+          +'<div class="badge-icon icon-leaf"><span style="font-size:16px;">'+inq.service.slice(0,2)+'</span></div>'
+          +'<div><div class="row-name">'+inq.customer+' — '+inq.service.replace(/^[^ ]+ /,'')+'</div>'
+          +'<div class="row-sub">'+inq.location+'</div></div></div>'
+          +'<button class="btn btn-ghost" style="padding:7px 14px;font-size:12.6px;" onclick="showView(\'quotation\')">Respond</button></div>';
+      });
+      dashInq.innerHTML=html;
+    }
+  }
+
+  showView('dashboard');
+
+  function showView(id){
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+    const btn = document.querySelector('.nav-item[data-view="'+id+'"]');
+    if(btn) btn.classList.add('active');
+    window.scrollTo(0,0);
+  }
+  document.querySelectorAll('.nav-item[data-view]').forEach(btn=>{
+    btn.addEventListener('click', ()=>showView(btn.getAttribute('data-view')));
+  });
+
+  function calc(){
+    const c1=+document.getElementById('c1').value||0;
+    const c2=+document.getElementById('c2').value||0;
+    const c3=+document.getElementById('c3').value||0;
+    const c4=+document.getElementById('c4').value||0;
+    const total=c1+c2+c3+c4;
+    const margin=+document.getElementById('margin').value||0;
+    const suggested = margin<100 ? total/(1-margin/100) : total;
+    document.getElementById('totalCost').textContent='KSh '+total.toLocaleString();
+    document.getElementById('suggested').textContent='KSh '+Math.round(suggested).toLocaleString();
+  }
+  calc();
+</script>
+<div class="modal-overlay" id="viewModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 id="modalTitle">Details</h3>
+      <button class="modal-close" onclick="closeModal()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+<div class="toast-wrap" id="toastWrap"></div>
 </body>
 </html>
