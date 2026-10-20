@@ -3,6 +3,8 @@ import { supabase, createIsolatedClient } from "./supabase.js";
 export const DASHBOARD_FOR = {
   admin: "admin-dashboard.html",
   sales: "sales-dashboard.html",
+  service: "service-dashboard.html",
+  accounts: "accounts-dashboard.html",
   customer: "customer-dashboard.html"
 };
 
@@ -63,19 +65,26 @@ export async function listByRole(role) {
   return data || [];
 }
 export const listCustomers = () => listByRole("customer");
-export const listSales = () => listByRole("sales");
+export async function listStaff() {
+  const { data, error } = await supabase.from("sfg_profiles").select("*").neq("role", "customer").order("created_at");
+  if (error) throw error;
+  return data || [];
+}
 
-export async function createSalesAccount({ name, email, phone, password }) {
+// Admin / developer adds any kind of user from Settings.
+export async function createUserAccount({ name, email, phone, password, role }) {
   const isolated = createIsolatedClient();
   const { data, error } = await isolated.auth.signUp({ email, password, options: { data: { name, phone } } });
   if (error) throw error;
   if (!data.user || (data.user.identities && data.user.identities.length === 0)) throw new Error("That email is already registered.");
-  const { error: roleError } = await supabase.from("sfg_profiles").update({ role: "sales" }).eq("id", data.user.id);
-  if (roleError) throw roleError;
+  if (role !== "customer") {
+    const { error: roleError } = await supabase.from("sfg_profiles").update({ role }).eq("id", data.user.id);
+    if (roleError) throw roleError;
+  }
 }
 
-// Browsers cannot delete auth users, so "Remove" takes the Sales access away.
-export async function removeSalesAccount(id) {
+// Browsers cannot delete auth users, so "Remove" takes the staff access away (the person becomes a plain customer).
+export async function removeStaffAccess(id) {
   const { error } = await supabase.from("sfg_profiles").update({ role: "customer" }).eq("id", id);
   if (error) throw error;
 }

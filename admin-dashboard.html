@@ -18,7 +18,7 @@
             <ul>
                 <li onclick="showAdminPage('dashboardPage')">🏠 Dashboard</li>
                 <li onclick="showAdminPage('customersPage')">👥 Customers</li>
-                <li onclick="showAdminPage('salesAccountsPage')">💼 Sales Accounts</li>
+                <li onclick="showAdminPage('settingsPage')">⚙️ Settings</li>
                 <li onclick="showAdminPage('galleryPage')">🖼️ Gallery Management</li>
                 <li onclick="showAdminPage('bookingsPage')">📅 Bookings Operations</li>
                 <li onclick="logoutAdmin()">🚪 Logout</li>
@@ -30,7 +30,7 @@
                 <div class="cards">
                     <div class="card"><h3>Registered Customers</h3><h2 id="customerCount">0</h2></div>
                     <div class="card"><h3>Total Received Bookings</h3><h2 id="bookingCount">0</h2></div>
-                    <div class="card"><h3>Sales Accounts</h3><h2 id="salesCount">0</h2></div>
+                    <div class="card"><h3>Staff Accounts</h3><h2 id="salesCount">0</h2></div>
                     <div class="card"><h3>Gallery Images</h3><h2 id="galleryCount">0</h2></div>
                 </div>
             </div>
@@ -41,25 +41,34 @@
                     <tbody id="customerBody"></tbody>
                 </table>
             </div>
-            <div id="salesAccountsPage" class="admin-page" style="display:none;">
-                <h1>Sales Account Management</h1>
+            <div id="settingsPage" class="admin-page" style="display:none;">
+                <h1>Settings: Users &amp; Accounts</h1>
                 <div class="admin-form">
-                    <h3 style="margin-bottom:20px;color:#1B5E20;">Create Sales Account</h3>
-                    <form id="salesAccountForm">
+                    <h3 style="margin-bottom:20px;color:#1B5E20;">Add User</h3>
+                    <form id="userForm">
                         <label>Full Name</label>
-                        <input type="text" id="salesName" required>
+                        <input type="text" id="userName" required>
                         <label>Email Address</label>
-                        <input type="email" id="salesEmail" required>
+                        <input type="email" id="userEmail" required>
                         <label>Phone Number</label>
-                        <input type="tel" id="salesPhone" required>
+                        <input type="tel" id="userPhone" required>
+                        <label>Role</label>
+                        <select id="userRole" required>
+                            <option value="sales">Sales</option>
+                            <option value="service">Customer Service</option>
+                            <option value="accounts">Accounts</option>
+                            <option value="customer">Customer</option>
+                            <option value="admin">Admin / Developer</option>
+                        </select>
                         <label>Password</label>
-                        <input type="password" id="salesPassword" required>
-                        <button type="submit">Create Sales Account</button>
+                        <input type="password" id="userPassword" minlength="6" required>
+                        <button type="submit">Add User</button>
                     </form>
                 </div>
-                <table id="salesAccountTable">
-                    <thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Email</th><th>Action</th></tr></thead>
-                    <tbody id="salesAccountBody"></tbody>
+                <h3 style="margin-bottom:15px;color:#1B5E20;">Staff &amp; Admin Accounts</h3>
+                <table id="userTable">
+                    <thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Email</th><th>Role</th><th>Action</th></tr></thead>
+                    <tbody id="userBody"></tbody>
                 </table>
             </div>
 

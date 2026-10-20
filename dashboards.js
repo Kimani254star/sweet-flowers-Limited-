@@ -1,6 +1,6 @@
 import { supabase } from "./supabase.js";
 import { esc, setText, setHtml, $ } from "./ui.js";
-import { listCustomers, listSales } from "./auth.js";
+import { listCustomers, listStaff } from "./auth.js";
 import { listBookings } from "./bookings.js";
 import { listGallery } from "./gallery.js";
 
@@ -15,31 +15,34 @@ function statusCell(b, editable) {
     STATUSES.map((s) => `<option${s === b.status ? " selected" : ""}>${s}</option>`).join("") + `</select>`;
 }
 
-function bookingRows(list) {
+const ROLE_LABELS = { admin: "Admin / Developer", sales: "Sales", service: "Customer Service", accounts: "Accounts" };
+
+function bookingRows(list, editable = true) {
   return list.map((b, i) => `<tr>
     <td>${i + 1}</td>
     <td>${esc(b.customer)}</td>
     <td>${esc(b.email)} <br> <small>${esc(b.phone)}</small></td>
     <td>${esc(b.service)}</td>
     <td>${esc(b.date)}${b.time ? " " + esc(b.time) : ""}</td>
-    <td>${statusCell(b, true)}</td>
+    <td>${statusCell(b, editable)}</td>
   </tr>`).join("");
 }
 
 export async function loadAdminDashboard() {
-  const [customers, sales, bookings, gallery] = await Promise.all([listCustomers(), listSales(), listBookings(), listGallery()]);
+  const [customers, staff, bookings, gallery] = await Promise.all([listCustomers(), listStaff(), listBookings(), listGallery()]);
   setText("customerCount", customers.length);
   setText("bookingCount", bookings.length);
-  setText("salesCount", sales.length);
+  setText("salesCount", staff.length);
   setText("galleryCount", gallery.length);
 
   setHtml("customerBody", customerRows(customers) || "<tr><td colspan='4'>No registered customers yet.</td></tr>");
   setHtml("bookingBody", bookingRows(bookings) || "<tr><td colspan='6'>No bookings yet.</td></tr>");
 
-  setHtml("salesAccountBody", sales.map((u, i) => `<tr>
+  setHtml("userBody", staff.map((u, i) => `<tr>
     <td>${i + 1}</td><td>${esc(u.name)}</td><td>${esc(u.phone)}</td><td>${esc(u.email)}</td>
-    <td><button class="toolbar-delete-btn" data-action="remove-sales" data-id="${esc(u.id)}">Remove</button></td>
-  </tr>`).join("") || "<tr><td colspan='5'>No sales accounts yet.</td></tr>");
+    <td>${esc(ROLE_LABELS[u.role] || u.role)}</td>
+    <td>${u.role === "admin" ? "" : `<button class="toolbar-delete-btn" data-action="remove-staff" data-id="${esc(u.id)}">Remove</button>`}</td>
+  </tr>`).join("") || "<tr><td colspan='6'>No staff accounts yet.</td></tr>");
 
   setHtml("galleryManageGrid", gallery.map((g) => `<div class="gallery-manage-item">
     <img src="${esc(g.image_url)}" alt="${esc(g.caption || "Gallery image")}">
@@ -48,12 +51,12 @@ export async function loadAdminDashboard() {
   </div>`).join("") || "<p>No uploaded images yet.</p>");
 }
 
-export async function loadSalesDashboard(profile) {
+export async function loadSalesDashboard(profile, editable = true) {
   setText("salesWelcomeName", profile.name);
   const [customers, bookings] = await Promise.all([listCustomers(), listBookings()]);
   setText("salesBookingCount", bookings.length);
   setText("salesCustomerCount", customers.length);
-  setHtml("salesBookingBody", bookingRows(bookings) || "<tr><td colspan='6'>No bookings yet.</td></tr>");
+  setHtml("salesBookingBody", bookingRows(bookings, editable) || "<tr><td colspan='6'>No bookings yet.</td></tr>");
   setHtml("salesCustomerBody", customerRows(customers) || "<tr><td colspan='4'>No registered customers yet.</td></tr>");
 }
 

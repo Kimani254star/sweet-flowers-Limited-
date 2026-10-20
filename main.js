@@ -1,6 +1,6 @@
 import { supabase } from "./supabase.js";
 import { $, openLogin, closeLogin, openRegister, closeRegister, openForgot, closeForgot, openReset, closeReset, showPage } from "./ui.js";
-import { registerCustomer, login, requireRole, logout, updateOwnProfile, createSalesAccount, removeSalesAccount, requestPasswordReset, setNewPassword, getProfile, DASHBOARD_FOR } from "./auth.js";
+import { registerCustomer, login, requireRole, logout, updateOwnProfile, createUserAccount, removeStaffAccess, requestPasswordReset, setNewPassword, getProfile, DASHBOARD_FOR } from "./auth.js";
 import { submitBooking, updateBookingStatus } from "./bookings.js";
 import { addGalleryImage, deleteGalleryImage, renderPublicGallery } from "./gallery.js";
 import { loadAdminDashboard, loadSalesDashboard, loadCustomerDashboard, watchTables } from "./dashboards.js";
@@ -102,8 +102,8 @@ document.addEventListener("click", async (e) => {
   const btn = e.target.closest("[data-action]");
   if (!btn) return;
   try {
-    if (btn.dataset.action === "remove-sales" && confirm("Remove this sales account?")) {
-      await removeSalesAccount(btn.dataset.id);
+    if (btn.dataset.action === "remove-staff" && confirm("Remove this person's staff access?")) {
+      await removeStaffAccess(btn.dataset.id);
     } else if (btn.dataset.action === "delete-gallery" && confirm("Delete this gallery image?")) {
       await deleteGalleryImage(btn.dataset.id, btn.dataset.path);
     }
@@ -120,10 +120,13 @@ async function boot() {
     await reload();
     watchTables(["sfg_bookings", "sfg_profiles", "sfg_gallery"], reload);
 
-    $("salesAccountForm")?.addEventListener("submit", run(async (e) => {
-      const name = $("salesName").value.trim();
-      await createSalesAccount({ name, email: $("salesEmail").value.trim(), phone: $("salesPhone").value.trim(), password: $("salesPassword").value });
-      alert("Sales account created for " + name + ".");
+    $("userForm")?.addEventListener("submit", run(async (e) => {
+      const name = $("userName").value.trim();
+      await createUserAccount({
+        name, email: $("userEmail").value.trim(), phone: $("userPhone").value.trim(),
+        password: $("userPassword").value, role: $("userRole").value
+      });
+      alert("User added: " + name + ".");
       e.target.reset();
       await reload();
     }));
@@ -137,16 +140,18 @@ async function boot() {
     }));
   }
 
-  if (page === "sales-dashboard") {
-    const profile = await requireRole(["sales", "admin"]);
+  const STAFF_PAGES = { "sales-dashboard": "sales", "service-dashboard": "service", "accounts-dashboard": "accounts" };
+  if (STAFF_PAGES[page]) {
+    const profile = await requireRole([STAFF_PAGES[page], "admin"]);
     if (!profile) return;
-    const reload = () => loadSalesDashboard(profile).catch((err) => alert(err.message));
+    const editable = STAFF_PAGES[page] !== "accounts"; // accounts can view, not change statuses
+    const reload = () => loadSalesDashboard(profile, editable).catch((err) => alert(err.message));
     await reload();
     watchTables(["sfg_bookings", "sfg_profiles"], reload);
   }
 
   if (page === "customer-dashboard") {
-    const profile = await requireRole(["customer", "sales", "admin"]);
+    const profile = await requireRole(["customer", "sales", "service", "accounts", "admin"]);
     if (!profile) return;
     const reload = () => loadCustomerDashboard(profile).catch((err) => alert(err.message));
     await reload();
