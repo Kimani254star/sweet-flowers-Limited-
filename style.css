@@ -1143,3 +1143,8 @@ min-height:18px;
 }
 
 .status-select { padding: 6px 8px; border: 1px solid #ccc; border-radius: 6px; font-family: inherit; }
+
+.forgot-link { text-align: center; margin-top: 14px; font-size: 14px; }
+.forgot-link a { color: #1B5E20; text-decoration: none; font-weight: 500; }
+.forgot-link a:hover { text-decoration: underline; }
+.modal-note { font-size: 14px; color: #555; margin-bottom: 15px; }

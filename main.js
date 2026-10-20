@@ -1,12 +1,13 @@
-import { $, openLogin, closeLogin, openRegister, closeRegister, showPage } from "./ui.js";
-import { registerCustomer, login, requireRole, logout, updateOwnProfile, createSalesAccount, removeSalesAccount, DASHBOARD_FOR } from "./auth.js";
+import { supabase } from "./supabase.js";
+import { $, openLogin, closeLogin, openRegister, closeRegister, openForgot, closeForgot, openReset, closeReset, showPage } from "./ui.js";
+import { registerCustomer, login, requireRole, logout, updateOwnProfile, createSalesAccount, removeSalesAccount, requestPasswordReset, setNewPassword, getProfile, DASHBOARD_FOR } from "./auth.js";
 import { submitBooking, updateBookingStatus } from "./bookings.js";
 import { addGalleryImage, deleteGalleryImage, renderPublicGallery } from "./gallery.js";
 import { loadAdminDashboard, loadSalesDashboard, loadCustomerDashboard, watchTables } from "./dashboards.js";
 
 // Inline onclick="..." attributes in the HTML call these.
 Object.assign(window, {
-  openLogin, closeLogin, openRegister, closeRegister,
+  openLogin, closeLogin, openRegister, closeRegister, openForgot, closeForgot,
   showAdminPage: (id) => showPage("admin-page", id),
   showCustomerPage: (id) => showPage("customer-page", id),
   logoutAdmin: logout, logoutSales: logout, logoutCustomer: logout
@@ -39,6 +40,30 @@ $("registerForm")?.addEventListener("submit", run(async () => {
 $("loginForm")?.addEventListener("submit", run(async () => {
   const profile = await login($("loginEmail").value.trim(), $("loginPassword").value);
   window.location.href = DASHBOARD_FOR[profile.role] || "customer-dashboard.html";
+}));
+
+// Forgot password: send the reset email
+$("forgotForm")?.addEventListener("submit", run(async (e) => {
+  await requestPasswordReset($("forgotEmail").value.trim());
+  alert("If that email has an account, a reset link is on its way. Check your inbox (and spam).");
+  e.target.reset();
+  closeForgot();
+}));
+
+// Arriving from the reset email: Supabase signs the person in briefly and fires this event
+supabase.auth.onAuthStateChange((event) => {
+  if (event === "PASSWORD_RECOVERY" && $("resetModal")) openReset();
+});
+
+// Choose the new password
+$("resetForm")?.addEventListener("submit", run(async () => {
+  const pw = $("newPassword").value;
+  if (pw !== $("newPasswordConfirm").value) return alert("Passwords do not match.");
+  await setNewPassword(pw);
+  alert("Password updated.");
+  closeReset();
+  const profile = await getProfile();
+  window.location.href = DASHBOARD_FOR[profile?.role] || "index.html";
 }));
 
 // Booking form

@@ -10,6 +10,9 @@ Authentication ▸ Providers ▸ Email: turn "Confirm email" off if you want new
 
 The site uses ES modules, so open it through a web server (Netlify, GitHub Pages, `npx serve`, VS Code Live Server), not by double-clicking the .html files.
 
+## Password reset
+Authentication ▸ URL Configuration: set **Site URL** to your live website address and add `https://YOUR-SITE/index.html` under **Redirect URLs**, otherwise the reset link will not bring people back to the site.
+
 ## Structure
 - `*.html` markup only; `style.css` all styling
 - `config.js` project URL + key, `supabase.js` the client

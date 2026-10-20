@@ -16,3 +16,8 @@ export function showPage(groupClass, id) {
   document.querySelectorAll("." + groupClass).forEach((p) => (p.style.display = "none"));
   $(id).style.display = "block";
 }
+
+export const openForgot = () => { $("forgotModal").style.display = "flex"; };
+export const closeForgot = () => { $("forgotModal").style.display = "none"; };
+export const openReset = () => { $("resetModal").style.display = "flex"; };
+export const closeReset = () => { $("resetModal").style.display = "none"; };

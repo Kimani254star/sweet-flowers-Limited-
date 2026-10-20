@@ -89,6 +89,7 @@
             <div class="input-group"><label>Email Address</label><input type="email" id="loginEmail" required></div>
             <div class="input-group"><label>Password</label><input type="password" id="loginPassword" required></div>
             <button type="submit" class="login-button">Login</button>
+            <p class="forgot-link"><a href="#" onclick="closeLogin();openForgot();return false;">Forgot password?</a></p>
         </form>
     </div>
 </div>
@@ -104,6 +105,29 @@
             <div class="input-group"><label>Password</label><input type="password" id="regPassword" required></div>
             <div class="input-group"><label>Confirm Password</label><input type="password" id="regConfirm" required></div>
             <button type="submit" class="login-button">Create Account</button>
+        </form>
+    </div>
+</div>
+
+<div id="forgotModal" class="modal">
+    <div class="modal-box">
+        <span class="close-modal" onclick="closeForgot()">&times;</span>
+        <h2>Reset Password</h2>
+        <p class="modal-note">Enter your account email and we will send you a link to choose a new password.</p>
+        <form id="forgotForm">
+            <div class="input-group"><label>Email Address</label><input type="email" id="forgotEmail" required></div>
+            <button type="submit" class="login-button">Send Reset Link</button>
+        </form>
+    </div>
+</div>
+
+<div id="resetModal" class="modal">
+    <div class="modal-box">
+        <h2>Choose a New Password</h2>
+        <form id="resetForm">
+            <div class="input-group"><label>New Password</label><input type="password" id="newPassword" minlength="6" required></div>
+            <div class="input-group"><label>Confirm New Password</label><input type="password" id="newPasswordConfirm" minlength="6" required></div>
+            <button type="submit" class="login-button">Save New Password</button>
         </form>
     </div>
 </div>

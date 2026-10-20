@@ -79,3 +79,16 @@ export async function removeSalesAccount(id) {
   const { error } = await supabase.from("sfg_profiles").update({ role: "customer" }).eq("id", id);
   if (error) throw error;
 }
+
+// Sends the reset email. The link brings the person back to index.html,
+// where main.js shows the "choose a new password" box.
+export async function requestPasswordReset(email) {
+  const redirectTo = new URL("index.html", window.location.href).href;
+  const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
+  if (error) throw error;
+}
+
+export async function setNewPassword(password) {
+  const { error } = await supabase.auth.updateUser({ password });
+  if (error) throw error;
+}
