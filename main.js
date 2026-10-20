@@ -2,7 +2,7 @@ import { supabase } from "./supabase.js";
 import { $, openLogin, closeLogin, openRegister, closeRegister, openForgot, closeForgot, openReset, closeReset, showPage } from "./ui.js";
 import { registerCustomer, login, requireRole, logout, updateOwnProfile, createUserAccount, removeStaffAccess, requestPasswordReset, setNewPassword, getProfile, DASHBOARD_FOR } from "./auth.js";
 import { submitBooking, updateBookingStatus } from "./bookings.js";
-import { addGalleryImage, deleteGalleryImage, renderPublicGallery } from "./gallery.js";
+import { addGalleryImage, deleteGalleryImage, renderPublicGallery, renderGallerySection } from "./gallery.js";
 import { loadAdminDashboard, loadSalesDashboard, loadCustomerDashboard, watchTables } from "./dashboards.js";
 
 // Inline onclick="..." attributes in the HTML call these.
@@ -110,9 +110,19 @@ document.addEventListener("click", async (e) => {
   } catch (err) { alert(err.message); }
 });
 
+// Any picture that fails to load (dead link, no internet) is swapped for a neutral green tile
+const FALLBACK_IMG = "data:image/svg+xml;utf8," + encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400"><rect width="100%" height="100%" fill="#2E7D32"/><text x="50%" y="52%" font-size="64" text-anchor="middle">🌿</text></svg>');
+document.addEventListener("error", (e) => {
+  const img = e.target;
+  if (img.tagName === "IMG" && !img.dataset.fallback) { img.dataset.fallback = "1"; img.src = FALLBACK_IMG; }
+}, true);
+
 // Page guards + dashboards
 async function boot() {
   if (page === "gallery") await renderPublicGallery();
+  if (page === "home") await renderGallerySection("homeGallery", "homeGalleryGrid", 6);
+  if (page === "projects") await renderGallerySection("projectsGallery", "projectsGalleryGrid", 9);
 
   if (page === "admin-dashboard") {
     if (!(await requireRole(["admin"]))) return;

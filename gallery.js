@@ -35,3 +35,21 @@ export async function renderPublicGallery() {
     grid.appendChild(img);
   });
 }
+
+// Shows the newest admin-uploaded photos in a section (hidden until at least one photo exists).
+export async function renderGallerySection(sectionId, gridId, limit = 6) {
+  const section = document.getElementById(sectionId);
+  const grid = document.getElementById(gridId);
+  if (!section || !grid) return;
+  const items = (await listGallery()).reverse().slice(0, limit);
+  if (!items.length) return;
+  grid.innerHTML = "";
+  items.forEach((g) => {
+    const img = document.createElement("img");
+    img.src = g.image_url;
+    img.alt = g.caption || "Sweet Flower Garden project photo";
+    img.loading = "lazy";
+    grid.appendChild(img);
+  });
+  section.style.display = "block";
+}
