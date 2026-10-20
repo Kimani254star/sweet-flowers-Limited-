@@ -1141,3 +1141,5 @@ font-size:14px;
 margin-bottom:10px;
 min-height:18px;
 }
+
+.status-select { padding: 6px 8px; border: 1px solid #ccc; border-radius: 6px; font-family: inherit; }
