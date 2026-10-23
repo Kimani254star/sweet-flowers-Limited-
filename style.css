@@ -1149,17 +1149,14 @@ min-height:18px;
 .forgot-link a:hover { text-decoration: underline; }
 .modal-note { font-size: 14px; color: #555; margin-bottom: 15px; }
 
-/* ===== One text size for the whole app =====
-   Change this single number to resize all text on every page. */
 :root { --app-font-size: 16px; }
 html, body, *, *::before, *::after { font-size: var(--app-font-size) !important; }
 h1, h2, h3, h4, h5, h6, .logo, th { font-weight: 700; }
-/* Emoji icons are pictures, not text, so they keep their size */
+
 .service-icon, .why-icon { font-size: 38px !important; }
 
 .admin-form select { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 18px; background: #fff; font-family: inherit; }
 
-/* ===== Advanced footer ===== */
 #siteFooter { background: #0f1f13; padding: 70px 0 25px; }
 #siteFooter .footer-grid { grid-template-columns: 1.4fr 1fr 1fr 1.2fr; gap: 40px; }
 #siteFooter .footer-about p { color: #b9c7bc; line-height: 1.7; margin-bottom: 20px; }
@@ -1175,3 +1172,16 @@ h1, h2, h3, h4, h5, h6, .logo, th { font-weight: 700; }
   #siteFooter .footer-grid { grid-template-columns: 1fr; }
   #siteFooter .footer-bottom { flex-direction: column; text-align: center; }
 }
+
+.quote-btn{padding:8px 14px;background:#2E7D32;color:#fff;border:none;border-radius:6px;font-weight:600;cursor:pointer}
+.quote-btn:hover{background:#1B5E20}
+.quote-modal{max-width:760px;width:94%;max-height:90vh;overflow-y:auto;text-align:left}
+.quote-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px 16px}
+.quote-modal label{display:block;font-weight:600;margin:10px 0 4px}
+.quote-modal input,.quote-modal textarea{width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;font-family:inherit}
+.quote-items{width:100%;margin:12px 0}
+.quote-items th,.quote-items td{padding:4px}
+.q-qty{width:70px}
+.q-line{white-space:nowrap}
+.q-remove{background:none;border:none;color:#C62828;font-size:22px;cursor:pointer}
+.quote-totals{text-align:right;margin:14px 0;line-height:1.7}

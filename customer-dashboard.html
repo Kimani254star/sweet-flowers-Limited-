@@ -18,6 +18,7 @@
             <ul>
                 <li onclick="showCustomerPage('customerDashboard')">🏠 Dashboard</li>
                 <li onclick="showCustomerPage('myBookings')">📅 My Bookings</li>
+                <li onclick="showCustomerPage('myQuotes')">📄 My Quotes</li>
                 <li onclick="showCustomerPage('myProfile')">👤 My Profile</li>
                 <li onclick="logoutCustomer()">🚪 Logout</li>
             </ul>
@@ -34,9 +35,16 @@
             <div id="myBookings" class="customer-page" style="display:none;">
                 <h1>My Bookings</h1>
                 <table>
-                    <thead><tr><th>Service</th><th>Date</th><th>Status</th></tr></thead>
+                    <thead><tr><th>Service</th><th>Date</th><th>Status</th><th>Quote</th></tr></thead>
                     <tbody id="customerBookingBody"></tbody>
                 </table>
+            </div>
+            <div id="myQuotes" class="customer-page" style="display:none;">
+                <h1>My Quotes</h1>
+                <div class="card" style="margin-bottom:25px;">
+                    <p>Create a quotation for the work you need. Your details are filled in for you; add the items and prices, then print or save it as a PDF.</p>
+                    <button type="button" class="quote-btn" data-action="make-quote" data-kind="me" data-id="me">Create New Quote</button>
+                </div>
             </div>
             <div id="myProfile" class="customer-page" style="display:none;">
                 <h1>My Profile</h1>

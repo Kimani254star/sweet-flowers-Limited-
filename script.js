@@ -8,13 +8,11 @@ function closeRegister() { registerModal.style.display = "none"; }
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    // Highlight the current page in the main nav
     const current = document.body.getAttribute("data-page");
     document.querySelectorAll(".main-nav-link").forEach(function (a) {
         a.classList.toggle("active", a.getAttribute("data-target") === current);
     });
 
-    // Registration
     const registerForm = document.getElementById("registerForm");
     if (registerForm) {
         registerForm.addEventListener("submit", function (e) {
@@ -37,7 +35,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Login -> redirects to the correct dashboard PAGE
     const loginForm = document.getElementById("loginForm");
     if (loginForm) {
         loginForm.addEventListener("submit", function (e) {
@@ -66,7 +63,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Booking form (services/contact page)
     const bookingForm = document.getElementById("bookingForm");
     if (bookingForm) {
         bookingForm.addEventListener("submit", function (e) {
@@ -86,7 +82,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Quote request form (contact page)
     const quoteForm = document.getElementById("quoteRequestForm");
     if (quoteForm) {
         quoteForm.addEventListener("submit", function (e) {
@@ -106,7 +101,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Guard + load the Admin dashboard page
     if (current === "admin-dashboard") {
         if (sessionStorage.getItem("sfgAdmin") !== "1") {
             window.location.href = "index.html";
@@ -115,7 +109,6 @@ document.addEventListener("DOMContentLoaded", function () {
         loadAdminDashboard();
     }
 
-    // Guard + load the Customer dashboard page
     if (current === "customer-dashboard") {
         const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
         if (!loggedInUser) {
@@ -125,7 +118,6 @@ document.addEventListener("DOMContentLoaded", function () {
         loadCustomerDashboard();
     }
 
-    // Guard + load the Sales dashboard page
     if (current === "sales-dashboard") {
         if (!sessionStorage.getItem("sfgSalesUser")) {
             window.location.href = "index.html";
@@ -134,7 +126,6 @@ document.addEventListener("DOMContentLoaded", function () {
         loadSalesDashboard();
     }
 
-    // Admin: create a Sales account
     const salesAccountForm = document.getElementById("salesAccountForm");
     if (salesAccountForm) {
         salesAccountForm.addEventListener("submit", function (e) {
@@ -157,7 +148,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Admin: add a gallery image (file upload, converted to a data URL)
     const galleryForm = document.getElementById("galleryForm");
     if (galleryForm) {
         galleryForm.addEventListener("submit", function (e) {
@@ -179,7 +169,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Customer: edit profile
     const profileEditForm = document.getElementById("profileEditForm");
     if (profileEditForm) {
         profileEditForm.addEventListener("submit", function (e) {
@@ -203,7 +192,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Public gallery page: render admin-uploaded images alongside the defaults
     if (current === "gallery") {
         renderPublicGallery();
     }
@@ -292,7 +280,6 @@ function loadAdminDashboard() {
     });
     document.getElementById("bookingBody").innerHTML = bookingHtml || "<tr><td colspan='6'>No bookings yet.</td></tr>";
 
-    // Sales accounts table (admin-only)
     if (document.getElementById("salesAccountBody")) {
         let salesHtml = "";
         salesAccounts.forEach((u, index) => {
@@ -307,7 +294,6 @@ function loadAdminDashboard() {
         document.getElementById("salesAccountBody").innerHTML = salesHtml || "<tr><td colspan='5'>No sales accounts yet.</td></tr>";
     }
 
-    // Gallery management grid (admin-only)
     if (document.getElementById("galleryManageGrid")) {
         let galleryHtml = "";
         gallery.forEach((g) => {

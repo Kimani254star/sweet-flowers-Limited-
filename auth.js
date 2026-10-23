@@ -12,7 +12,7 @@ export async function registerCustomer({ name, email, phone, password }) {
   const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { name, phone } } });
   if (error) throw error;
   if (data.user && data.user.identities && data.user.identities.length === 0) throw new Error("Email already registered.");
-  return data; // data.session is null when email confirmation is switched on
+  return data;
 }
 
 export async function login(email, password) {
@@ -30,7 +30,7 @@ export async function getProfile() {
   let { data, error } = await supabase.from("sfg_profiles").select("*").eq("id", uid).maybeSingle();
   if (error) throw error;
   if (!data) {
-    // Account exists in the shared Supabase project but has no website profile yet.
+
     const meta = session.user.user_metadata || {};
     const row = { id: uid, email: session.user.email, name: meta.name || "", phone: meta.phone || "", role: "customer" };
     const ins = await supabase.from("sfg_profiles").insert(row).select().single();
@@ -71,7 +71,6 @@ export async function listStaff() {
   return data || [];
 }
 
-// Admin / developer adds any kind of user from Settings.
 export async function createUserAccount({ name, email, phone, password, role }) {
   const isolated = createIsolatedClient();
   const { data, error } = await isolated.auth.signUp({ email, password, options: { data: { name, phone } } });
@@ -83,14 +82,11 @@ export async function createUserAccount({ name, email, phone, password, role }) 
   }
 }
 
-// Browsers cannot delete auth users, so "Remove" takes the staff access away (the person becomes a plain customer).
 export async function removeStaffAccess(id) {
   const { error } = await supabase.from("sfg_profiles").update({ role: "customer" }).eq("id", id);
   if (error) throw error;
 }
 
-// Sends the reset email. The link brings the person back to index.html,
-// where main.js shows the "choose a new password" box.
 export async function requestPasswordReset(email) {
   const redirectTo = new URL("index.html", window.location.href).href;
   const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });

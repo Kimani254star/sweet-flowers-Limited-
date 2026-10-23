@@ -36,7 +36,6 @@ export async function renderPublicGallery() {
   });
 }
 
-// Shows the newest admin-uploaded photos in a section (hidden until at least one photo exists).
 export async function renderGallerySection(sectionId, gridId, limit = 6) {
   const section = document.getElementById(sectionId);
   const grid = document.getElementById(gridId);

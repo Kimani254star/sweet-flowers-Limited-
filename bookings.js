@@ -7,7 +7,6 @@ export async function submitBooking(fields) {
   if (error) throw error;
 }
 
-// Row Level Security decides what comes back: staff see all, customers only their own.
 export async function listBookings() {
   const { data, error } = await supabase.from("sfg_bookings").select("*").order("created_at", { ascending: false });
   if (error) throw error;

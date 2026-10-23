@@ -1,6 +1,5 @@
 export const $ = (id) => document.getElementById(id);
 
-// Everything that comes from the database is escaped before it goes into innerHTML.
 export function esc(v) {
   return String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }

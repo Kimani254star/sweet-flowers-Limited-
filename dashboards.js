@@ -1,4 +1,5 @@
 import { supabase } from "./supabase.js";
+import { rememberQuoteSource } from "./quotes.js";
 import { esc, setText, setHtml, $ } from "./ui.js";
 import { listCustomers, listStaff } from "./auth.js";
 import { listBookings } from "./bookings.js";
@@ -6,8 +7,13 @@ import { listGallery } from "./gallery.js";
 
 const STATUSES = ["Pending", "Confirmed", "Completed", "Cancelled"];
 
+const quoteBtn = (kind, id) => `<button class="quote-btn" data-action="make-quote" data-kind="${kind}" data-id="${esc(id)}">Create Quote</button>`;
+
 const customerRows = (list) =>
-  list.map((u, i) => `<tr><td>${i + 1}</td><td>${esc(u.name)}</td><td>${esc(u.phone)}</td><td>${esc(u.email)}</td></tr>`).join("");
+  list.map((u, i) => {
+    rememberQuoteSource("customer", u.id, { name: u.name, email: u.email, phone: u.phone, service: "", notes: "" });
+    return `<tr><td>${i + 1}</td><td>${esc(u.name)}</td><td>${esc(u.phone)}</td><td>${esc(u.email)}</td><td>${quoteBtn("customer", u.id)}</td></tr>`;
+  }).join("");
 
 function statusCell(b, editable) {
   if (!editable) return `<strong>${esc(b.status)}</strong>`;
@@ -18,6 +24,10 @@ function statusCell(b, editable) {
 const ROLE_LABELS = { admin: "Admin / Developer", sales: "Sales", service: "Customer Service", accounts: "Accounts" };
 
 function bookingRows(list, editable = true) {
+  list.forEach((b) => rememberQuoteSource("booking", b.id, {
+    name: b.customer, email: b.email, phone: b.phone,
+    service: String(b.service || "").replace(/ \(Quote Request\)$/, ""), notes: b.description || ""
+  }));
   return list.map((b, i) => `<tr>
     <td>${i + 1}</td>
     <td>${esc(b.customer)}</td>
@@ -25,6 +35,7 @@ function bookingRows(list, editable = true) {
     <td>${esc(b.service)}</td>
     <td>${esc(b.date)}${b.time ? " " + esc(b.time) : ""}</td>
     <td>${statusCell(b, editable)}</td>
+    <td>${quoteBtn("booking", b.id)}</td>
   </tr>`).join("");
 }
 
@@ -35,8 +46,8 @@ export async function loadAdminDashboard() {
   setText("salesCount", staff.length);
   setText("galleryCount", gallery.length);
 
-  setHtml("customerBody", customerRows(customers) || "<tr><td colspan='4'>No registered customers yet.</td></tr>");
-  setHtml("bookingBody", bookingRows(bookings) || "<tr><td colspan='6'>No bookings yet.</td></tr>");
+  setHtml("customerBody", customerRows(customers) || "<tr><td colspan='5'>No registered customers yet.</td></tr>");
+  setHtml("bookingBody", bookingRows(bookings) || "<tr><td colspan='7'>No bookings yet.</td></tr>");
 
   setHtml("userBody", staff.map((u, i) => `<tr>
     <td>${i + 1}</td><td>${esc(u.name)}</td><td>${esc(u.phone)}</td><td>${esc(u.email)}</td>
@@ -56,8 +67,8 @@ export async function loadSalesDashboard(profile, editable = true) {
   const [customers, bookings] = await Promise.all([listCustomers(), listBookings()]);
   setText("salesBookingCount", bookings.length);
   setText("salesCustomerCount", customers.length);
-  setHtml("salesBookingBody", bookingRows(bookings, editable) || "<tr><td colspan='6'>No bookings yet.</td></tr>");
-  setHtml("salesCustomerBody", customerRows(customers) || "<tr><td colspan='4'>No registered customers yet.</td></tr>");
+  setHtml("salesBookingBody", bookingRows(bookings, editable) || "<tr><td colspan='7'>No bookings yet.</td></tr>");
+  setHtml("salesCustomerBody", customerRows(customers) || "<tr><td colspan='5'>No registered customers yet.</td></tr>");
 }
 
 export async function loadCustomerDashboard(profile) {
@@ -68,16 +79,20 @@ export async function loadCustomerDashboard(profile) {
   if ($("editName")) $("editName").value = profile.name;
   if ($("editPhone")) $("editPhone").value = profile.phone;
 
+  rememberQuoteSource("me", "me", { name: profile.name, email: profile.email, phone: profile.phone, service: "", notes: "" });
   const mine = await listBookings();
+  mine.forEach((b) => rememberQuoteSource("booking", b.id, {
+    name: profile.name, email: profile.email, phone: profile.phone,
+    service: String(b.service || "").replace(/ \(Quote Request\)$/, ""), notes: b.description || ""
+  }));
   setText("myBookingCount", mine.length);
   setText("myPendingCount", mine.filter((b) => b.status === "Pending").length);
   setText("myCompletedCount", mine.filter((b) => b.status === "Completed").length);
   setHtml("customerBookingBody", mine.map((b) =>
-    `<tr><td>${esc(b.service)}</td><td>${esc(b.date)}</td><td>${statusCell(b, false)}</td></tr>`).join("") ||
-    "<tr><td colspan='3'>No bookings yet.</td></tr>");
+    `<tr><td>${esc(b.service)}</td><td>${esc(b.date)}</td><td>${statusCell(b, false)}</td><td>${quoteBtn("booking", b.id)}</td></tr>`).join("") ||
+    "<tr><td colspan='4'>No bookings yet.</td></tr>");
 }
 
-// Live sync: any change made from another browser/device refreshes this dashboard.
 export function watchTables(tables, reload) {
   const channel = supabase.channel("sfg-" + Math.random().toString(36).slice(2));
   tables.forEach((table) => channel.on("postgres_changes", { event: "*", schema: "public", table }, () => reload()));
