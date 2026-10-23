@@ -1,4 +1,5 @@
 import { esc } from "./ui.js";
+import { supabase } from "./supabase.js";
 
 export const QUOTE_DEFAULTS = {
   company: "Sweet Flower Garden",
@@ -76,7 +77,9 @@ function refreshTotals(root) {
   root.querySelector("#qDeposit").textContent = money(q.total * QUOTE_DEFAULTS.depositPercent / 100);
 }
 
-function printableQuote(q) {
+function printableQuote(q, opts = {}) {
+  const label = opts.label || "QUOTATION";
+  const dateLabel = opts.dateLabel || "Valid until";
   const rows = q.items.map((i, n) => `<tr><td>${n + 1}</td><td>${esc(i.desc)}</td><td class="r">${i.qty}</td><td class="r">${money(i.price)}</td><td class="r">${money(i.qty * i.price)}</td></tr>`).join("");
   return `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${esc(q.number)}</title>
 <style>
@@ -87,8 +90,8 @@ th{background:#2E7D32;color:#fff;text-align:left;padding:8px}td{padding:8px;bord
 .totals{width:300px;margin-left:auto}.totals td{border:none;padding:4px 8px}.grand td{font-weight:bold;font-size:16px;border-top:2px solid #2E7D32}
 .terms{margin-top:24px;font-size:12px;color:#444}.terms li{margin-bottom:4px}
 </style></head><body>
-<div class="top"><div><h1>${esc(QUOTE_DEFAULTS.company)}</h1><div>QUOTATION</div></div>
-<div class="meta"><strong>${esc(q.number)}</strong><br>Date: ${esc(q.date)}<br>Valid until: ${esc(q.validUntil)}</div></div>
+<div class="top"><div><h1>${esc(QUOTE_DEFAULTS.company)}</h1><div>${esc(label)}</div></div>
+<div class="meta"><strong>${esc(q.number)}</strong><br>Date: ${esc(q.date)}<br>${esc(dateLabel)}: ${esc(q.validUntil)}${opts.status ? `<br><strong>${esc(opts.status)}</strong>` : ""}</div></div>
 <p><strong>Prepared for</strong><br>${esc(q.name)}<br>${esc(q.email)}<br>${esc(q.phone)}</p>
 ${q.notes ? `<p><strong>Notes</strong><br>${esc(q.notes).replace(/\n/g, "<br>")}</p>` : ""}
 <table><thead><tr><th>#</th><th>Description</th><th class="r">Qty</th><th class="r">Unit price (${esc(q.currency)})</th><th class="r">Amount (${esc(q.currency)})</th></tr></thead><tbody>${rows}</tbody></table>
@@ -96,10 +99,58 @@ ${q.notes ? `<p><strong>Notes</strong><br>${esc(q.notes).replace(/\n/g, "<br>")}
 <tr><td>Subtotal</td><td class="r">${esc(q.currency)} ${money(q.subtotal)}</td></tr>
 <tr><td>VAT (${q.vatPercent}%)</td><td class="r">${esc(q.currency)} ${money(q.vat)}</td></tr>
 <tr class="grand"><td>Total</td><td class="r">${esc(q.currency)} ${money(q.total)}</td></tr>
-<tr><td>Deposit (${QUOTE_DEFAULTS.depositPercent}%)</td><td class="r">${esc(q.currency)} ${money(q.total * QUOTE_DEFAULTS.depositPercent / 100)}</td></tr>
+${opts.invoice ? "" : `<tr><td>Deposit (${QUOTE_DEFAULTS.depositPercent}%)</td><td class="r">${esc(q.currency)} ${money(q.total * QUOTE_DEFAULTS.depositPercent / 100)}</td></tr>`}
 </table>
 <div class="terms"><strong>Terms</strong><ol>${q.terms.map((t) => `<li>${esc(t)}</li>`).join("")}</ol></div>
 </body></html>`;
+}
+
+const saved = new Map();
+
+export const getSavedQuote = (id) => saved.get(String(id));
+
+const fromRow = (r) => ({
+  number: r.quote_number, date: r.quote_date || String(r.created_at || "").slice(0, 10), validUntil: r.valid_until || "",
+  currency: r.currency || QUOTE_DEFAULTS.currency, name: r.customer || "", email: r.email || "", phone: r.phone || "",
+  notes: r.notes || "", terms: r.terms || [], items: r.items || [], vatPercent: Number(r.vat_percent) || 0,
+  subtotal: Number(r.subtotal) || 0, vat: Number(r.vat) || 0, total: Number(r.total) || 0
+});
+
+export async function listQuotes() {
+  const { data, error } = await supabase.from("sfg_quotes").select("*").order("created_at", { ascending: false });
+  if (error) throw error;
+  (data || []).forEach((r) => saved.set(String(r.id), r));
+  return data || [];
+}
+
+export function viewSavedQuote(id) {
+  const row = saved.get(String(id));
+  if (!row) return alert("Could not find that quote. Refresh the page and try again.");
+  showPrintable(fromRow(row));
+}
+
+export function showPrintable(q, opts) {
+  const w = window.open("", "_blank");
+  if (!w) return alert("Allow pop-ups for this site to print the quote.");
+  w.document.write(printableQuote(q, opts));
+  w.document.close();
+  w.focus();
+  w.print();
+}
+
+async function saveQuote(q, src, kind) {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) throw new Error("Please log in again.");
+  const userId = kind === "me" ? session.user.id : (src.userId || null);
+  const { error } = await supabase.from("sfg_quotes").insert({
+    quote_number: q.number, quote_date: q.date || null, valid_until: q.validUntil || null,
+    created_by: session.user.id, user_id: userId, booking_id: src.bookingId || null,
+    customer: q.name, email: q.email, phone: q.phone, currency: q.currency,
+    vat_percent: q.vatPercent, items: q.items, notes: q.notes, terms: q.terms,
+    subtotal: q.subtotal, vat: q.vat, total: q.total,
+    status: kind === "me" ? "Customer" : "Sent"
+  });
+  if (error) throw error;
 }
 
 export function openQuote(kind, id) {
@@ -138,7 +189,8 @@ export function openQuote(kind, id) {
     </div>
     <label>Terms (one per line)</label>
     <textarea id="qTerms" rows="4">${esc(QUOTE_DEFAULTS.terms.join("\n"))}</textarea>
-    <button type="button" class="login-button" id="qPrint">Print / Save as PDF</button>
+    <button type="button" class="login-button" id="qSave">${kind === "me" ? "Save Quote" : "Save & Send to Customer"}</button>
+    <button type="button" class="login-button" id="qPrint" style="margin-top:10px;background:#555;">Print / Save as PDF</button>
   </div>`;
   document.body.appendChild(wrap);
 
@@ -151,12 +203,16 @@ export function openQuote(kind, id) {
     if (e.target.id === "qPrint") {
       const q = readQuote(wrap);
       if (!q.items.length) return alert("Add at least one line with a description or price.");
-      const w = window.open("", "_blank");
-      if (!w) return alert("Allow pop-ups for this site to print the quote.");
-      w.document.write(printableQuote(q));
-      w.document.close();
-      w.focus();
-      w.print();
+      showPrintable(q);
+    }
+    if (e.target.id === "qSave") {
+      const q = readQuote(wrap);
+      if (!q.items.length) return alert("Add at least one line with a description or price.");
+      if (kind !== "me" && !src.userId && !q.email) return alert("Add the customer's email so they can see this quote.");
+      e.target.disabled = true;
+      saveQuote(q, src, kind)
+        .then(() => { alert(kind === "me" ? "Quote saved to My Quotes." : "Quote saved. The customer will see it in My Quotes when they log in."); wrap.remove(); })
+        .catch((err) => { e.target.disabled = false; alert(err.message || "Could not save the quote."); });
     }
   });
   refreshTotals(wrap);

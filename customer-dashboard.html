@@ -30,12 +30,13 @@
                     <div class="card"><h3>My Bookings</h3><h2 id="myBookingCount">0</h2></div>
                     <div class="card"><h3>Pending</h3><h2 id="myPendingCount">0</h2></div>
                     <div class="card"><h3>Completed</h3><h2 id="myCompletedCount">0</h2></div>
+                    <div class="card"><h3>My Quotes</h3><h2 id="myQuoteCount">0</h2></div>
                 </div>
             </div>
             <div id="myBookings" class="customer-page" style="display:none;">
                 <h1>My Bookings</h1>
                 <table>
-                    <thead><tr><th>Service</th><th>Date</th><th>Status</th><th>Quote</th></tr></thead>
+                    <thead><tr><th>Service</th><th>Date</th><th>Status</th><th>Our Reply</th><th>Quote</th></tr></thead>
                     <tbody id="customerBookingBody"></tbody>
                 </table>
             </div>
@@ -45,6 +46,16 @@
                     <p>Create a quotation for the work you need. Your details are filled in for you; add the items and prices, then print or save it as a PDF.</p>
                     <button type="button" class="quote-btn" data-action="make-quote" data-kind="me" data-id="me">Create New Quote</button>
                 </div>
+                <h3 style="margin-bottom:15px;color:#1B5E20;">Quotes from us and quotes I made</h3>
+                <table>
+                    <thead><tr><th>Quote No.</th><th>Date</th><th>Total</th><th>Source</th><th>Action</th></tr></thead>
+                    <tbody id="customerQuoteBody"></tbody>
+                </table>
+                <h3 style="margin:30px 0 15px;color:#1B5E20;">My Invoices</h3>
+                <table>
+                    <thead><tr><th>Invoice No.</th><th>Due</th><th>Total</th><th>Status</th><th>Action</th></tr></thead>
+                    <tbody id="customerInvoiceBody"></tbody>
+                </table>
             </div>
             <div id="myProfile" class="customer-page" style="display:none;">
                 <h1>My Profile</h1>

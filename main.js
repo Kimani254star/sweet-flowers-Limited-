@@ -3,7 +3,9 @@ import { $, openLogin, closeLogin, openRegister, closeRegister, openForgot, clos
 import { registerCustomer, login, requireRole, logout, updateOwnProfile, createUserAccount, removeStaffAccess, requestPasswordReset, setNewPassword, getProfile, DASHBOARD_FOR } from "./auth.js";
 import { submitBooking, updateBookingStatus } from "./bookings.js";
 import { addGalleryImage, deleteGalleryImage, renderPublicGallery, renderGallerySection } from "./gallery.js";
-import { openQuote } from "./quotes.js";
+import { openQuote, viewSavedQuote } from "./quotes.js";
+import { openReply } from "./replies.js";
+import { convertToInvoice, markInvoicePaid, viewInvoice } from "./invoices.js";
 import { loadAdminDashboard, loadSalesDashboard, loadCustomerDashboard, watchTables } from "./dashboards.js";
 
 Object.assign(window, {
@@ -94,6 +96,16 @@ document.addEventListener("click", async (e) => {
   try {
     if (btn.dataset.action === "make-quote") {
       openQuote(btn.dataset.kind, btn.dataset.id);
+    } else if (btn.dataset.action === "reply-booking") {
+      openReply(btn.dataset.id);
+    } else if (btn.dataset.action === "convert-invoice") {
+      await convertToInvoice(btn.dataset.id);
+    } else if (btn.dataset.action === "mark-paid") {
+      await markInvoicePaid(btn.dataset.id);
+    } else if (btn.dataset.action === "view-invoice") {
+      viewInvoice(btn.dataset.id);
+    } else if (btn.dataset.action === "view-quote") {
+      viewSavedQuote(btn.dataset.id);
     } else if (btn.dataset.action === "remove-staff" && confirm("Remove this person's staff access?")) {
       await removeStaffAccess(btn.dataset.id);
     } else if (btn.dataset.action === "delete-gallery" && confirm("Delete this gallery image?")) {
@@ -118,7 +130,7 @@ async function boot() {
     if (!(await requireRole(["admin"]))) return;
     const reload = () => loadAdminDashboard().catch((err) => alert(err.message));
     await reload();
-    watchTables(["sfg_bookings", "sfg_profiles", "sfg_gallery"], reload);
+    watchTables(["sfg_bookings", "sfg_profiles", "sfg_gallery", "sfg_quotes", "sfg_invoices"], reload);
 
     $("userForm")?.addEventListener("submit", run(async (e) => {
       const name = $("userName").value.trim();
@@ -147,7 +159,7 @@ async function boot() {
     const editable = STAFF_PAGES[page] !== "accounts";
     const reload = () => loadSalesDashboard(profile, editable).catch((err) => alert(err.message));
     await reload();
-    watchTables(["sfg_bookings", "sfg_profiles"], reload);
+    watchTables(["sfg_bookings", "sfg_profiles", "sfg_quotes", "sfg_invoices"], reload);
   }
 
   if (page === "customer-dashboard") {
@@ -155,7 +167,7 @@ async function boot() {
     if (!profile) return;
     const reload = () => loadCustomerDashboard(profile).catch((err) => alert(err.message));
     await reload();
-    watchTables(["sfg_bookings"], reload);
+    watchTables(["sfg_bookings", "sfg_quotes", "sfg_invoices"], reload);
 
     $("profileEditForm")?.addEventListener("submit", run(async () => {
       profile.name = $("editName").value.trim();
