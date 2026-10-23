@@ -138,23 +138,39 @@ export function showPrintable(q, opts) {
   w.print();
 }
 
-async function saveQuote(q, src, kind) {
+async function saveQuote(q, src, kind, edit) {
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) throw new Error("Please log in again.");
-  const userId = kind === "me" ? session.user.id : (src.userId || null);
-  const { error } = await supabase.from("sfg_quotes").insert({
+  const row = {
     quote_number: q.number, quote_date: q.date || null, valid_until: q.validUntil || null,
-    created_by: session.user.id, user_id: userId, booking_id: src.bookingId || null,
     customer: q.name, email: q.email, phone: q.phone, currency: q.currency,
     vat_percent: q.vatPercent, items: q.items, notes: q.notes, terms: q.terms,
-    subtotal: q.subtotal, vat: q.vat, total: q.total,
+    subtotal: q.subtotal, vat: q.vat, total: q.total
+  };
+  if (edit) {
+    const { data, error } = await supabase.from("sfg_quotes").update(row).eq("id", edit.id).select("id");
+    if (error) throw error;
+    if (!data || !data.length) throw new Error("Nothing was changed. You may not have permission to edit this quote.");
+    return;
+  }
+  const userId = kind === "me" ? session.user.id : (src.userId || null);
+  const { error } = await supabase.from("sfg_quotes").insert({
+    ...row, created_by: session.user.id, user_id: userId, booking_id: src.bookingId || null,
     status: kind === "me" ? "Customer" : "Sent"
   });
   if (error) throw error;
 }
 
-export function openQuote(kind, id) {
-  const src = sources.get(kind + ":" + id);
+export function editQuote(id) {
+  const row = saved.get(String(id));
+  if (!row) return alert("Could not find that quote. Refresh the page and try again.");
+  openQuote(row.status === "Customer" ? "me" : "booking", id, row);
+}
+
+export function openQuote(kind, id, edit) {
+  const src = edit
+    ? { name: edit.customer, email: edit.email, phone: edit.phone, notes: edit.notes || "", service: "", userId: edit.user_id, bookingId: edit.booking_id }
+    : sources.get(kind + ":" + id);
   if (!src) return alert("Could not find that record. Refresh the page and try again.");
 
   document.getElementById("quoteModal")?.remove();
@@ -165,21 +181,21 @@ export function openQuote(kind, id) {
   wrap.style.display = "flex";
   wrap.innerHTML = `<div class="modal-content quote-modal">
     <span class="close-modal" id="qClose">&times;</span>
-    <h2>Create Quote</h2>
+    <h2>${edit ? "Edit Quote" : "Create Quote"}</h2>
     <div class="quote-grid">
-      <div><label>Quote No.</label><input id="qNumber" value="${esc(newQuoteNumber())}"></div>
-      <div><label>Date</label><input id="qDate" type="date" value="${isoDate(today)}"></div>
-      <div><label>Valid until</label><input id="qValid" type="date" value="${isoDate(addDays(today, QUOTE_DEFAULTS.validDays))}"></div>
-      <div><label>Currency</label><input id="qCurrency" value="${esc(QUOTE_DEFAULTS.currency)}"></div>
+      <div><label>Quote No.</label><input id="qNumber" value="${esc(edit ? edit.quote_number : newQuoteNumber())}"></div>
+      <div><label>Date</label><input id="qDate" type="date" value="${edit && edit.quote_date ? esc(edit.quote_date) : isoDate(today)}"></div>
+      <div><label>Valid until</label><input id="qValid" type="date" value="${edit && edit.valid_until ? esc(edit.valid_until) : isoDate(addDays(today, QUOTE_DEFAULTS.validDays))}"></div>
+      <div><label>Currency</label><input id="qCurrency" value="${esc(edit ? edit.currency : QUOTE_DEFAULTS.currency)}"></div>
       <div><label>Customer</label><input id="qName" value="${esc(src.name)}"></div>
       <div><label>Email</label><input id="qEmail" value="${esc(src.email)}"></div>
       <div><label>Phone</label><input id="qPhone" value="${esc(src.phone)}"></div>
-      <div><label>VAT %</label><input id="qVat" type="number" min="0" step="0.5" value="${QUOTE_DEFAULTS.vatPercent}"></div>
+      <div><label>VAT %</label><input id="qVat" type="number" min="0" step="0.5" value="${edit ? Number(edit.vat_percent) : QUOTE_DEFAULTS.vatPercent}"></div>
     </div>
     <label>Notes</label>
     <textarea id="qNotes" rows="2">${esc(src.notes)}</textarea>
     <table class="quote-items"><thead><tr><th>Description</th><th>Qty</th><th>Unit price</th><th>Amount</th><th></th></tr></thead>
-      <tbody id="qItems">${itemRow(src.service)}</tbody></table>
+      <tbody id="qItems">${edit && (edit.items || []).length ? edit.items.map((i) => itemRow(i.desc, i.qty, i.price)).join("") : itemRow(src.service)}</tbody></table>
     <button type="button" class="quote-btn" id="qAdd">+ Add line</button>
     <div class="quote-totals">
       <div>Subtotal: <strong id="qSubtotal">0.00</strong></div>
@@ -188,8 +204,8 @@ export function openQuote(kind, id) {
       <div>Deposit (${QUOTE_DEFAULTS.depositPercent}%): <strong id="qDeposit">0.00</strong></div>
     </div>
     <label>Terms (one per line)</label>
-    <textarea id="qTerms" rows="4">${esc(QUOTE_DEFAULTS.terms.join("\n"))}</textarea>
-    <button type="button" class="login-button" id="qSave">${kind === "me" ? "Save Quote" : "Save & Send to Customer"}</button>
+    <textarea id="qTerms" rows="4">${esc((edit && edit.terms && edit.terms.length ? edit.terms : QUOTE_DEFAULTS.terms).join("\n"))}</textarea>
+    <button type="button" class="login-button" id="qSave">${edit ? "Save Changes" : kind === "me" ? "Save Quote" : "Save & Send to Customer"}</button>
     <button type="button" class="login-button" id="qPrint" style="margin-top:10px;background:#555;">Print / Save as PDF</button>
   </div>`;
   document.body.appendChild(wrap);
@@ -210,8 +226,8 @@ export function openQuote(kind, id) {
       if (!q.items.length) return alert("Add at least one line with a description or price.");
       if (kind !== "me" && !src.userId && !q.email) return alert("Add the customer's email so they can see this quote.");
       e.target.disabled = true;
-      saveQuote(q, src, kind)
-        .then(() => { alert(kind === "me" ? "Quote saved to My Quotes." : "Quote saved. The customer will see it in My Quotes when they log in."); wrap.remove(); })
+      saveQuote(q, src, kind, edit)
+        .then(() => { alert(edit ? "Quote updated." : kind === "me" ? "Quote saved to My Quotes." : "Quote saved. The customer will see it in My Quotes when they log in."); wrap.remove(); document.dispatchEvent(new CustomEvent("sfg:changed")); })
         .catch((err) => { e.target.disabled = false; alert(err.message || "Could not save the quote."); });
     }
   });

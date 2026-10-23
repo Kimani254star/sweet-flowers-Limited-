@@ -5,6 +5,7 @@ import { submitBooking, updateBookingStatus } from "./bookings.js";
 import { addGalleryImage, deleteGalleryImage, renderPublicGallery, renderGallerySection } from "./gallery.js";
 import { openQuote, viewSavedQuote } from "./quotes.js";
 import { openReply } from "./replies.js";
+import { rowAction } from "./actions.js";
 import { convertToInvoice, markInvoicePaid, viewInvoice } from "./invoices.js";
 import { loadAdminDashboard, loadSalesDashboard, loadCustomerDashboard, watchTables } from "./dashboards.js";
 
@@ -94,7 +95,9 @@ document.addEventListener("click", async (e) => {
   const btn = e.target.closest("[data-action]");
   if (!btn) return;
   try {
-    if (btn.dataset.action === "make-quote") {
+    if (btn.dataset.action === "row") {
+      await rowAction(btn.dataset.op, btn.dataset.kind, btn.dataset.id);
+    } else if (btn.dataset.action === "make-quote") {
       openQuote(btn.dataset.kind, btn.dataset.id);
     } else if (btn.dataset.action === "reply-booking") {
       openReply(btn.dataset.id);
@@ -131,6 +134,7 @@ async function boot() {
     const reload = () => loadAdminDashboard().catch((err) => alert(err.message));
     await reload();
     watchTables(["sfg_bookings", "sfg_profiles", "sfg_gallery", "sfg_quotes", "sfg_invoices"], reload);
+    document.addEventListener("sfg:changed", reload);
 
     $("userForm")?.addEventListener("submit", run(async (e) => {
       const name = $("userName").value.trim();
@@ -160,6 +164,7 @@ async function boot() {
     const reload = () => loadSalesDashboard(profile, editable).catch((err) => alert(err.message));
     await reload();
     watchTables(["sfg_bookings", "sfg_profiles", "sfg_quotes", "sfg_invoices"], reload);
+    document.addEventListener("sfg:changed", reload);
   }
 
   if (page === "customer-dashboard") {

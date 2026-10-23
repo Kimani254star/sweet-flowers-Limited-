@@ -7,6 +7,8 @@ const isoDate = (d) => `${d.getFullYear()}-${two(d.getMonth() + 1)}-${two(d.getD
 
 export const INVOICE_DUE_DAYS = 14;
 
+export const getInvoice = (id) => store.get(String(id));
+
 export async function listInvoices() {
   const { data, error } = await supabase.from("sfg_invoices").select("*").order("created_at", { ascending: false });
   if (error) throw error;

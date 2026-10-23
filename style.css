@@ -1185,3 +1185,12 @@ h1, h2, h3, h4, h5, h6, .logo, th { font-weight: 700; }
 .q-line{white-space:nowrap}
 .q-remove{background:none;border:none;color:#C62828;font-size:22px;cursor:pointer}
 .quote-totals{text-align:right;margin:14px 0;line-height:1.7}
+
+.act-wrap{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0}
+.act-btn{padding:5px 9px;border:0;border-radius:5px;color:#fff;font-size:12px;font-weight:600;cursor:pointer}
+.act-preview{background:#455A64}
+.act-edit{background:#1565C0}
+.act-email{background:#6A1B9A}
+.act-delete{background:#C62828}
+.act-btn:hover{opacity:.85}
+.quote-modal select{width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;font-family:inherit}

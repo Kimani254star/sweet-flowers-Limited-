@@ -2,6 +2,7 @@ import { supabase } from "./supabase.js";
 import { rememberQuoteSource, listQuotes } from "./quotes.js";
 import { rememberInquiry } from "./replies.js";
 import { listInvoices } from "./invoices.js";
+import { actionButtons, rememberRecord } from "./actions.js";
 import { esc, setText, setHtml, $ } from "./ui.js";
 import { listCustomers, listStaff } from "./auth.js";
 import { listBookings } from "./bookings.js";
@@ -11,10 +12,11 @@ const STATUSES = ["Pending", "Confirmed", "Completed", "Cancelled"];
 
 const quoteBtn = (kind, id) => `<button class="quote-btn" data-action="make-quote" data-kind="${kind}" data-id="${esc(id)}">Create Quote</button>`;
 
-const customerRows = (list) =>
+const customerRows = (list, role) =>
   list.map((u, i) => {
+    rememberRecord("customer", u.id, u);
     rememberQuoteSource("customer", u.id, { name: u.name, email: u.email, phone: u.phone, service: "", notes: "", userId: u.id });
-    return `<tr><td>${i + 1}</td><td>${esc(u.name)}</td><td>${esc(u.phone)}</td><td>${esc(u.email)}</td><td>${quoteBtn("customer", u.id)}</td></tr>`;
+    return `<tr><td>${i + 1}</td><td>${esc(u.name)}</td><td>${esc(u.phone)}</td><td>${esc(u.email)}</td><td>${quoteBtn("customer", u.id)}</td><td>${actionButtons("customer", u.id, { edit: role === "admin", del: role === "admin" })}</td></tr>`;
   }).join("");
 
 function statusCell(b, editable) {
@@ -25,7 +27,8 @@ function statusCell(b, editable) {
 
 const fmt = (n) => Number(n || 0).toLocaleString("en-KE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-async function loadFinance(canMarkPaid) {
+async function loadFinance(role) {
+  const canMarkPaid = ["admin", "accounts"].includes(role);
   let quotes = [];
   let invoices = [];
   try {
@@ -46,17 +49,17 @@ async function loadFinance(canMarkPaid) {
   setText("homeOutstanding", fmt(total - paid));
 
   const quoteAction = (q) => {
-    const view = `<button class="quote-btn" data-action="view-quote" data-id="${esc(q.id)}">View</button>`;
+    const view = actionButtons("quote", q.id, { del: role === "admin" });
     if (q.status !== "Sent") return view;
     if (invoicedQuotes.has(String(q.id))) return view + " <small>&#10003; Invoiced</small>";
-    return view + ` <button class="quote-btn" data-action="convert-invoice" data-id="${esc(q.id)}">Convert to Invoice</button>`;
+    return view + `<button class="quote-btn" data-action="convert-invoice" data-id="${esc(q.id)}">Convert to Invoice</button>`;
   };
   setHtml("financeQuoteBody", quotes.map((q) =>
     `<tr><td>${esc(q.quote_number)}</td><td>${esc(q.customer)}</td><td>${esc(q.quote_date || String(q.created_at || "").slice(0, 10))}</td><td>${esc(q.currency)} ${fmt(q.total)}</td><td>${q.status === "Sent" ? "Sent" : "Customer-made"}</td><td>${quoteAction(q)}</td></tr>`
   ).join("") || "<tr><td colspan='6'>No quotes yet.</td></tr>");
 
   setHtml("financeInvoiceBody", invoices.map((i) => {
-    const view = `<button class="quote-btn" data-action="view-invoice" data-id="${esc(i.id)}">View / Print</button>`;
+    const view = actionButtons("invoice", i.id, { edit: canMarkPaid, del: role === "admin" });
     const pay = canMarkPaid && i.status !== "Paid" ? ` <button class="quote-btn" data-action="mark-paid" data-id="${esc(i.id)}">Mark Paid</button>` : "";
     return `<tr><td>${esc(i.invoice_number)}</td><td>${esc(i.customer)}</td><td>${esc(i.due_date || "")}</td><td>${esc(i.currency)} ${fmt(i.total)}</td><td><strong>${esc(i.status)}</strong></td><td>${view}${pay}</td></tr>`;
   }).join("") || "<tr><td colspan='6'>No invoices yet.</td></tr>");
@@ -64,7 +67,8 @@ async function loadFinance(canMarkPaid) {
 
 const ROLE_LABELS = { admin: "Admin / Developer", sales: "Sales", service: "Customer Service", accounts: "Accounts" };
 
-function bookingRows(list, editable = true) {
+function bookingRows(list, editable = true, role = "admin") {
+  list.forEach((b) => rememberRecord("booking", b.id, b));
   list.forEach((b) => rememberQuoteSource("booking", b.id, {
     name: b.customer, email: b.email, phone: b.phone, userId: b.user_id, bookingId: b.id,
     service: String(b.service || "").replace(/ \(Quote Request\)$/, ""), notes: b.description || ""
@@ -78,41 +82,44 @@ function bookingRows(list, editable = true) {
     <td>${esc(b.date)}${b.time ? " " + esc(b.time) : ""}</td>
     <td>${statusCell(b, editable)}</td>
     <td>${quoteBtn("booking", b.id)} <button class="quote-btn" data-action="reply-booking" data-id="${esc(b.id)}">${b.reply ? "Edit Reply" : "Reply"}</button>${b.reply ? " <small>&#10003; Replied</small>" : ""}</td>
+    <td>${actionButtons("booking", b.id, { edit: editable, del: role === "admin" })}</td>
   </tr>`).join("");
 }
 
 export async function loadAdminDashboard() {
-  await loadFinance(true);
+  await loadFinance("admin");
   const [customers, staff, bookings, gallery] = await Promise.all([listCustomers(), listStaff(), listBookings(), listGallery()]);
   setText("customerCount", customers.length);
   setText("bookingCount", bookings.length);
   setText("salesCount", staff.length);
   setText("galleryCount", gallery.length);
 
-  setHtml("customerBody", customerRows(customers) || "<tr><td colspan='5'>No registered customers yet.</td></tr>");
-  setHtml("bookingBody", bookingRows(bookings) || "<tr><td colspan='7'>No bookings yet.</td></tr>");
+  setHtml("customerBody", customerRows(customers, "admin") || "<tr><td colspan='6'>No registered customers yet.</td></tr>");
+  setHtml("bookingBody", bookingRows(bookings, true, "admin") || "<tr><td colspan='8'>No bookings yet.</td></tr>");
 
+  staff.forEach((u) => rememberRecord("staff", u.id, u));
+  gallery.forEach((g) => rememberRecord("gallery", g.id, g));
   setHtml("userBody", staff.map((u, i) => `<tr>
     <td>${i + 1}</td><td>${esc(u.name)}</td><td>${esc(u.phone)}</td><td>${esc(u.email)}</td>
     <td>${esc(ROLE_LABELS[u.role] || u.role)}</td>
-    <td>${u.role === "admin" ? "" : `<button class="toolbar-delete-btn" data-action="remove-staff" data-id="${esc(u.id)}">Remove</button>`}</td>
+    <td>${actionButtons("staff", u.id, { del: u.role !== "admin" })}</td>
   </tr>`).join("") || "<tr><td colspan='6'>No staff accounts yet.</td></tr>");
 
   setHtml("galleryManageGrid", gallery.map((g) => `<div class="gallery-manage-item">
     <img src="${esc(g.image_url)}" alt="${esc(g.caption || "Gallery image")}">
     <p>${esc(g.caption || "")}</p>
-    <button class="toolbar-delete-btn" data-action="delete-gallery" data-id="${esc(g.id)}" data-path="${esc(g.storage_path || "")}">Delete</button>
+    ${actionButtons("gallery", g.id)}
   </div>`).join("") || "<p>No uploaded images yet.</p>");
 }
 
 export async function loadSalesDashboard(profile, editable = true) {
   setText("salesWelcomeName", profile.name);
-  await loadFinance(["admin", "accounts"].includes(profile.role));
+  await loadFinance(profile.role);
   const [customers, bookings] = await Promise.all([listCustomers(), listBookings()]);
   setText("salesBookingCount", bookings.length);
   setText("salesCustomerCount", customers.length);
-  setHtml("salesBookingBody", bookingRows(bookings, editable) || "<tr><td colspan='7'>No bookings yet.</td></tr>");
-  setHtml("salesCustomerBody", customerRows(customers) || "<tr><td colspan='5'>No registered customers yet.</td></tr>");
+  setHtml("salesBookingBody", bookingRows(bookings, editable, profile.role) || "<tr><td colspan='8'>No bookings yet.</td></tr>");
+  setHtml("salesCustomerBody", customerRows(customers, profile.role) || "<tr><td colspan='6'>No registered customers yet.</td></tr>");
 }
 
 export async function loadCustomerDashboard(profile) {
