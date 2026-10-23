@@ -8,6 +8,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<script>window.ACACIA_APPEARANCE={sidebar:'.admin-sidebar',items:'.admin-sidebar li',rightbar:'#sfgRightBar',rightitems:'#sfgRightBar button'};</script>
+<script src="appearance.js"></script>
 </head>
 <body data-page="service-dashboard">
 
@@ -20,6 +22,7 @@
                 <li onclick="showAdminPage('salesCustomersPage')">👥 Customers</li>
                 <li onclick="showAdminPage('salesBookingsPage')">📅 Bookings Operations</li>
                 <li onclick="showAdminPage('financePage')">💰 Quotes &amp; Invoices</li>
+                <li onclick="showAdminPage('appearancePage')">🎨 Appearance</li>
                 <li onclick="logoutSales()">🚪 Logout</li>
             </ul>
         </aside>
@@ -65,10 +68,15 @@
                     <tbody id="financeInvoiceBody"></tbody>
                 </table>
             </div>
+            <div id="appearancePage" class="admin-page" style="display:none;">
+                <h1>Appearance</h1>
+                <div data-acacia-appearance></div>
+            </div>
         </main>
     </div>
 </section>
 
+<script src="rightbar.js"></script>
 <script type="module" src="main.js"></script>
 </body>
 </html>
