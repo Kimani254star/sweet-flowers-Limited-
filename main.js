@@ -4,6 +4,7 @@ import { registerCustomer, login, requireRole, logout, updateOwnProfile, createU
 import { submitBooking, updateBookingStatus } from "./bookings.js";
 import { addGalleryImage, deleteGalleryImage, renderPublicGallery, renderGallerySection } from "./gallery.js";
 import { openQuote, viewSavedQuote } from "./quotes.js";
+import "./lightbox.js";
 import { openReply } from "./replies.js";
 import { rowAction } from "./actions.js";
 import { convertToInvoice, markInvoicePaid, viewInvoice } from "./invoices.js";

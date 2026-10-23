@@ -25,6 +25,8 @@ function statusCell(b, editable) {
     STATUSES.map((s) => `<option${s === b.status ? " selected" : ""}>${s}</option>`).join("") + `</select>`;
 }
 
+const isInquiry = (b) => /\(Quote Request\)$/.test(String(b.service || ""));
+
 const fmt = (n) => Number(n || 0).toLocaleString("en-KE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 async function loadFinance(role) {
@@ -90,12 +92,16 @@ export async function loadAdminDashboard() {
   await loadFinance("admin");
   const [customers, staff, bookings, gallery] = await Promise.all([listCustomers(), listStaff(), listBookings(), listGallery()]);
   setText("customerCount", customers.length);
-  setText("bookingCount", bookings.length);
+  const inquiries = bookings.filter(isInquiry);
+  const realBookings = bookings.filter((b) => !isInquiry(b));
+  setText("bookingCount", realBookings.length);
+  setText("inquiryCount", inquiries.length);
   setText("salesCount", staff.length);
   setText("galleryCount", gallery.length);
 
   setHtml("customerBody", customerRows(customers, "admin") || "<tr><td colspan='6'>No registered customers yet.</td></tr>");
-  setHtml("bookingBody", bookingRows(bookings, true, "admin") || "<tr><td colspan='8'>No bookings yet.</td></tr>");
+  setHtml("bookingBody", bookingRows(realBookings, true, "admin") || "<tr><td colspan='8'>No bookings yet.</td></tr>");
+  setHtml("inquiryBody", bookingRows(inquiries, true, "admin") || "<tr><td colspan='8'>No inquiries yet.</td></tr>");
 
   staff.forEach((u) => rememberRecord("staff", u.id, u));
   gallery.forEach((g) => rememberRecord("gallery", g.id, g));
@@ -116,9 +122,13 @@ export async function loadSalesDashboard(profile, editable = true) {
   setText("salesWelcomeName", profile.name);
   await loadFinance(profile.role);
   const [customers, bookings] = await Promise.all([listCustomers(), listBookings()]);
-  setText("salesBookingCount", bookings.length);
+  const inquiries = bookings.filter(isInquiry);
+  const realBookings = bookings.filter((b) => !isInquiry(b));
+  setText("salesBookingCount", realBookings.length);
+  setText("salesInquiryCount", inquiries.length);
   setText("salesCustomerCount", customers.length);
-  setHtml("salesBookingBody", bookingRows(bookings, editable, profile.role) || "<tr><td colspan='8'>No bookings yet.</td></tr>");
+  setHtml("salesBookingBody", bookingRows(realBookings, editable, profile.role) || "<tr><td colspan='8'>No bookings yet.</td></tr>");
+  setHtml("salesInquiryBody", bookingRows(inquiries, editable, profile.role) || "<tr><td colspan='8'>No inquiries yet.</td></tr>");
   setHtml("salesCustomerBody", customerRows(customers, profile.role) || "<tr><td colspan='6'>No registered customers yet.</td></tr>");
 }
 

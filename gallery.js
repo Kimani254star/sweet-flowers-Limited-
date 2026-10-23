@@ -32,6 +32,8 @@ export async function renderPublicGallery() {
     const img = document.createElement("img");
     img.src = g.image_url;
     img.alt = g.caption || "Sweet Flower Garden project photo";
+    img.loading = "lazy";
+    img.decoding = "async";
     grid.appendChild(img);
   });
 }

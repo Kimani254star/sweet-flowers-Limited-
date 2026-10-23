@@ -22,8 +22,10 @@
                 <li onclick="showAdminPage('customersPage')">👥 Customers</li>
                 <li onclick="showAdminPage('settingsPage')">⚙️ Settings</li>
                 <li onclick="showAdminPage('galleryPage')">🖼️ Gallery Management</li>
+                <li onclick="showAdminPage('inquiriesPage')">📥 Inquiries</li>
                 <li onclick="showAdminPage('bookingsPage')">📅 Bookings Operations</li>
-                <li onclick="showAdminPage('financePage')">💰 Quotes &amp; Invoices</li>
+                <li onclick="showAdminPage('quotesPage')">📄 Quotes</li>
+                <li onclick="showAdminPage('invoicesPage')">🧾 Invoices</li>
                 <li onclick="showAdminPage('appearancePage')">🎨 Appearance</li>
                 <li onclick="logoutAdmin()">🚪 Logout</li>
             </ul>
@@ -34,6 +36,7 @@
                 <div class="cards">
                     <div class="card"><h3>Registered Customers</h3><h2 id="customerCount">0</h2></div>
                     <div class="card"><h3>Total Received Bookings</h3><h2 id="bookingCount">0</h2></div>
+                    <div class="card"><h3>Inquiries</h3><h2 id="inquiryCount">0</h2></div>
                     <div class="card"><h3>Staff Accounts</h3><h2 id="salesCount">0</h2></div>
                     <div class="card"><h3>Gallery Images</h3><h2 id="galleryCount">0</h2></div>
                     <div class="card"><h3>Total Invoiced (KES)</h3><h2 id="homeInvoiced">0.00</h2></div>
@@ -100,21 +103,32 @@
                     <tbody id="bookingBody"></tbody>
                 </table>
             </div>
-            <div id="financePage" class="admin-page" style="display:none;">
-                <h1>Quotes &amp; Invoices</h1>
+            <div id="inquiriesPage" class="admin-page" style="display:none;">
+                <h1>Inquiries</h1>
+                <p style="margin-bottom:15px;">Quote requests sent from the website. Reply, or create a quote for the customer.</p>
+                <table>
+                    <thead><tr><th>#</th><th>Customer Name</th><th>Email / Phone</th><th>Service Requested</th><th>Target Date</th><th>Status</th><th>Quote</th><th>Actions</th></tr></thead>
+                    <tbody id="inquiryBody"></tbody>
+                </table>
+            </div>
+            <div id="quotesPage" class="admin-page" style="display:none;">
+                <h1>Quotes</h1>
                 <div class="cards">
                     <div class="card"><h3>Quotes Sent</h3><h2 id="finQuoteCount">0</h2></div>
+                </div>
+                <table>
+                    <thead><tr><th>Quote No.</th><th>Customer</th><th>Date</th><th>Total</th><th>Status</th><th>Action</th></tr></thead>
+                    <tbody id="financeQuoteBody"></tbody>
+                </table>
+            </div>
+            <div id="invoicesPage" class="admin-page" style="display:none;">
+                <h1>Invoices</h1>
+                <div class="cards">
                     <div class="card"><h3>Invoices</h3><h2 id="finInvoiceCount">0</h2></div>
                     <div class="card"><h3>Total Invoiced (KES)</h3><h2 id="finInvoiced">0.00</h2></div>
                     <div class="card"><h3>Paid (KES)</h3><h2 id="finPaid">0.00</h2></div>
                     <div class="card"><h3>Outstanding (KES)</h3><h2 id="finOutstanding">0.00</h2></div>
                 </div>
-                <h3 style="margin:20px 0 15px;color:#1B5E20;">Quotes</h3>
-                <table>
-                    <thead><tr><th>Quote No.</th><th>Customer</th><th>Date</th><th>Total</th><th>Status</th><th>Action</th></tr></thead>
-                    <tbody id="financeQuoteBody"></tbody>
-                </table>
-                <h3 style="margin:30px 0 15px;color:#1B5E20;">Invoices</h3>
                 <table>
                     <thead><tr><th>Invoice No.</th><th>Customer</th><th>Due</th><th>Total</th><th>Status</th><th>Action</th></tr></thead>
                     <tbody id="financeInvoiceBody"></tbody>
